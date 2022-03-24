@@ -12,7 +12,6 @@ import Onboard3 from './assets/images/onboard3.png';
 
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-// import Progress from "./src/components/progressbar/Progress"
 
 
 export const AgentContext = React.createContext();
@@ -76,7 +75,10 @@ const Root = () => {
   getUsers,
     users,
     getAllHolidays,
-    allholidays
+    allholidays,
+    requestHoliday,
+    deleteHoliday,
+    updateHoliday
   } = ProjecsService();
 
 
@@ -209,7 +211,10 @@ const Root = () => {
         getUsers,
          users,
          getAllHolidays,
-         allholidays
+         allholidays,
+         requestHoliday,
+         deleteHoliday,
+         updateHoliday
       }}>
         <Stack.Navigator>
           {!Register && (

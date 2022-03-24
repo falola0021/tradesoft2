@@ -603,6 +603,105 @@ export default () => {
     });
   };
 
+  const requestHoliday = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+  
+ body
+  ) => {
+
+
+  
+    http().then((axios) => {
+      axios
+        .post('/holiday/store',body )
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            setMessage(response.data.message);
+        
+            getAllHolidays(setModalVisible, setMessage, setLoading);
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const updateHoliday = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+  
+ body
+  ) => {
+
+
+  
+    http().then((axios) => {
+      axios
+        .post('/holiday/update',body )
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            setMessage(response.data.message);
+        
+            getAllHolidays(setModalVisible, setMessage, setLoading);
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const deleteHoliday = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+  id
+  ) => {
+    http().then((axios) => {
+      axios
+        .post('/holiday/destroy', { id })
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            setMessage(response.data.message);
+          
+            getAllHolidays(setModalVisible, setMessage, setLoading);
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+
   return {
     getAllLiveProjects,
     allLiveProjects,
@@ -637,6 +736,9 @@ export default () => {
     getUsers,
     users,
     getAllHolidays,
-    allholidays
+    allholidays,
+    requestHoliday,
+    deleteHoliday,
+    updateHoliday
   };
 };

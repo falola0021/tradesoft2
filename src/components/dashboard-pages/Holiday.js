@@ -32,6 +32,8 @@ import * as Sharing from 'expo-sharing';
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
 import { showMessage } from 'react-native-flash-message';
 import AddNewHoliday from "../holiday/AddNewHoliday"
+import EditHoliday from "../holiday/EditHoliday"
+
 import * as FileSystem from 'expo-file-system';
 import HolidayCalendar from "../../components/calendar/HolidayCalendar"
 
@@ -46,9 +48,9 @@ var allholidays = app.allholidays;
  let getUsers = app.getUsers
    let  users = app.users
  let  getMessageDetails=app.getMessageDetails
-  let deleteMessage=app.deleteMessage
- var replyMessage=app.replyMessage
-var addMessage = app.addMessage
+  let deleteHoliday=app.deleteHoliday
+ var updateHoliday=app.updateHoliday
+var requestHoliday= app.requestHoliday
   const [message ,setMessage] = React.useState(null);
   const [loading ,setLoading] = React.useState(false);
   const [viewmessage ,setViewmessage] = React.useState(false);
@@ -58,6 +60,8 @@ var addMessage = app.addMessage
   const [ base64image,setBase64image] = React.useState(null);
   const [ toggletab,setToggletab] = React.useState(true);
   const [ toggletab1,setToggletab1] = React.useState(false);
+  const [ selectedhol,setSelectedhol] = React.useState(null);
+
 
 
  const handleToggletab=()=>{
@@ -73,26 +77,16 @@ var addMessage = app.addMessage
    const [err ,setErr] = React.useState(null);
 
 
-  
 
-const handleshowmessage=(index,item)=>{
-  setActiveindex(index)
-  let  message_id=item.id
-  getMessageDetails( setModalVisible,
-    setMessage,
-    setLoading,
-    message_id)
-}
- const handleclosemessage=()=>{
+//  const handleclosemessage=()=>{
 
-   setActiveindex(null)
-   setLoading(null)
- }
+//    setActiveindex(null)
+//    setLoading(null)
+//  }
   
 
 useEffect(() => {
  getAllHolidays(setModalVisible,setMessage,setLoading)
-  getUsers(setModalVisible,setMessage,setLoading)
 
 }, [])
 
@@ -105,99 +99,146 @@ setModalVisible2(!modalVisible2)
  
 };
 
-  const handleAddMessage = (item) => {
-   setConversationId(item.id)
-    setViewmessage(false)
-setModalVisible(!modalVisible)
-   
-  };
-
- const handleDeleteMessage=(item,messagedetail)=>{
-  let  message_id=item.id
-  let  conversation_id = messagedetail.id
- deleteMessage(
+const handleDeleteHoliday=(item)=>{
+  let id = item.id
+ 
+  deleteHoliday(
     setModalVisible,
     setMessage,
     setLoading,
     setSuccess,
     setErr,
-    message_id,
-    conversation_id
+ id
    )
  }
 
 
+const handleNewHoliday = async(val,title,startdate,enddate)=>{
+let start=moment(startdate).format(
+  'DD-MM-YYYY'
+)
+let end=moment(enddate).format(
+  'DD-MM-YYYY'
+)
 
+console.log(
+  typeof(end),
+  end)
 
-
-
-const handleNewMessage = async(val,title,docname,docsize,docurl,doctype,selectedItems)=>{
-  let content = val
-
- if(docname){
-const base64 = await FileSystem.readAsStringAsync(docurl, {
-   encoding: 'base64',
- });
- setBase64image(`data:image/png;base64,${base64}`)
-}
-
-
-var taggedUser=selectedItems.toString()
 let body = {
-  user_id: taggedUser,
-  subject:title,
- conversation_id : conversationId,
- content:content,
- name: "attachment",
- filename: docname,
- type: "pdf",
- data:base64image
+
+
+   start_date:start,
+   end_date:end,
+   holiday_reason:val,
+    id:"10"
+
 }
 
-addMessage(
+requestHoliday(
    setModalVisible,
    setMessage,
    setLoading,
    setSuccess,
    setErr,
- body
+   body
   )
+  setModalVisible2(false)
+  
 }
 
+const handleUpdateHoliday = async(val,startdate,enddate,selectedhol)=>{
+  // var start;
+  // var end ;
+  // if(startdate || enddate){
+  // var start=moment(startdate).format(
+  //   'DD-MM-YYYY'
+  // )
+  // var end=moment(enddate).format(
+  //   'DD-MM-YYYY'
+  // )
+  // }else{
+  //   var start=moment(selectedhol.start_date).format(
+  //     'DD-MM-YYYY'
+  //   )
+  //   var end=moment(selectedhol.end_date).format(
+  //     'DD-MM-YYYY'
+  //   )
+  // }
+
+  let id=selectedhol.id
+  
+  let body = {
+  
+  
+     start_date:moment(startdate||selectedhol.start_date).format( 'DD-MM-YYYY'),
+     end_date:moment(enddate||selectedhol.start_date).format( 'DD-MM-YYYY'),
+     holiday_reason:val?val : selectedhol.holiday_reason,
+      id:id
+  
+  }
+  
+  updateHoliday(
+     setModalVisible,
+     setMessage,
+     setLoading,
+     setSuccess,
+     setErr,
+     body
+    )
+    setModalVisible(false)
+    
+  }
 
 
 
- const handleReplyMessage= async(val,docname,docsize,docurl,doctype)=>{
-   let content = val
+const handleshowUpdate=(item)=>{
+setSelectedhol(item)
+ setModalVisible(!modalVisible)
+}
 
-   if(docname){
-    const base64 = await FileSystem.readAsStringAsync(docurl, {
-      encoding: 'base64',
-    });
-    setBase64image(`data:image/png;base64,${base64}`)
-   }
+//   const handleAddMessage = (item) => {
+//    setConversationId(item.id)
+//     setViewmessage(false)
+// setModalVisible(!modalVisible)
+   
+//   };
+
+
+
+
+
+//  const handleReplyMessage= async(val,docname,docsize,docurl,doctype)=>{
+//    let content = val
+
+//    if(docname){
+//     const base64 = await FileSystem.readAsStringAsync(docurl, {
+//       encoding: 'base64',
+//     });
+//     setBase64image(`data:image/png;base64,${base64}`)
+//    }
 
   
 
 
-let body = {
-  conversation_id : conversationId,
-  content:content,
-  name: "attachment",
-  filename: docname,
-  type: "pdf",
-data:base64image
-}
+// let body = {
+//   conversation_id : conversationId,
+//   content:content,
+//   name: "attachment",
+//   filename: docname,
+//   type: "pdf",
+// data:base64image
+// }
 
- replyMessage(
-    setModalVisible,
-    setMessage,
-    setLoading,
-    setSuccess,
-    setErr,
-  body
-   )
- }
+//  replyMessage(
+//     setModalVisible,
+//     setMessage,
+//     setLoading,
+//     setSuccess,
+//     setErr,
+//   body
+//    )
+//  }
  
  
 
@@ -221,7 +262,7 @@ data:base64image
 
 
 
-console.log(allholidays)
+
   return (
     <SafeAreaView>
       <View>
@@ -299,10 +340,10 @@ console.log(allholidays)
          <View style={{marginTop:15,display:"flex",flexDirection:"row",justifyContent:"space-between",marginTop:20}}>
           
              <View style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-             <TouchableOpacity onPress={()=> activeindex !==index ? handleshowmessage(index,item):handleclosemessage()} >
+             <TouchableOpacity onPress={()=> handleshowUpdate(item)} >
              <Text style={{fontFamily:"Nunito_600SemiBold",fontSize:12,color:"grey"}}>Edit Message</Text>
              </TouchableOpacity>
-             <TouchableOpacity onPress={()=>handleAddMessage(item)} >
+             <TouchableOpacity onPress={()=>handleDeleteHoliday(item)} >
              <Text style={{fontFamily:"Nunito_600SemiBold",fontSize:12,color:"red",marginLeft:20}}>Delete </Text>
               </TouchableOpacity>
              </View>
@@ -329,8 +370,8 @@ console.log(allholidays)
          
         </View>
       </View>
-  <AddMessage  modalVisible={modalVisible} setModalVisible= {setModalVisible} handleReplyMessage={handleReplyMessage} />
-  <AddNewHoliday users={users} modalVisible={modalVisible2} setModalVisible= {setModalVisible2}  handleAddNewMessage={handleNewMessage}/>
+      <EditHoliday selectedhol={selectedhol} users={users} modalVisible={modalVisible} setModalVisible= {setModalVisible} handleUpdateHoliday={handleUpdateHoliday}/>
+  <AddNewHoliday  users={users} modalVisible={modalVisible2} setModalVisible= {setModalVisible2} handleNewHoliday={handleNewHoliday}/>
 
     </SafeAreaView>
   );

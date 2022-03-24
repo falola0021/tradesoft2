@@ -24,7 +24,7 @@ import MultiSelect from 'react-native-multiple-select';
 import moment from 'moment';
 
 
-const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
+const handleNavigate = ({selectedhol, modalVisible, setModalVisible,handleUpdateHoliday}) => {
   const [val, setVal] = React.useState(null);
   const [title, setTitle] = React.useState(null);
   const [enddate, setEnddete] = React.useState('');
@@ -35,7 +35,7 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
   const [mindate, setMindate] = React.useState(new Date(moment().add(1, "day")));
 
 
- 
+ console.log(selectedhol,"this")
 
   const close = () => {
     setModalVisible(false);
@@ -46,8 +46,8 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
   };
 
   const handleSubmit = () => {
-  
-    handleNewHoliday(val,title,startdate,enddate)   
+    
+    handleUpdateHoliday(val,startdate,enddate,selectedhol)   
     setVal(null)
     setTitle(null)
     setStartdate("")
@@ -102,12 +102,12 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
                
 
 
-              <Text style={{marginTop:20,marginBottom:10,fontFamily: 'Nunito_600SemiBold',}}>Enter your holiday request details</Text>
+              <Text style={{marginTop:20,marginBottom:10,fontFamily: 'Nunito_600SemiBold',}}>Edit holiday request details</Text>
                 <View style={{marginBottom:20}}>
                 <DatePicker
            
                  setDob={setStartdate}
-                 dob={startdate}
+                 dob={startdate?startdate: selectedhol.start_date}
                 minDate={mindate}
                  
                   placeholder='Start date'
@@ -119,7 +119,7 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
                 <DatePicker
            
                  setDob={setEnddete}
-                 dob={enddate}
+                 dob={enddate?enddate: selectedhol.end_date}
                 minDate={mindate}
                  
                   placeholder='End date'
@@ -128,7 +128,7 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
                 <TextArea
                   placeholder='Enter your message here...'
                   label='Your Reason'
-                  val={val}
+                  val={val ? val  :selectedhol.holiday_reason }
                   setVal={setVal}
                 />
 
@@ -138,12 +138,12 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
                 <View style={styles.bottomtxtbuttonbox}>
                
         
-                {val && startdate && startdate ?
+          
                   <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
-                    <Text style={styles.btntext2}>Send Request</Text>
-                  </TouchableOpacity>:
-                  <InactiveButton text='Send Request' />
-               }
+                    <Text style={styles.btntext2}>Update Request</Text>
+                  </TouchableOpacity>
+               
+               
              
        
                 </View>
