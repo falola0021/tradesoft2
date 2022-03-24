@@ -77,14 +77,22 @@ if (errorMsg) {
         }}
       >
         <View >
+       
         <TouchableOpacity onPress={()=>setModalVisible1(false)} style={{position:"absolute",top:40,zIndex:10,left:20}} >
 <FontAwesome name='minus-circle' color='grey' size={35} />
 </TouchableOpacity>
-        <Map projectDetails={projectDetails}  location={location}/>
+<TouchableOpacity onPress={()=>setModalVisible1(false)} style={{position:"absolute",top:37,zIndex:10,right:20,backgroundColor:"grey",paddingHorizontal:20,paddingVertical:5,borderRadius:5}} >
+<Text style={{color:'#fff'}}>Get Direction</Text>
+</TouchableOpacity>
+
+        {/* <Map projectDetails={projectDetails}  location={location}/> */}
         </View>
       </Modal>
       <TouchableOpacity onPress={()=>setModalVisible1(true)} style={{position:"absolute",top:120,zIndex:10,left:15}} >
       {risk && <FontAwesome name='plus-circle' color='grey' size={35} />}
+</TouchableOpacity>
+<TouchableOpacity onPress={()=>setModalVisible1(false)} style={{position:"absolute",top:124,zIndex:10,right:20,backgroundColor:"grey",paddingHorizontal:20,paddingVertical:5,borderRadius:5}} >
+<Text style={{color:'#fff'}}>Get Direction</Text>
 </TouchableOpacity>
       <View style={styles.riskbox}>
         <TouchableOpacity onPress={handleRisk} style={styles.risktab}>
@@ -111,7 +119,7 @@ if (errorMsg) {
          
           <View style={{  marginTop: 20, marginBottom: 20,height:"100%" }}>
             
-           <Map projectDetails={projectDetails}  location={location} /> 
+           {/* <Map projectDetails={projectDetails}  location={location} />  */}
            </View>
          
         

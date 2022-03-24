@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, LogBox } from 'react-native';
 import Welcome from './src/screens/welcome/Welcome';
@@ -31,6 +32,8 @@ import FlashMessage from "react-native-flash-message";
 
 
 const Root = () => {
+  
+  
   const Stack = createNativeStackNavigator();
 
   const {
@@ -62,7 +65,18 @@ const Root = () => {
   addAdditionalRisk,
   clockInOut ,
   getClock,
-  clockview
+  clockview,
+  getAllMessage,
+  allmessage,
+  messagedetails,
+  getMessageDetails,
+  deleteMessage,
+  replyMessage,
+  addMessage,
+  getUsers,
+    users,
+    getAllHolidays,
+    allholidays
   } = ProjecsService();
 
 
@@ -184,7 +198,18 @@ const Root = () => {
         addAdditionalRisk,
         clockInOut ,
         getClock,
-        clockview
+        clockview,
+        getAllMessage,
+        allmessage,
+        messagedetails,
+        getMessageDetails,
+        deleteMessage,
+        replyMessage,
+        addMessage,
+        getUsers,
+         users,
+         getAllHolidays,
+         allholidays
       }}>
         <Stack.Navigator>
           {!Register && (

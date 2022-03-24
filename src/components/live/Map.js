@@ -1,24 +1,16 @@
 import React, { useEffect,useRef,useState } from 'react';
 import { View, Text } from 'react-native';
 
-// import tw from 'tailwind-react-native-classnames';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
-// import { useSelector, useDispatch } from 'react-redux';
 
-// import {
-//   selectOrigin,
-//   selectDestination,
-//   setTravelTimeInformation,
-// } from '../slices/navSlice';
 import MapViewDirections from 'react-native-maps-directions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-// import { GOOGLE_MAPS_APIKEY } from '@env';
+import getDirections from 'react-native-google-maps-directions'
+
 
 const map = ({location,projectDetails}) => {
-//   const dispatch = useDispatch();
+
   const mapRef = useRef(null);
-  //const origin = "lagos"
-  //const destination = "abuja"
 
 let projectLat=Number(projectDetails?.address.lat)
 let projectLng=Number(projectDetails?.address.lng)
@@ -28,40 +20,73 @@ let projectLng=Number(projectDetails?.address.lng)
   };
   const destination = {
     zoom: 8,
-    location: { lat:projectLat, lng:projectLat },
+    location: { lat:projectLat, lng:projectLng },
   };
 
   useEffect(() => {
     if (!origin || !destination) return;
-    // console.log(origin, destination)
+  
 
-    mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
+ mapRef.current.fitToSuppliedMarkers(['origin', 'destination'], {
       edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
     });
   }, [origin, destination]);
 
-  
-//   useEffect(() => {
-//     if (!origin || !destination) return;
-//     const getTravelTime = async () => {
-//       fetch(
-//         `https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=${origin.description}&destinations=${destination.description}&key=${GOOGLE_MAPS_APIKEY}`
-//       )
-//         .then((res) => res.json())
-//         .then((data) => {
-//           let distanceTimeInfo = data.rows[0].elements[0];
-//           console.log(distanceTimeInfo);
-//           dispatch(setTravelTimeInformation(distanceTimeInfo));
-//         });
-//     };
-//     getTravelTime();
-//   }, [origin, destination, GOOGLE_MAPS_APIKEY]);
+
+  const origin1 = {latitude: location? location?.coords?.latitude:0, longitude: location? location?.coords?.longitude:0};
+  const destination1 = {latitude: projectLat, longitude: projectLng};
 
 
 
+ const handleGetDirections = () => {
+    const data = {
+       source: {
+        latitude: -33.8356372,
+        longitude: 18.6947617
+      },
+      destination: {
+        latitude: -33.8600024,
+        longitude: 18.697459
+      },
+      params: [
+        {
+          key: "travelmode",
+          value: "driving"        // may be "walking", "bicycling" or "transit" as well
+        },
+        {
+          key: "dir_action",
+          value: "navigate"       // this instantly initializes navigation using the given travel mode
+        }
+      ],
+      waypoints: [
+        {
+          latitude: -33.8600025,
+          longitude: 18.697452,
+        },
+        {
+          latitude: -33.8600026,
+          longitude: 18.697453,
+        },
+           {
+          latitude: -33.8600036,
+          longitude: 18.697493,
+        },
+           {
+          latitude: -33.8600046,
+          longitude: 18.69743,
+        },
+
+      ]
+    }
+
+    getDirections(data)
+  }
 
   return (
-  
+  <>
+  <TouchableOpacity onPress={handleGetDirections}>
+    <Text>Get Direction</Text>
+  </TouchableOpacity>
     <MapView
     
     //minZoomLevel={0}  // default => 0
@@ -78,11 +103,12 @@ let projectLng=Number(projectDetails?.address.lng)
       }}>
       {origin && destination && (
         <MapViewDirections
-          origin={origin.description}
-          destination={destination.description}
+          origin={origin1}
+          destination={destination1}
           apikey="AIzaSyCUGnm8XzXR26tbZRnCHOQXkY1mn43dPJA&libraries=places"
           strokeWidth={3}
-          strokeColor='black'
+          strokeColor='red'
+          
         />
       )}
       {origin?.location && (
@@ -108,6 +134,7 @@ let projectLng=Number(projectDetails?.address.lng)
         />
       )}
     </MapView>
+    </>
   
   );
 };

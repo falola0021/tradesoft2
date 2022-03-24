@@ -37,9 +37,12 @@ const Create = () => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [message, setMessage] = React.useState(null);
   const [details, setDetails] = React.useState(null);
+  const [showclock, setShowclock] = React.useState(false);
+
 
 
   const handleNavigateToDetails = (item) => {
+    setShowclock(false)
     setModalVisible(true);
    setDetails(item)
   };
@@ -71,12 +74,28 @@ const Create = () => {
     setMessage(false);
   }
 
+  const handleShowClockins=()=>{
+    setShowclock(!showclock)
+  }
+
 
   return (
     <SafeAreaView>
       <View>
         <View style={styles.container}>
+          <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
           <Text style={styles.txt1b}>LIVE PROJECTS</Text>
+          <TouchableOpacity onPress={handleShowClockins} style={{display:"flex",flexDirection:"row",marginRight:20,alignItems:"center"}}>
+          <Text style={{color:"#66C825",fontSize:14,marginRight:5}}>View Clock-ins</Text>
+
+          <MaterialCommunityIcons
+                      name='clock-outline'
+                      color='green'
+                      size={17}
+                    />
+          </TouchableOpacity>
+
+          </View>
           {loading ? (
             <ActivityIndicator size='25%' color='#c3c3c3' />
           ) : (
@@ -118,14 +137,22 @@ const Create = () => {
                         <Text style={styles.bottomtxt}>{item?.name}</Text>
                       </View>
 
-                      <View style={styles.bottomtxtbox2}>
+                      {/* <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>
-                          {/* {item?.address.address_line_1} */}
+                    
                         </Text>
-                      </View>
+                      </View> */}
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Task: </Text>
                         <Text style={styles.bottomtxt3}>No task from API</Text>
+                      </View>
+                      <View style={styles.bottomtxtbox2a}>
+                        <Text style={styles.bottomtxt2}>Address 1: </Text>
+                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_1}</Text>
+                      </View>
+                      <View style={styles.bottomtxtbox2a}>
+                        <Text style={styles.bottomtxt2}>Address 2: </Text>
+                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_2}</Text>
                       </View>
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Start: </Text>
@@ -154,8 +181,10 @@ const Create = () => {
 
 {
   !loading &&
-  
- <>
+<>
+  {
+    showclock &&
+<>
 
           <Text style={styles.txt1b}>LATEST CLOCK-INS</Text>
 
@@ -200,8 +229,10 @@ const Create = () => {
           ) : (
             <Text>No Available clockin</Text>
           )}
-        </>   
-
+        </>  
+          } 
+          </>
+      
 }
         </View>
       </View>
@@ -304,7 +335,7 @@ const styles = StyleSheet.create({
   secbox: {
     backgroundColor: '#fff',
     width: '48%',
-    height: 280,
+    height: 330,
     borderRadius: 10,
     marginBottom: 20,
   },
@@ -348,10 +379,19 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: 'Nunito_600SemiBold',
   },
+  bottomtxtbox2a: {
+    paddingHorizontal: 10,
+    // display: 'flex',
+    // flexDirection: 'row',
+    width:"100%",
+
+    marginBottom: 5,
+  },
   bottomtxtbox2: {
     paddingHorizontal: 10,
     display: 'flex',
     flexDirection: 'row',
+    width:"100%",
 
     marginBottom: 5,
   },
@@ -362,12 +402,12 @@ const styles = StyleSheet.create({
   },
   bottomtxt3: {
     color: '#2E3A59',
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: 'Nunito_600SemiBold',
   },
   bottomtxt4: {
     color: '#348045',
-    fontSize: 11,
+    fontSize: 10,
     fontFamily: 'Nunito_600SemiBold',
   },
   scroll: {

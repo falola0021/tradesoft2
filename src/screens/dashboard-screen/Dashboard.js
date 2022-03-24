@@ -12,12 +12,13 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import TopNav from '../../components/topnav/Nav';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AppContext } from '../../../App';
 import { useFocusEffect } from '@react-navigation/native';
 
 import Dashboard from '../../components/dashboard-pages/Dashboard';
-import Projects from '../../components/dashboard-pages/Projects';
+import Messages from '../../components/dashboard-pages/Message';
+import Holiday from '../../components/dashboard-pages/Holiday';
+
 import ThirdPage from '../../components/dashboard-pages/page3';
 import {
   FontAwesome,
@@ -26,7 +27,8 @@ import {
   Octicons,
   Ionicons,
   MaterialIcons,
-  Fontisto
+  Fontisto,
+  AntDesign
 } from '@expo/vector-icons';
 
 // Import Custom Sidebar
@@ -57,7 +59,7 @@ const NavigationDrawerStructure = (props) => {
   );
 };
 
-function FirstScreenStack({ navigation }) {
+function DashboardScreenStack({ navigation }) {
   return (
     <Stack.Navigator initialRouteName='Dashboard'>
       <Stack.Screen
@@ -71,7 +73,7 @@ function FirstScreenStack({ navigation }) {
   );
 }
 
-function SecondScreenStack({ navigation }) {
+function MessageScreenStack({ navigation }) {
   const [isLongPressed, setIsLongPressed] = useState(true);
   useEffect(() => {
     if (isLongPressed) {
@@ -80,16 +82,16 @@ function SecondScreenStack({ navigation }) {
   }, [isLongPressed]);
   return (
     <Stack.Navigator
-      initialRouteName='Projects'
+      initialRouteName='Messages'
       screenOptions={{
         header: () => <TopNav navigationProps={navigation} />,
       }}
     >
       <Stack.Screen
-        name='Projects'
-        component={Projects}
+        name='Messages'
+        component={Messages}
         options={{
-          title: 'Projects', //Set Header Title
+          title: 'Messages', //Set Header Title
         }}
       />
       <Stack.Screen
@@ -102,6 +104,21 @@ function SecondScreenStack({ navigation }) {
     </Stack.Navigator>
   );
 }
+
+function HolidayScreenStack({ navigation }) {
+  return (
+    <Stack.Navigator initialRouteName='Dashboard'>
+      <Stack.Screen
+        name="Holiday"
+        component={Holiday}
+        options={{
+          header: () => <TopNav navigationProps={navigation} />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 
 function Dashboarddd() {
   const app = useContext(AppContext);
@@ -170,18 +187,9 @@ function Dashboarddd() {
               />
             ),
           }}
-          component={FirstScreenStack}
+          component={DashboardScreenStack}
         />
-        <Drawer.Screen
-          name='Projects'
-          options={{
-            headerShown: false,
-            drawerIcon: ({ color }) => (
-              <Octicons name={'project'} size={16} color={color} />
-            ),
-          }}
-          component={SecondScreenStack}
-        />
+        
         <Drawer.Screen
           name='Message'
           options={{
@@ -191,7 +199,7 @@ function Dashboarddd() {
             ),
           }}
           
-          component={SecondScreenStack}
+          component={MessageScreenStack}
         />
         <Drawer.Screen
           name='Calendar'
@@ -201,37 +209,29 @@ function Dashboarddd() {
               <Octicons name={'calendar'} size={16} color={color} />
             ),
           }}
-          component={SecondScreenStack}
+          component={MessageScreenStack}
         />
-        <Drawer.Screen
-          name='Rams'
-          options={{
-            headerShown: false,
-            drawerIcon: ({ color }) => (
-              <Ionicons name={'medkit-outline'} size={16} color={color} />
-            ),
-          }}
-          component={SecondScreenStack}
-        />
-        <Drawer.Screen
-          name='Media'
-          options={{
-            headerShown: false,
-            drawerIcon: ({ color }) => (
-              <MaterialIcons name={'perm-media'} size={16} color={color} />
-            ),
-          }}
-          component={SecondScreenStack}
-        />
+       
         <Drawer.Screen
           name='Holiday'
           options={{
             headerShown: false,
             drawerIcon: ({ color }) => (
               <Fontisto name={'holiday-village'} size={16} color={color} />
+
             ),
           }}
-          component={SecondScreenStack}
+          component={HolidayScreenStack}
+        />
+        <Drawer.Screen
+          name='Profile'
+          options={{
+            headerShown: false,
+            drawerIcon: ({ color }) => (
+              <AntDesign name={'user'} size={18} color={color} />
+            ),
+          }}
+          component={HolidayScreenStack}
         />
       </Drawer.Navigator>
     </>

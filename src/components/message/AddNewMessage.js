@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import {
   Alert,
   Modal,
@@ -12,24 +12,40 @@ import {
   //Animated
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
-import TextArea from '../../components/inputs/InputTextArea';
+import TextArea from '../inputs/InputTextArea';
+import SubjectInput from "../inputs/Input"
 import {
   AntDesign
 } from '@expo/vector-icons';
 import { Value } from 'react-native-reanimated';
 import * as DocumentPicker from "expo-document-picker";
-import InactiveButton from '../../components/inactive-button/Button';
+import InactiveButton from '../inactive-button/Button';
+import MultiSelect from 'react-native-multiple-select';
 
 
-const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}) => {
+const handleNavigate = ({ modalVisible, setModalVisible,handleAddNewMessage ,users}) => {
   const [val, setVal] = React.useState(null);
+  const [title, setTitle] = React.useState(null);
+
   const [docname, setDocname] = React.useState(null);
   const [docsize, setDocsize] = React.useState(null);
   const [docurl, setDocurl] = React.useState(null);
   const [doctype, setDoctype] = React.useState(null);
+  const [selectedItems, setSelectedItems] = React.useState([]);
 
 
 
+
+let passName = users?.map((name) => { 
+ let username=name.first_name + " " + name.last_name
+let id  = name.id
+  return { username, id }; 
+});
+
+const onSelectedItemsChange = (selectedItems) => {
+
+  setSelectedItems(selectedItems);
+};
  
     const pickDocument = async () => {
      
@@ -40,7 +56,6 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}
       setDocurl(result.uri)
       setDoctype(result.mimeType)
      
-   
     };
 
 
@@ -54,9 +69,16 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}
   };
 
   const handleSubmit = () => {
-   
-    handleSendNote(val,docname,docsize,docurl,doctype)
-setVal("")
+  
+    handleAddNewMessage(val,title,docname,docsize,docurl,doctype,selectedItems)   
+    setVal(null)
+    setTitle(null)
+    
+    setDocname(null)
+    setDocsize(null)
+    setDocurl(null)
+    setDoctype(null)
+    setSelectedItems([]);
     setModalVisible(false);
   
   };
@@ -103,9 +125,51 @@ setVal("")
                 <View style={styles.titlebox}>
                   {/* <Text style={styles.bottomtxt2}>135, Brierley Hill, Dudley, West Midlands, SY3 3NH, AL</Text> */}
                 </View>
+
+               
+        <View style={{marginTop:20,marginBottom:5}}>
+        <MultiSelect
+          hideTags
+          items={passName}
+        single={true}
+          hideSubmitButton
+          uniqueKey="id"
+          onSelectedItemsChange={onSelectedItemsChange}
+          selectedItems={selectedItems}
+          selectText="Send To"
+          
+          searchInputPlaceholderText="Search names..."
+          onChangeInput={(text) => console.log(text)}
+          tagRemoveIconColor="#CCC"
+          tagBorderColor="#CCC"
+          tagTextColor="#CCC"
+          selectedItemTextColor="#CCC"
+          selectedItemIconColor="#66C825"
+          itemTextColor="#000"
+          displayKey="username"
+          searchInputStyle={{color: '#CCC'}}
+          submitButtonColor="#48d22b"
+          submitButtonText="Submit"
+          styleItemsContainer	={{maxHeight:200}}
+          altFontFamily="Nunito_600SemiBold"
+          styleTextDropdown={{fontFamily:"Nunito_600SemiBold",marginLeft:10,color:"grey",fontSize:14}}
+          styleTextDropdownSelected={{fontFamily:"Nunito_600SemiBold",marginLeft:10,color:"grey",fontSize:14}}
+
+
+        />
+               </View>
+
+                <View style={{marginBottom:10}}>
+                <SubjectInput 
+                 placeholder='Title'
+                 label='Title'
+                 val={title}
+                 setVal={setTitle}
+                />
+                </View>
                 <TextArea
-                  placeholder='Enter your note here...'
-                  label='Your Note'
+                  placeholder='Enter your message here...'
+                  label='Your Message'
                   val={val}
                   setVal={setVal}
                 />
@@ -131,11 +195,11 @@ setVal("")
                   {/* <TouchableOpacity style={styles.btn1}>
                <Text style={styles.btntext2}>GO TO PROJECT</Text>
                </TouchableOpacity> */}
-               {val ?
+               {val && selectedItems?.length>0 && title ?
                   <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
-                    <Text style={styles.btntext2}>Add Note</Text>
+                    <Text style={styles.btntext2}>Send Message</Text>
                   </TouchableOpacity>:
-                  <InactiveButton text='Add Note' />
+                  <InactiveButton text='Send Message' />
                }
                 </View>
               </View>
@@ -163,7 +227,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 7,
     padding: 20,
-    height: 365,
+    // height: 500,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -195,7 +259,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontFamily: 'Nunito_600SemiBold',
     textTransform:"lowercase",
-    marginTop:30,
+    marginTop:15,
     marginBottom:5
   },
   bottomtxt3: {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import {
   Alert,
   Modal,
@@ -12,37 +12,25 @@ import {
   //Animated
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
-import TextArea from '../../components/inputs/InputTextArea';
+import TextArea from '../inputs/InputTextArea';
+import SubjectInput from "../inputs/Input"
 import {
   AntDesign
 } from '@expo/vector-icons';
 import { Value } from 'react-native-reanimated';
 import * as DocumentPicker from "expo-document-picker";
-import InactiveButton from '../../components/inactive-button/Button';
+import InactiveButton from '../inactive-button/Button';
+import MultiSelect from 'react-native-multiple-select';
 
 
-const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}) => {
+const handleNavigate = ({ modalVisible, setModalVisible,handleAddNewMessage}) => {
   const [val, setVal] = React.useState(null);
-  const [docname, setDocname] = React.useState(null);
-  const [docsize, setDocsize] = React.useState(null);
-  const [docurl, setDocurl] = React.useState(null);
-  const [doctype, setDoctype] = React.useState(null);
+  const [title, setTitle] = React.useState(null);
+
 
 
 
  
-    const pickDocument = async () => {
-     
-      let result = await DocumentPicker.getDocumentAsync();
-  
-      setDocname(result.name)
-      setDocsize(result.size)
-      setDocurl(result.uri)
-      setDoctype(result.mimeType)
-     
-   
-    };
-
 
   const close = () => {
     setModalVisible(false);
@@ -54,11 +42,12 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}
   };
 
   const handleSubmit = () => {
-   
-    handleSendNote(val,docname,docsize,docurl,doctype)
-setVal("")
-    setModalVisible(false);
   
+    handleAddNewMessage(val,title)   
+    setVal(null)
+    setTitle(null)
+    
+ 
   };
   return (
     <>
@@ -103,40 +92,31 @@ setVal("")
                 <View style={styles.titlebox}>
                   {/* <Text style={styles.bottomtxt2}>135, Brierley Hill, Dudley, West Midlands, SY3 3NH, AL</Text> */}
                 </View>
+
+               
+       
+
+                <View style={{marginBottom:10}}>
+                
+                </View>
                 <TextArea
-                  placeholder='Enter your note here...'
-                  label='Your Note'
+                  placeholder='Enter your message here...'
+                  label='Your Reason'
                   val={val}
                   setVal={setVal}
                 />
 
-                <Text style={styles.bottomtxt2}>ALLOWED: JPEG, JPG, BMP, PNG, PDF, GIF, DOC, DOCX, ODT, CSV, ODS, XLS, XLSX, ZIP, TXT
-                 
-                 </Text>
 
-                 <TouchableOpacity onPress={pickDocument} style={styles.attachmentbox}>
-                 <AntDesign
-                  name='addfile'
-                  color='#66C825'
-                  size={15}
-                />
-                <View style={{display:"flex",flexDirection:"row"}}>
-                   <Text style={styles.attachmenttext2}>{docname?docname.substring(0, 26):"Attatchment"}  </Text>
-                   <Text style={styles.attachmenttext}>{docsize?(docsize * 0.000001).toFixed(2) + "Mb": " (128mb max-size)"}  </Text>
-
-                   </View>
-                 </TouchableOpacity>
+                
 
                 <View style={styles.bottomtxtbuttonbox}>
-                  {/* <TouchableOpacity style={styles.btn1}>
-               <Text style={styles.btntext2}>GO TO PROJECT</Text>
-               </TouchableOpacity> */}
-               {val ?
+               
+        
                   <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
-                    <Text style={styles.btntext2}>Add Note</Text>
-                  </TouchableOpacity>:
-                  <InactiveButton text='Add Note' />
-               }
+                    <Text style={styles.btntext2}>Send Request</Text>
+                  </TouchableOpacity>
+                  {/* <InactiveButton text='Send Request' /> */}
+       
                 </View>
               </View>
             </View>
@@ -163,7 +143,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 7,
     padding: 20,
-    height: 365,
+    // height: 500,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -195,7 +175,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontFamily: 'Nunito_600SemiBold',
     textTransform:"lowercase",
-    marginTop:30,
+    marginTop:15,
     marginBottom:5
   },
   bottomtxt3: {

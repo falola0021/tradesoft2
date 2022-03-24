@@ -28,10 +28,10 @@ import { set } from 'react-native-reanimated';
 const Notifications = ({ route }) => {
   const { details } = route.params;
   const navigation = useNavigation();
-  const [note, setNote] = React.useState(true);
+  const [note, setNote] = React.useState(false);
   const [rams, setRams] = React.useState(false);
   const [calendar, setCalendar] = React.useState(false);
-  const [live, setLive] = React.useState(false);
+  const [live, setLive] = React.useState(true);
   const [loading, setLoading] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [message, setMessage] = React.useState(null);
@@ -300,6 +300,14 @@ const Notifications = ({ route }) => {
           )}
           <View style={{ height: '100%' }}>
             <View style={styles.tabs}>
+            <TouchableOpacity
+                onPress={handleLive}
+                style={live ? styles.tab : styles.tab2}
+              >
+                <Text style={live ? styles.tabtext : styles.tabtext2}>
+                  Live
+                </Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={handleNote}
                 style={note ? styles.tab : styles.tab2}
@@ -324,14 +332,7 @@ const Notifications = ({ route }) => {
                   Calendar
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleLive}
-                style={live ? styles.tab : styles.tab2}
-              >
-                <Text style={live ? styles.tabtext : styles.tabtext2}>
-                  Live
-                </Text>
-              </TouchableOpacity>
+             
             </View>
             <View style={styles.contentcontainer}>
               {note && <Notes id={details?.id} notes={projectDetails?.notes} />}

@@ -68,10 +68,7 @@ const handleNavigate = ({
                <Text style={styles.bottomtxt3}>Project: </Text>
                <Text style={styles.bottomtxt2}>{details?.name}</Text>
              </View>
-             <View style={styles.titlebox}>
-               {/* <Text style={styles.bottomtxt3}>Address: </Text> */}
-               <Text style={styles.bottomtxt2}>{details?.address.address_line_1}, {details?.address.county}, {details?.address.country}</Text>
-             </View>
+           
              <View style={styles.titlebox}>
                <Text style={styles.bottomtxt3}>Task: </Text>
                <Text style={styles.bottomtxt2}>No task from API</Text>
@@ -89,9 +86,26 @@ const handleNavigate = ({
                             'MM-DD-YY, h:mm:ss a'
                           )}</Text>
              </View>
+             <View style={styles.titleboxa}>
+                <Text style={styles.bottomtxt3}>Address 1: </Text> 
+               <Text style={styles.bottomtxt2}>{details?.address.address_line_1}, {details?.address.county}, {details?.address.country}</Text>
+             </View>
+             <View style={styles.titleboxa}>
+                <Text style={styles.bottomtxt3}>Address 2: </Text> 
+               <Text style={styles.bottomtxt2}>{details?.address.address_line_2}, {details?.address.county}, {details?.address.country}</Text>
+             </View>
              <View style={styles.titlebox}>
+               <Text style={styles.bottomtxt3}>County: </Text>
+               <Text style={styles.bottomtxt2}>{details?.address.county}</Text>
+             </View>
+             <View style={styles.titlebox}>
+            
                <Text style={styles.bottomtxt3}>Postcode: </Text>
                <Text style={styles.bottomtxt2}>{details?.address.postcode}</Text>
+             </View>
+             <View style={styles.titlebox}>
+               <Text style={styles.bottomtxt3}>Country: </Text>
+               <Text style={styles.bottomtxt2}>{details?.address.country}</Text>
              </View>
              <View style={styles.bottomtxtbuttonbox}>
                <TouchableOpacity onPress={handleNavigateToDetails} style={styles.btn1}>
@@ -130,7 +144,7 @@ const styles = StyleSheet.create({
     
     borderRadius: 7,
     padding: 20,
-    height: 350,
+    height: 420,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -155,18 +169,24 @@ const styles = StyleSheet.create({
   titlebox:{
     display:"flex",
     flexDirection:"row",
-    marginTop:10,
+    marginTop:7,
+    flexWrap:"wrap"
+  },
+  titleboxa:{
+    display:"flex",
+    // flexDirection:"row",
+    marginTop:7,
     flexWrap:"wrap"
   },
   bottomtxt2: {
     color: 'rgba(46, 58, 89, 0.7)',
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
     
   },
   bottomtxt3: {
     color: '#2E3A59',
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
   },
   bottomtxtbuttonbox:{

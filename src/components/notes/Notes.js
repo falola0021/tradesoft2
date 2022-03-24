@@ -108,7 +108,7 @@ if (success && message) {
               <Text style={styles.txtb}> {moment(item?.created_at).format(
                             'MM-DD-YY, h:mm:ss a'
                           )}</Text>
-              {notes,myaccountinfo?.id==item?.user_id &&
+              {notes.myaccountinfo?.id==item?.user_id &&
                <TouchableOpacity onPress={()=>handleDeletedNote(item)} style={styles.downloadbox2}>
               <Feather
                   name='trash'

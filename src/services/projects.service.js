@@ -13,13 +13,20 @@ export default () => {
   const [success, setSuccess] = React.useState(false);
   const [allLiveProjects, setAllLIveProjects] = React.useState(null);
   const [allProjects, setAllProjects] = React.useState(null);
-
   const [latestClockinsTime, setLatestClockinsTime] = React.useState(null);
   const [notificationCount, setNotificationCount] = React.useState(null);
   const [notification, setNotification] = React.useState(null);
   const [projectDetails, setProjectDetails] = React.useState(null);
   const [risk, setRisk] = React.useState(null);
   const [clockview, setClockview] = React.useState(null);
+  const [allmessage, setAllmessage] = React.useState(null);
+  const [messagedetails, setMessageDetails] = React.useState(null);
+  const [users, setUsers] = React.useState(null);
+  const [allholidays, setAllholidays] = React.useState(null);
+
+  
+
+
 
 
   const getAllLiveProjects = async (
@@ -79,6 +86,166 @@ export default () => {
         });
     });
   };
+
+
+  const getAllMessage = async (setModalVisible, setMessage, setLoading) => {
+    setLoading(true);
+    http().then((axios) => {
+      axios
+        .post('/message_get')
+        .then((response) => {
+          setLoading(false);
+          setAllmessage(response.data.data.conversations);
+         
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const getMessageDetails = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    message_id
+  ) => {
+    setLoading(true);
+
+    http().then((axios) => {
+      axios
+        .post('/message_detail', { message_id })
+        .then((response) => {
+          setLoading(false);
+          setMessageDetails(response?.data?.data?.conversation?.messages)
+        })
+        .catch((e) => {
+          console.log(e.response, 'dddd');
+
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const deleteMessage = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+    message_id,
+    conversation_id
+  ) => {
+    http().then((axios) => {
+      axios
+        .post('/message_delete', {  message_id, conversation_id })
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            setMessage(response.data.message);
+        
+            getAllMessage(setModalVisible, setMessage, setLoading);
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const replyMessage = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+  
+ body
+  ) => {
+
+   
+  
+
+  
+    http().then((axios) => {
+      axios
+        .post('/message_reply',body )
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            setMessage(response.data.message);
+        
+            getAllMessage(setModalVisible, setMessage, setLoading);
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const addMessage = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+  
+ body
+  ) => {
+
+   
+  
+
+  
+    http().then((axios) => {
+      axios
+        .post('/message_add',body )
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            setMessage(response.data.message);
+        
+            getAllMessage(setModalVisible, setMessage, setLoading);
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const getUsers = async (setModalVisible, setMessage, setLoading) => {
+    setLoading(true);
+    http().then((axios) => {
+      axios
+        .post('/get_user')
+        .then((response) => {
+          setLoading(false);
+          setUsers(response.data.data);
+         
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
 
   const addNote = async (
     setModalVisible,
@@ -419,6 +586,23 @@ export default () => {
     });
   };
 
+
+  const getAllHolidays = async (setModalVisible, setMessage, setLoading) => {
+    setLoading(true);
+    http().then((axios) => {
+      axios
+        .post('/holiday/index')
+        .then((response) => {
+          setLoading(false);
+          setAllholidays(response.data.data.holiday);
+         
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
   return {
     getAllLiveProjects,
     allLiveProjects,
@@ -442,6 +626,17 @@ export default () => {
     addAdditionalRisk,
     clockInOut,
     getClock,
-    clockview
+    clockview,
+    getAllMessage,
+    allmessage,
+    messagedetails,
+    getMessageDetails,
+    deleteMessage,
+    replyMessage,
+    addMessage,
+    getUsers,
+    users,
+    getAllHolidays,
+    allholidays
   };
 };

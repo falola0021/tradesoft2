@@ -12,17 +12,18 @@ import {
   //Animated
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
-import TextArea from '../../components/inputs/InputTextArea';
+import TextArea from '../inputs/InputTextArea';
 import {
   AntDesign
 } from '@expo/vector-icons';
 import { Value } from 'react-native-reanimated';
 import * as DocumentPicker from "expo-document-picker";
-import InactiveButton from '../../components/inactive-button/Button';
+import InactiveButton from '../inactive-button/Button';
 
 
-const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}) => {
+const handleNavigate = ({ modalVisible, setModalVisible,handleReplyMessage ,setFile}) => {
   const [val, setVal] = React.useState(null);
+
   const [docname, setDocname] = React.useState(null);
   const [docsize, setDocsize] = React.useState(null);
   const [docurl, setDocurl] = React.useState(null);
@@ -39,7 +40,6 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}
       setDocsize(result.size)
       setDocurl(result.uri)
       setDoctype(result.mimeType)
-     
    
     };
 
@@ -54,8 +54,8 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}
   };
 
   const handleSubmit = () => {
-   
-    handleSendNote(val,docname,docsize,docurl,doctype)
+ 
+    handleReplyMessage(val,docname,docsize,docurl,doctype)
 setVal("")
     setModalVisible(false);
   
@@ -104,15 +104,14 @@ setVal("")
                   {/* <Text style={styles.bottomtxt2}>135, Brierley Hill, Dudley, West Midlands, SY3 3NH, AL</Text> */}
                 </View>
                 <TextArea
-                  placeholder='Enter your note here...'
-                  label='Your Note'
+                  placeholder='Enter your message here...'
+                  label='Your Message'
                   val={val}
                   setVal={setVal}
                 />
 
                 <Text style={styles.bottomtxt2}>ALLOWED: JPEG, JPG, BMP, PNG, PDF, GIF, DOC, DOCX, ODT, CSV, ODS, XLS, XLSX, ZIP, TXT
-                 
-                 </Text>
+                  </Text>
 
                  <TouchableOpacity onPress={pickDocument} style={styles.attachmentbox}>
                  <AntDesign
@@ -133,9 +132,9 @@ setVal("")
                </TouchableOpacity> */}
                {val ?
                   <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
-                    <Text style={styles.btntext2}>Add Note</Text>
+                    <Text style={styles.btntext2}>Send Message</Text>
                   </TouchableOpacity>:
-                  <InactiveButton text='Add Note' />
+                  <InactiveButton text='Send Message' />
                }
                 </View>
               </View>

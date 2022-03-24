@@ -31,11 +31,11 @@ const Password = ({ icon, label, placeholder,val, setVal,err }) => {
           onChangeText={(text) => setVal(text)}
           mode='outlined'
           direction='rtl'
-          outlineColor={err && !val ?"#C81C1C": '#0130B0'}
+          outlineColor={err && !val ?"rgba(46, 58, 89, 0.2)": 'rgba(46, 58, 89, 0.2)'}
           style={styles.input}
           theme={{
             colors: {
-              primary: '#0130B0',
+              primary: 'rgba(46, 58, 89, 0.2)',
               underlineColor: 'transparent',
             },
           }}
