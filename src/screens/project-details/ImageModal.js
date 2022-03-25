@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react';
+import React, { useState } from 'react';
 import {
   Alert,
   Modal,
@@ -8,63 +8,41 @@ import {
   View,
   Image,
   TouchableOpacity,
+
   
   //Animated
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
-import TextArea from '../inputs/InputTextArea';
-import DatePicker from "../inputs/DatePicker"
-import {
-  AntDesign
-} from '@expo/vector-icons';
-import { Value } from 'react-native-reanimated';
-import * as DocumentPicker from "expo-document-picker";
-import InactiveButton from '../inactive-button/Button';
-import MultiSelect from 'react-native-multiple-select';
-import moment from 'moment';
 
 
-const handleNavigate = ({selectedhol, modalVisible, setModalVisible,handleUpdateHoliday}) => {
-  const [val, setVal] = React.useState(null);
-  const [title, setTitle] = React.useState(null);
-  const [enddate, setEnddete] = React.useState('');
-  const [startdate, setStartdate] = React.useState('');
 
 
-  const [maxdate, setMaxdate] = React.useState(new Date(moment().add(150, "years")));
-  const [mindate, setMindate] = React.useState(new Date(moment().add(1, "day")));
+const handleNavigate = ({ modalVisible2, setModalVisible2,projectDetails}) => {
+
+
 
 
  
+
 
   const close = () => {
-    setModalVisible(false);
-    setVal(null)
-    setTitle(null)
-    setStartdate("")
-    setEnddete("")
+    setModalVisible2(false);
+   
   };
 
-  const handleSubmit = () => {
-    
-    handleUpdateHoliday(val,startdate,enddate,selectedhol)   
-    setVal(null)
-    setTitle(null)
-    setStartdate("")
-    setEnddete("")
-    
  
-  };
+  
+
   return (
     <>
-      <TouchableOpacity style={modalVisible && styles.overlay}>
+      <TouchableOpacity style={modalVisible2 && styles.overlay}>
         <View style={styles.centeredView}>
           <Modal
             animationType='slide'
             transparent={true}
-            visible={modalVisible}
+            visible={modalVisible2}
             onRequestClose={() => {
-              setModalVisible(!modalVisible);
+              setModalVisible2(!modalVisible2);
             }}
           >
             <View style={styles.centeredView}>
@@ -95,58 +73,20 @@ const handleNavigate = ({selectedhol, modalVisible, setModalVisible,handleUpdate
                   </TouchableOpacity>
                 </View>
 
-                <View style={styles.titlebox}>
-                  {/* <Text style={styles.bottomtxt2}>135, Brierley Hill, Dudley, West Midlands, SY3 3NH, AL</Text> */}
-                </View>
-
                
-
-
-              <Text style={{marginTop:20,marginBottom:10,fontFamily: 'Nunito_600SemiBold',}}>Edit holiday request details</Text>
-                <View style={{marginBottom:20}}>
-                <DatePicker
-           
-                 setDob={setStartdate}
-                 dob={startdate?startdate: selectedhol?.start_date}
-                minDate={mindate}
-                 
-                  placeholder='Start date'
-                 />
-                </View>
-       
-
-                <View style={{marginBottom:15}}>
-                <DatePicker
-           
-                 setDob={setEnddete}
-                 dob={enddate?enddate: selectedhol?.end_date}
-                minDate={mindate}
-                 
-                  placeholder='End date'
-                 />
-                </View>
-                <TextArea
-                  placeholder='Enter your message here...'
-                  label='Your Reason'
-                  val={val ? val  :selectedhol?.holiday_reason }
-                  setVal={setVal}
-                />
-
+              <View >
+          <Image
+            style={styles.img}
+            source={{
+              uri: `http://portal.trade-soft.co.uk/${projectDetails?.project_info?.image_src}`,
+            }}
+          />
+        </View>
 
                 
-
-                <View style={styles.bottomtxtbuttonbox}>
                
-        
-          
-                  <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
-                    <Text style={styles.btntext2}>Update Request</Text>
-                  </TouchableOpacity>
+                 
                
-               
-             
-       
-                </View>
               </View>
             </View>
           </Modal>
@@ -158,6 +98,12 @@ const handleNavigate = ({selectedhol, modalVisible, setModalVisible,handleUpdate
 export default handleNavigate;
 
 const styles = StyleSheet.create({
+  img: {
+    width: '100%',
+    resizeMode: 'contain',
+    height: "100%",
+    borderRadius: 8,
+  },
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -172,7 +118,7 @@ const styles = StyleSheet.create({
 
     borderRadius: 7,
     padding: 20,
-    // height: 500,
+    height: 365,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -204,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontFamily: 'Nunito_600SemiBold',
     textTransform:"lowercase",
-    marginTop:15,
+    marginTop:30,
     marginBottom:5
   },
   bottomtxt3: {

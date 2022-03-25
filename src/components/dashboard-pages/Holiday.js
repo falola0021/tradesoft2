@@ -166,17 +166,18 @@ const handleUpdateHoliday = async(val,startdate,enddate,selectedhol)=>{
   //   )
   // }
 
-  let id=selectedhol.id
+  let id=selectedhol?.id
   
   let body = {
   
   
-     start_date:moment(startdate||selectedhol.start_date).format( 'DD-MM-YYYY'),
-     end_date:moment(enddate||selectedhol.start_date).format( 'DD-MM-YYYY'),
-     holiday_reason:val?val : selectedhol.holiday_reason,
+     start_date:moment(startdate||selectedhol?.start_date).format( 'DD-MM-YYYY'),
+     end_date:moment(enddate||selectedhol?.start_date).format( 'DD-MM-YYYY'),
+     holiday_reason:val?val : selectedhol?.holiday_reason,
       id:id
   
   }
+
   
   updateHoliday(
      setModalVisible,

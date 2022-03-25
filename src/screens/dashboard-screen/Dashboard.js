@@ -19,7 +19,6 @@ import Dashboard from '../../components/dashboard-pages/Dashboard';
 import Messages from '../../components/dashboard-pages/Message';
 import Holiday from '../../components/dashboard-pages/Holiday';
 
-import ThirdPage from '../../components/dashboard-pages/page3';
 import {
   FontAwesome,
   MaterialCommunityIcons,
@@ -33,6 +32,8 @@ import {
 
 // Import Custom Sidebar
 import CustomSidebarMenu from '../../components/side-menu/Sidebar';
+import Calendar from '../../components/dashboard-pages/Calendar';
+import Profile from '../../components/dashboard-pages/Profile';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -94,13 +95,7 @@ function MessageScreenStack({ navigation }) {
           title: 'Messages', //Set Header Title
         }}
       />
-      <Stack.Screen
-        name='ThirdPage'
-        component={ThirdPage}
-        options={{
-          title: 'Third Page', //Set Header Title
-        }}
-      />
+      
     </Stack.Navigator>
   );
 }
@@ -111,6 +106,36 @@ function HolidayScreenStack({ navigation }) {
       <Stack.Screen
         name="Holiday"
         component={Holiday}
+        options={{
+          header: () => <TopNav navigationProps={navigation} />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+function CalendarScreenStack({ navigation }) {
+  return (
+    <Stack.Navigator initialRouteName='Dashboard'>
+      <Stack.Screen
+        name="Holiday"
+        component={Calendar}
+        options={{
+          header: () => <TopNav navigationProps={navigation} />,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+
+function ProfileScreenStack({ navigation }) {
+  return (
+    <Stack.Navigator initialRouteName='Dashboard'>
+      <Stack.Screen
+        name="Holiday"
+        component={Profile}
         options={{
           header: () => <TopNav navigationProps={navigation} />,
         }}
@@ -209,7 +234,7 @@ function Dashboarddd() {
               <Octicons name={'calendar'} size={16} color={color} />
             ),
           }}
-          component={MessageScreenStack}
+          component={CalendarScreenStack}
         />
        
         <Drawer.Screen
@@ -231,7 +256,7 @@ function Dashboarddd() {
               <AntDesign name={'user'} size={18} color={color} />
             ),
           }}
-          component={HolidayScreenStack}
+          component={ProfileScreenStack}
         />
       </Drawer.Navigator>
     </>

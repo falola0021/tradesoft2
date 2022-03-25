@@ -5,7 +5,7 @@ import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 
 import MapViewDirections from 'react-native-maps-directions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import getDirections from 'react-native-google-maps-directions'
+// import getDirections from 'react-native-google-maps-directions'
 
 
 const map = ({location,projectDetails}) => {
@@ -85,7 +85,7 @@ let projectLng=Number(projectDetails?.address.lng)
   return (
   <>
   <TouchableOpacity onPress={handleGetDirections}>
-    <Text>Get Direction</Text>
+
   </TouchableOpacity>
     <MapView
     
@@ -125,8 +125,8 @@ let projectLng=Number(projectDetails?.address.lng)
       {destination?.location && (
         <Marker
           coordinate={{
-            latitude: destination?.location?.lat,
-            longitude: destination?.location?.lng,
+            latitude: destination?.location?.lat ||0,
+            longitude: destination?.location?.lng ||0,
           }}
           title='Destination'
           description={destination?.description}

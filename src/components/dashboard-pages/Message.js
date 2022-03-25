@@ -13,13 +13,6 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 
-import {
-  FontAwesome,
-  MaterialCommunityIcons,
-  Feather,
-  Octicons,
-  Entypo,
-} from '@expo/vector-icons';
 import Avatar from '../../../assets/images/avatar.png';
 import { AppContext } from '../../../App';
 import moment from "moment"

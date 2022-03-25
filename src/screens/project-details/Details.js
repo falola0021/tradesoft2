@@ -10,6 +10,7 @@ import Rams from '../../components/rams/Rams';
 import Calendar from '../../components/calendar/Calendar';
 import Live from '../../components/live/Live';
 import moment from 'moment';
+import ImageModal from "./ImageModal"
 import { AppContext } from '../../../App';
 
 import {
@@ -36,10 +37,10 @@ const Notifications = ({ route }) => {
   const [modalVisible, setModalVisible] = React.useState(false);
   const [message, setMessage] = React.useState(null);
   // console.log(details.id,"details")
-  const [showvalue, setShowvalue] = React.useState(false);
+  const [modalVisible2, setModalVisible2] = React.useState(false);
 
-  const handleToggleValue = () => {
-    setShowvalue(!showvalue);
+  const handleToggleImage = () => {
+    setModalVisible2(!modalVisible2)
   };
 
   const handleNote = () => {
@@ -47,14 +48,14 @@ const Notifications = ({ route }) => {
     setNote(true);
     setRams(false);
     setCalendar(false);
-    setShowvalue(false)
+   
   };
   const handleRams = () => {
     setLive(false);
     setNote(false);
     setRams(true);
     setCalendar(false);
-    setShowvalue(false)
+   
 
   };
   const handleCalendar = () => {
@@ -62,7 +63,7 @@ const Notifications = ({ route }) => {
     setNote(false);
     setRams(false);
     setCalendar(true);
-    setShowvalue(false)
+   
 
   };
   const handleLive = () => {
@@ -70,7 +71,7 @@ const Notifications = ({ route }) => {
     setNote(false);
     setRams(false);
     setCalendar(false);
-    setShowvalue(false)
+   
 
   };
 
@@ -95,14 +96,7 @@ const Notifications = ({ route }) => {
           <Arrowback />
           <Text style={styles.nottext}>Project Overview</Text>
         </View>
-        <View style={{ paddingHorizontal: 20 }}>
-          <Image
-            style={styles.img}
-            source={{
-              uri: `http://portal.trade-soft.co.uk/${projectDetails?.project_info?.image_src}`,
-            }}
-          />
-        </View>
+        
         <View style={styles.detailspage}>
           <View
             style={{
@@ -116,7 +110,7 @@ const Notifications = ({ route }) => {
               {projectDetails?.project_info?.name}{' '}
             </Text>
             <TouchableOpacity
-              onPress={handleToggleValue}
+              onPress={handleToggleImage}
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -124,12 +118,12 @@ const Notifications = ({ route }) => {
               }}
             >
               <Text style={{ color: '#66C825', marginRight: 5 }}>
-                View Details
+               Image
               </Text>
-              <Feather name='chevrons-down' color='#66C825' size={15} />
+              <Feather name='image' color='#66C825' size={16} />
             </TouchableOpacity>
           </View>
-          {showvalue && (
+       
             <View>
               <View
                 style={{
@@ -297,7 +291,7 @@ const Notifications = ({ route }) => {
                 </View>
               </ScrollView>
             </View>
-          )}
+       
           <View style={{ height: '100%' }}>
             <View style={styles.tabs}>
             <TouchableOpacity
@@ -343,6 +337,7 @@ const Notifications = ({ route }) => {
           </View>
         </View>
       </View>
+      <ImageModal projectDetails={projectDetails} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
     </SafeAreaView>
     // </ScrollView>
   );
@@ -433,12 +428,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'GilroyBold',
   },
-  img: {
-    width: '100%',
-    resizeMode: 'contain',
-    height: 270,
-    borderRadius: 8,
-  },
+ 
   detailspage: {
     paddingHorizontal: 20,
     
