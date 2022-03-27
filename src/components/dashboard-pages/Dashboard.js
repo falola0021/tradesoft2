@@ -146,14 +146,8 @@ const Create = () => {
                         <Text style={styles.bottomtxt2}>Task: </Text>
                         <Text style={styles.bottomtxt3}>No task from API</Text>
                       </View>
-                      <View style={styles.bottomtxtbox2a}>
-                        <Text style={styles.bottomtxt2}>Address 1: </Text>
-                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_1}</Text>
-                      </View>
-                      <View style={styles.bottomtxtbox2a}>
-                        <Text style={styles.bottomtxt2}>Address 2: </Text>
-                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_2}</Text>
-                      </View>
+                    
+                     
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Start: </Text>
                         <Text style={styles.bottomtxt3}>
@@ -167,6 +161,16 @@ const Create = () => {
                         <Text style={styles.bottomtxt3}>
                           {moment(item?.end_date).format('MM-DD-YY, h:mm:ss a')}
                         </Text>
+                      </View>
+                      <View style={styles.bottomtxtbox2a}>
+                        <Text style={styles.bottomtxt2}>Address : </Text>
+                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_1}</Text>
+                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_2}</Text>
+                        <Text style={styles.bottomtxt3}>{item?.address?.county}</Text>
+                        <Text style={styles.bottomtxt3}>{item?.address?.postcode}</Text>
+                        <Text style={styles.bottomtxt3}>{item?.address?.country}</Text>
+
+
                       </View>
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Project Status: </Text>
@@ -335,7 +339,7 @@ const styles = StyleSheet.create({
   secbox: {
     backgroundColor: '#fff',
     width: '48%',
-    height: 330,
+    height: 340,
     borderRadius: 10,
     marginBottom: 20,
   },

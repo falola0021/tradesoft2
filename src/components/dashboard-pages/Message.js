@@ -282,11 +282,11 @@ data:base64image
            <View style={{display:"flex",flexDirection:"row",alignItems:'center'}}>
            
              <View  >
-               <View style={{display:"flex",flexDirection:"row",alignItems:'center',marginBottom:4}}>
+               {/* <View style={{display:"flex",flexDirection:"row",alignItems:'center',marginBottom:4}}>
                <Image style={styles.avatar}  source={Avatar}/>
                <Text  style={{ fontFamily: 'Nunito_600SemiBold',fontSize:10,color:"grey"}}>Abbeb Moral</Text>
 
-               </View>
+               </View> */}
                <View style={{display:"flex",flexDirection:"row",alignItems:'center',marginBottom:10}}>
                <Image style={styles.avatar}  source={Avatar}/>
                <Text  style={{ fontFamily: 'Nunito_600SemiBold',fontSize:10,color:"grey"}}>Abbeb Moral</Text>

@@ -91,9 +91,10 @@ if (errorMsg) {
       <TouchableOpacity onPress={()=>setModalVisible1(true)} style={{position:"absolute",top:120,zIndex:10,left:15}} >
       {risk && <FontAwesome name='plus-circle' color='grey' size={35} />}
 </TouchableOpacity>
+{!method && 
 <TouchableOpacity onPress={()=>setModalVisible1(true)} style={{position:"absolute",top:124,zIndex:10,right:20,backgroundColor:"grey",paddingHorizontal:20,paddingVertical:5,borderRadius:5}} >
 <Text style={{color:'#fff'}}>Get Direction</Text>
-</TouchableOpacity>
+</TouchableOpacity>}
       <View style={styles.riskbox}>
         <TouchableOpacity onPress={handleRisk} style={styles.risktab}>
           <View style={risk ? styles.checkwrapper : styles.checkwrapper2}>

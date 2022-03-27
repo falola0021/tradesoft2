@@ -87,12 +87,12 @@ const handleNavigate = ({
                           )}</Text>
              </View>
              <View style={styles.titleboxa}>
-                <Text style={styles.bottomtxt3}>Address 1: </Text> 
-               <Text style={styles.bottomtxt2}>{details?.address.address_line_1}, {details?.address.county}, {details?.address.country}</Text>
+                <Text style={styles.bottomtxt3}>Address Line 1: </Text> 
+               <Text style={styles.bottomtxt2}>{details?.address.address_line_1}</Text>
              </View>
              <View style={styles.titleboxa}>
-                <Text style={styles.bottomtxt3}>Address 2: </Text> 
-               <Text style={styles.bottomtxt2}>{details?.address.address_line_2}, {details?.address.county}, {details?.address.country}</Text>
+                <Text style={styles.bottomtxt3}>Address Line 2: </Text> 
+               <Text style={styles.bottomtxt2}>{details?.address.address_line_2}</Text>
              </View>
              <View style={styles.titlebox}>
                <Text style={styles.bottomtxt3}>County: </Text>

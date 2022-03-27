@@ -133,14 +133,14 @@ const Login = () => {
               >
                 <Text style={styles.forgotpas}>Forgot password?</Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={
                   () => alert('Not part of the the discussed features')
                   //navigation.navigate('RegisterScreen')
                 }
               >
                 <Text style={styles.forgotpas}>Don't have an account ?</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View style={styles.button}>
               {password.length>7 && email ? (
