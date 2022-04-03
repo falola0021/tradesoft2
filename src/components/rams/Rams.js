@@ -19,6 +19,7 @@ import RenderHtml, {
 
 import AddRams from './AddRams';
 import { showMessage, hideMessage } from 'react-native-flash-message';
+import moment from 'moment';
 
 
 import { Feather } from '@expo/vector-icons';
@@ -151,9 +152,9 @@ if (success && message) {
   });
   setMessage(false);
 }
-
+console.log("the grrret",risks.project_risk_method,"risko")
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{minHeight:400}}>
       <View style={styles.riskbox}>
         <TouchableOpacity onPress={handleRisk} style={styles.risktab}>
           <View style={risk ? styles.checkwrapper : styles.checkwrapper2}>
@@ -210,7 +211,7 @@ if (success && message) {
       )}
       {method && (
         <View style={{ flex: 1, height: '100%', paddingBottom: 30 }}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+       
             <View style={styles.btncotainer}>
               <TouchableOpacity onPress={handleAddNote} style={styles.btn}>
                 <Text style={styles.btntxt}>Additional Risks</Text>
@@ -263,7 +264,7 @@ if (success && message) {
                     />
                   </View>
                 </View>
-                <View
+                {/* <View
                   style={{
                     marginBottom: 20,
                     display: 'flex',
@@ -292,10 +293,58 @@ if (success && message) {
                   >
                     <Text style={styles.txta2}>Delete</Text>
                   </TouchableOpacity>
-                </View>
+                </View> */}
               </View>
             ))}
-          </ScrollView>
+         {risks?.project_risk_method?.modified_by &&
+         <>
+            <Text style={{color:"#66C825",marginTop:20,marginBottom:5}}>Additional Risk</Text>
+            <View style={styles.sec1}>
+                <View style={{ width: '100%', marginBottom: 10 }}>
+                <View style={{ width: '100%',justifyContent:"space-between",display:"flex",flexDirection:"row",marginBottom:10 }}>
+                    <Text style={styles.txta1}>{risks.project_risk_method.modified_by}</Text>
+                           <Text style={styles.txta1}>{moment(risks.project_risk_method.created_at).format(
+                            'MM-DD-YY, h:mm:ss a'
+                          )}</Text>
+                  </View>
+                  <Text style={styles.txta}>{risks.project_risk_method.details}</Text>
+                 
+                </View>
+                
+                {/* <View
+                  style={{
+                    marginBottom: 20,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    marginTop: 10,
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#F1E130',
+                      paddingHorizontal: 30,
+                      paddingVertical: 7,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Text style={styles.txta}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: 'red',
+                      paddingHorizontal: 30,
+                      paddingVertical: 7,
+                      borderRadius: 10,
+                      marginLeft: 20,
+                    }}
+                  >
+                    <Text style={styles.txta2}>Delete</Text>
+                  </TouchableOpacity>
+                </View> */}
+              </View>
+              </>
+            }
+      
         </View>
       )}
 

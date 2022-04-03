@@ -87,8 +87,10 @@ const Notifications = ({ route }) => {
     getRisk(setModalVisible, setMessage, setLoading, id);
   }, []);
 
+
+
   return (
-    // <ScrollView showsVerticalScrollIndicator={false}>
+<ScrollView showsVerticalScrollIndicator={false}>
 
     <SafeAreaView>
       <View style={styles.container}>
@@ -148,17 +150,17 @@ const Notifications = ({ route }) => {
                   <Text style={styles.address}>
                     {' '}
                     {
-                      projectDetails?.contact?.account?.organisation
+                      projectDetails?.address
                         ?.address_line_1
                     }{' '}
                   </Text>
-                  {projectDetails?.contact.account.organisation
-                    .address_line_2 != '' && (
+                  { projectDetails?.address
+                        ?.address_line_2 != '' && (
                     <Text style={styles.address}>
                       {' '}
                       {
-                        projectDetails?.contact?.account?.organisation
-                          ?.address_line_2
+                       projectDetails?.address
+                       ?.address_line_2
                       }{' '}
                     </Text>
                   )}
@@ -176,36 +178,25 @@ const Notifications = ({ route }) => {
                   <Text style={styles.address}>
                     Postcode:{' '}
                     {
-                      projectDetails?.contact?.account?.organisation
-                        ?.address_postcode
+                   projectDetails?.address
+                        ?.postcode
                     }{' '}
                   </Text>
                   <Text style={styles.address}>
-                    Town:{' '}
-                    {
-                      projectDetails?.contact?.account?.organisation
-                        ?.address_town
-                    }{' '}
-                  </Text>
-                </View>
-                <View>
-                  <View style={{ marginLeft: 10 }}>
-                    <Text style={styles.address}>
-                      City:{' '}
+                      County:{' '}
                       {
-                        projectDetails?.contact?.account.organisation
-                          ?.address_county
+                      projectDetails?.address?.county
                       }{' '}
                     </Text>
-                    <Text style={styles.address}>
+                  <Text style={styles.address}>
                       Country:{' '}
                       {
-                        projectDetails?.contact.account?.organisation
-                          ?.address_country
+                     projectDetails?.address?.country
                       }{' '}
                     </Text>
-                  </View>
+                 
                 </View>
+               
               </View>
 
               <ScrollView
@@ -318,20 +309,12 @@ const Notifications = ({ route }) => {
                   Rams
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCalendar}
-                style={calendar ? styles.tab : styles.tab2}
-              >
-                <Text style={calendar ? styles.tabtext : styles.tabtext2}>
-                  Calendar
-                </Text>
-              </TouchableOpacity>
+         
              
             </View>
             <View style={styles.contentcontainer}>
               {note && <Notes id={details?.id} notes={projectDetails?.notes} />}
               {rams && <Rams id={details?.id} risks={risk} />}
-              {calendar  && <Calendar projectDetails={projectDetails} />}
               {live && <Live projectDetails={projectDetails} details={details} />}
             </View>
           </View>
@@ -339,7 +322,7 @@ const Notifications = ({ route }) => {
       </View>
       <ImageModal projectDetails={projectDetails} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
     </SafeAreaView>
-    // </ScrollView>
+ </ScrollView>
   );
 };
 
@@ -348,11 +331,9 @@ export default Notifications;
 const styles = StyleSheet.create({
   contentcontainer: {
     marginTop: 20,
-    //backgroundColor:"red",
-     height:"100%",
   
   
-     flex:1
+
   },
   tabtext: {
     fontSize: 14,
@@ -361,7 +342,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     paddingVertical: 7,
-    width: '25%',
+    width: '33.33%',
     borderBottomColor: '#66C825',
     borderBottomWidth: 3,
     alignItems: 'center',
@@ -373,7 +354,7 @@ const styles = StyleSheet.create({
   },
   tab2: {
     paddingVertical: 7,
-    width: '25%',
+    width: '33.33%',
     borderBottomColor: 'rgba(220,220,220,0.4)',
     borderBottomWidth: 3,
     alignItems: 'center',
@@ -388,6 +369,7 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: '#fff',
     height: '100%',
+    
   },
   cancel: {
     width: 40,

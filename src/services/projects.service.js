@@ -701,12 +701,83 @@ export default () => {
     });
   };
 
+  const markAsRead = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+  id
+  ) => {
+    let project_id=id
+    http().then((axios) => {
+      axios
+        .post('/project_finalize', { project_id })
+        .then((response) => {
+          if (response.data.status) {
+           
+            setErr(false);
+            setSuccess(true);
+            setMessage("This project is successfully completed");
+           getAllLiveProjects (setModalVisible, setMessage, setLoading);
+          } else {
+         
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const getAllRisk = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+  id
+  ) => {
+    let project_id=id
+    http().then((axios) => {
+      axios
+        .post('/get_risk', { project_id })
+        .then((response) => {
+          if (response.data.status) {
+           
+            setErr(false);
+            setSuccess(true);
+            setMessage("This project is successfully completed");
+            getProjectsDetails  ( setModalVisible,
+              setMessage,
+              setLoading,
+              id);
+          } else {
+         
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+
+
+
 
   return {
     getAllLiveProjects,
     allLiveProjects,
     success,
     err,
+    setErr,
     latestClockinsTime,
     getNotificatiobCount,
     notificationCount,
@@ -739,6 +810,9 @@ export default () => {
     allholidays,
     requestHoliday,
     deleteHoliday,
-    updateHoliday
+    updateHoliday,
+    markAsRead ,
+    getAllRisk
+   
   };
 };

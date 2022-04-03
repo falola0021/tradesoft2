@@ -120,11 +120,110 @@ export default () => {
     });
   };
 
+  const upadteProfile = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+    body
+  ) => {
+    http().then((axios) => {
+      axios
+        .post('/update_my_account',body)
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            getMyAccount(setModalVisible,setMessage,setLoading)
+            setMessage(response.data.message);
+            
+          
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+  
+  const   deleteProfileNote = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+   id
+  ) => {
+    http().then((axios) => {
+      axios
+        .post('/delete_note',{id})
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            getMyAccount(setModalVisible,setMessage,setLoading)
+            setMessage(response.data.message);
+            
+          
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
+  const changePassword = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+   body
+  ) => {
+    http().then((axios) => {
+      axios
+        .post('/change_password',body)
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setSuccess(true);
+            getMyAccount(setModalVisible,setMessage,setLoading)
+            setMessage(response.data.message);
+            
+          
+          } else {
+            setErr(true);
+            setSuccess(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+  
+  
+
+
   return {
     login,
     logout,
     success,
     err,
-    myaccountinfo
+    myaccountinfo,
+    upadteProfile,
+    deleteProfileNote,
+    changePassword 
   };
 };

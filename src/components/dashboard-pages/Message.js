@@ -19,7 +19,7 @@ import moment from "moment"
 import AddMessage from "../message/AddMessage"
 import * as Sharing from 'expo-sharing';
       import * as MediaLibrary from 'expo-media-library';
-      import * as Permissions from "expo-permissions";
+ 
 
 
 import { ScrollView, TouchableHighlight } from 'react-native-gesture-handler';
@@ -112,38 +112,54 @@ setModalVisible(!modalVisible)
 
 
 const downloadAttachment = async (messagedetail) =>{ 
+
+
   var attachment=messagedetail.attachment
   var url=`https://dev.trade-soft.co.uk${attachment}`
-console.log(url)
 
   let path = url.split('/');
 
+
+  let { status } = await MediaLibrary.getPermissionsAsync();
+
+if(status=="granted"){
+
   const file_name = path[path.length-1];
-   FileSystem.downloadAsync(
-    url,
-    FileSystem.documentDirectory + file_name
-  )
-    .then(({ uri }) => {
-      console.log('Finished downloading to ', uri);
-      MediaLibrary.createAssetAsync(uri).then(asset => {
-        console.log('asset', asset);
-      MediaLibrary.createAlbumAsync('myfolder', asset)
-        .then(() => {
-          setErr(false);
-          setSuccess(true);
-          setMessage("Successfully downloaded");
-        })
-        .catch(error => {
-          setErr(true);
-          setSuccess(false);
-          setMessage("Cannot download file");
-        });
-      });
-      
-    })
-    .catch(error => {
-      console.error(error);
-    });
+  FileSystem.downloadAsync(
+   url,
+   FileSystem.documentDirectory + file_name
+ )
+   .then(({ uri }) => {
+     console.log('Finished downloading to ', uri);
+     MediaLibrary.createAssetAsync(uri).then(asset => {
+       console.log('asset', asset);
+     MediaLibrary.createAlbumAsync('myfolder', asset)
+       .then(() => {
+         setErr(false);
+         setSuccess(true);
+         setMessage("Successfully downloaded");
+       })
+       .catch(error => {
+         setErr(true);
+         setSuccess(false);
+         setMessage("Cannot download file");
+       });
+     });
+     
+   })
+   .catch(error => {
+     console.error(error);
+   });
+
+}else{
+  let { status } = await MediaLibrary.getPermissionsAsync();
+
+}
+
+
+ 
+
+ 
 }
 
 

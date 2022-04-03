@@ -24,6 +24,8 @@ import {
 
 const CustomSidebarMenu = (props) => {
   const app = useContext(AppContext);
+
+  var  myaccountinfo = app. myaccountinfo;
   var logout = app.logout;
   const success = app.success;
   const [message, setMessage] = React.useState(null);
@@ -61,8 +63,11 @@ if (success && message) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
    <View style={styles.sidename}>
-       <FontAwesome name='user-circle-o' color='#f6f3f4' size={47} />
-
+   <Image style={{height:40,width:40,borderRadius:50,marginRight:20}}
+          source={{
+            uri: `http://portal.trade-soft.co.uk/${myaccountinfo?.profile_pic}`,
+          }}
+               />
        <Text style={styles.name}>Hi {firstname}</Text>
        </View>
       <DrawerContentScrollView {...props}>

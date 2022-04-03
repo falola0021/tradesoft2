@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     borderWidth: 1,
-    borderColor: 'grey',
+    borderColor: 'rgb(211, 211, 211)',
     borderRadius: 5,
-    paddingVertical: 15,
+    paddingVertical: 18,
   },
   datecalender: {
     width: 25,

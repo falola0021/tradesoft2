@@ -8,6 +8,8 @@ import {
   Image,
   Modal,
   ScrollView,
+  Linking,
+  Platform
 } from 'react-native';
 import {
   FontAwesome,
@@ -29,6 +31,7 @@ const Notes = ({details,projectDetails}) => {
 
 const [location, setLocation] = useState(null);
 const [errorMsg, setErrorMsg] = useState(null);
+const [currentaddress, setCurrentaddress] = useState(null);
 
 useEffect(() => {
   (async () => {
@@ -40,6 +43,19 @@ useEffect(() => {
 
     let location = await Location.getCurrentPositionAsync({});
     setLocation(location);
+
+    if (location.coords) {
+      let { longitude, latitude } = location.coords;
+
+      let regionName = await Location.reverseGeocodeAsync({
+        longitude,
+        latitude,
+      });
+      setCurrentaddress(regionName);
+  
+    }
+
+
   })();
 }, []);
 
@@ -66,8 +82,26 @@ if (errorMsg) {
     setVisible(true);
   };
 
+
+
+  const openMap = async () => {
+    const origin = encodeURIComponent(`${currentaddress[0].street} ${currentaddress[0].subregion} ${currentaddress[0].city}, ${currentaddress[0].country}`);  
+   const destination = encodeURIComponent(`${details.address.address_line_1} ${details.address.postcode}, ${details.address.town}`);  
+    const provider = Platform.OS === 'ios' ? 'apple' : 'google'
+    const link = `http://maps.${provider}.com/?saddr=${origin}&daddr=${destination}`;
+
+    try {
+        const supported = await Linking.canOpenURL(link);
+
+        if (supported) Linking.openURL(link);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+  // projectDetails
   return (
-    <View>
+    <View >
        <Modal
         animationType='slide'
         transparent={true}
@@ -76,12 +110,12 @@ if (errorMsg) {
           setModalVisible1(!modalVisible1);
         }}
       >
-        <View >
+        <View  >
        
         <TouchableOpacity onPress={()=>setModalVisible1(false)} style={{position:"absolute",top:40,zIndex:10,left:20}} >
 <FontAwesome name='minus-circle' color='grey' size={35} />
 </TouchableOpacity>
-<TouchableOpacity onPress={()=>setModalVisible1(false)} style={{position:"absolute",top:37,zIndex:10,right:20,backgroundColor:"grey",paddingHorizontal:20,paddingVertical:5,borderRadius:5}} >
+<TouchableOpacity onPress={openMap} style={{position:"absolute",top:37,zIndex:10,right:20,backgroundColor:"grey",paddingHorizontal:20,paddingVertical:5,borderRadius:5}} >
 <Text style={{color:'#fff'}}>Get Direction</Text>
 </TouchableOpacity>
 
@@ -92,7 +126,7 @@ if (errorMsg) {
       {risk && <FontAwesome name='plus-circle' color='grey' size={35} />}
 </TouchableOpacity>
 {!method && 
-<TouchableOpacity onPress={()=>setModalVisible1(true)} style={{position:"absolute",top:124,zIndex:10,right:20,backgroundColor:"grey",paddingHorizontal:20,paddingVertical:5,borderRadius:5}} >
+<TouchableOpacity onPress={openMap} style={{position:"absolute",top:124,zIndex:10,right:20,backgroundColor:"grey",paddingHorizontal:20,paddingVertical:5,borderRadius:5}} >
 <Text style={{color:'#fff'}}>Get Direction</Text>
 </TouchableOpacity>}
       <View style={styles.riskbox}>
@@ -118,11 +152,10 @@ if (errorMsg) {
         <View >
           <Clockin location={location} details={details} />
          
-          <View style={{  marginTop: 20, marginBottom: 20,height:"100%" }}>
+          <View style={{  marginTop: 20, marginBottom: 20,height:350 }}>
             
-           <Map projectDetails={projectDetails}  location={location} /> 
+           <Map projectDetails={projectDetails}  details={details} location={location} /> 
            </View>
-         
         
         </View>
       
@@ -155,6 +188,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-end',
     marginBottom: 20,
+
   },
   btn: {
     backgroundColor: '#66C825',

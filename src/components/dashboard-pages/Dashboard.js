@@ -17,6 +17,7 @@ import MoreDetails from '../dashboard-moreinfo/MoreInfo';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import moment from 'moment';
 
+
 import {
   FontAwesome,
   MaterialCommunityIcons,
@@ -38,13 +39,16 @@ const Create = () => {
   const [message, setMessage] = React.useState(null);
   const [details, setDetails] = React.useState(null);
   const [showclock, setShowclock] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
 
 
 
   const handleNavigateToDetails = (item) => {
     setShowclock(false)
-    setModalVisible(true);
-   setDetails(item)
+    let details=item
+    navigation.navigate('ProjectDetails',{details})
+  //   setModalVisible(true);
+  //  setDetails(item)
   };
 
   const app = useContext(AppContext);
@@ -52,11 +56,12 @@ const Create = () => {
   var getAllProjects = app.getAllProjects;
   var allProjects = app.allProjects;
   var allLiveProjects = app.allLiveProjects;
-
+   var markAsRead =app.markAsRead 
   const latestClockinsTime = app.latestClockinsTime;
 
 
   const err = app.err;
+  const setErr=app.setErr
  
 
   useEffect(() => {
@@ -77,6 +82,38 @@ const Create = () => {
   const handleShowClockins=()=>{
     setShowclock(!showclock)
   }
+
+  const handleMarkAsRead=(item)=>{
+    let id=item.id
+    markAsRead(
+      setModalVisible,
+      setMessage,
+      setLoading,
+      setSuccess,
+      setErr,
+    id
+    )
+  }
+
+
+  if (err && message) {
+    showMessage({
+      message: 'ERROR',
+      description: message,
+      type: 'danger',
+    });
+    setMessage(false);
+  }
+  
+   if (success && message) {
+    showMessage({
+      message: 'SUCCESS',
+      description: message,
+      type: 'success',
+    });
+    setMessage(false);
+  }
+  
 
 
   return (
@@ -123,7 +160,7 @@ const Create = () => {
                           borderTopRightRadius: 6,
                         }}
                         source={{
-                          uri: `http://portal.trade-soft.co.uk/${item?.image_src}`,
+                          uri: `https://portal.trade-soft.co.uk/${item?.image_src}`,
                         }}
                         style={styles.imgbg}
                       >
@@ -144,7 +181,7 @@ const Create = () => {
                       </View> */}
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Task: </Text>
-                        <Text style={styles.bottomtxt3}>No task from API</Text>
+                        <Text style={styles.bottomtxt3}>No task from API </Text>
                       </View>
                     
                      
@@ -176,6 +213,14 @@ const Create = () => {
                         <Text style={styles.bottomtxt2}>Project Status: </Text>
                         <Text style={styles.bottomtxt4}>{item?.status}</Text>
                       </View>
+                      <View style={styles.bottomtxtbuttonbox}>
+               {/* <TouchableOpacity onPress={handleNavigateToDetails} style={styles.btn1}>
+               <Text style={styles.btntext2}>GO TO PROJECT</Text>
+               </TouchableOpacity> */}
+               <TouchableOpacity onPress={()=>item.status !=="finalised" && handleMarkAsRead(item)} style={item.status =="finalised"? styles.btn1 : styles.btn2}>
+               <Text style={item.status=="finalised"?styles.btntext2a : styles.btntext2}>{item?.status=="finalised"? "COMPLETED" : "MARK AS COMPLETE"}</Text>
+               </TouchableOpacity>
+             </View>
                     </TouchableOpacity>
                   )}
                 />
@@ -240,11 +285,11 @@ const Create = () => {
 }
         </View>
       </View>
-      <MoreDetails
+      {/* <MoreDetails
       details={details}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
-      />
+      /> */}
     </SafeAreaView>
   );
 };
@@ -339,9 +384,9 @@ const styles = StyleSheet.create({
   secbox: {
     backgroundColor: '#fff',
     width: '48%',
-    height: 340,
+    height: 380,
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: 30,
   },
   viewcontainer: {
     display: 'flex',
@@ -419,6 +464,60 @@ const styles = StyleSheet.create({
 
     maxHeight: 800,
   },
+
+  bottomtxtbuttonbox:{
+    display:"flex",
+    flexDirection:"row",
+    justifyContent:"space-between",
+    marginTop:10,
+    // paddingHorizontal:10,
+    position:"absolute",
+    bottom:0
+
+  },
+  btn1:{
+    backgroundColor:'#F1E22E',
+    width:"100%",
+    height:37,
+    borderBottomRightRadius:7,
+    borderBottomLeftRadius:7,
+    alignItems:"center",
+    justifyContent:"center",
+    // backgroundColor:'#66C825',
+    // // width:140,
+    // height:37,
+    // // borderRadius:7,
+    // alignItems:"center",
+    // justifyContent:"center"
+  },
+  btn2:{
+    backgroundColor:'#66C825',
+    width:"100%",
+    height:37,
+    borderBottomRightRadius:7,
+    borderBottomLeftRadius:7,
+    alignItems:"center",
+    justifyContent:"center",
+  
+
+
+  },
+  btntext2:{
+    color:"#fff",
+    fontSize: 10,
+    fontFamily: 'Nunito_600SemiBold',
+    marginBottom:2,
+
+  },
+  btntext2a:{
+    color:"#000",
+    fontSize: 10,
+    fontFamily: 'Nunito_600SemiBold',
+    marginBottom:2,
+
+  }
+
+
 });
 
 {

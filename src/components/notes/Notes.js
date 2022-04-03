@@ -56,7 +56,7 @@ const handleDeletedNote = (item) => {
 
 const downloadFile=()=> {
   FileSystem.downloadAsync(
-   'http://gahp.net/wp-content/uploads/2017/09/sample.pdf',
+   'https://gahp.net/wp-content/uploads/2017/09/sample.pdf',
    FileSystem.documentDirectory + 'small.pdf'
  )
    .then(({ uri }) => {
@@ -89,7 +89,7 @@ if (success && message) {
 
 
   return (
-    <View>
+    <View style={{minHeight:400}}>
       <View style={styles.btncotainer}>
         <TouchableOpacity onPress={handleAddNote} style={styles.btn}>
           <Text style={styles.btntxt}>Add Note</Text>

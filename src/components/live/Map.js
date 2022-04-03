@@ -9,6 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const map = ({location,projectDetails}) => {
+ 
 
   const mapRef = useRef(null);
 

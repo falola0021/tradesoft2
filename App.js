@@ -40,7 +40,10 @@ const Root = () => {
     logout,
     success,
     err,
-    myaccountinfo
+    myaccountinfo,
+    upadteProfile,
+    deleteProfileNote,
+    changePassword 
   } = AuthService();
   
   const {
@@ -78,7 +81,11 @@ const Root = () => {
     allholidays,
     requestHoliday,
     deleteHoliday,
-    updateHoliday
+    updateHoliday,
+    markAsRead ,
+    setErr,
+    getAllRisk
+    
   } = ProjecsService();
 
 
@@ -214,7 +221,13 @@ const Root = () => {
          allholidays,
          requestHoliday,
          deleteHoliday,
-         updateHoliday
+         updateHoliday,
+         upadteProfile,
+         deleteProfileNote,
+         changePassword ,
+         markAsRead ,
+         setErr,
+         getAllRisk
       }}>
         <Stack.Navigator>
           {!Register && (

@@ -127,6 +127,18 @@ const Login = () => {
                 setPassword={setPassword}
               />
             </View>
+           
+            <View style={styles.button}>
+              {password.length>7 && email ? (
+                <Button
+                  //loading={loading}
+                  handleNavigate={handleLogin}
+                  text='Login'
+                />
+              ) : (
+                <InactiveButton text='Login' />
+              )}
+            </View>
             <View style={styles.forgotpasbox}>
               <TouchableOpacity
                 onPress={() => navigation.navigate('ForgotScreen')}
@@ -142,23 +154,12 @@ const Login = () => {
                 <Text style={styles.forgotpas}>Don't have an account ?</Text>
               </TouchableOpacity> */}
             </View>
-            <View style={styles.button}>
-              {password.length>7 && email ? (
-                <Button
-                  //loading={loading}
-                  handleNavigate={handleLogin}
-                  text='Login'
-                />
-              ) : (
-                <InactiveButton text='Login' />
-              )}
-            </View>
-          
-
-          
           </View>
+          
           </TouchableWithoutFeedback>
+          
         </ImageBackground>
+        
         {/* </ScrollView> */}
         <Loader loading={loading}/> 
       </SafeAreaView>
@@ -182,9 +183,11 @@ const styles = StyleSheet.create({
   },
 
   forgotpasbox: {
-    justifyContent: 'space-between',
-    display: 'flex',
-    flexDirection: 'row',
+   marginTop:10,
+    alignItems:"center"
+    // justifyContent: 'space-between',
+    // display: 'flex',
+    // flexDirection: 'row',
   },
   forgotpas: {
     marginTop: 10,
