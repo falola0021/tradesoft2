@@ -9,6 +9,8 @@ import Notes from '../../components/notes/Notes';
 import Rams from '../../components/rams/Rams';
 import Calendar from '../../components/calendar/Calendar';
 import Live from '../../components/live/Live';
+import Tasks from '../../components/tasks/Task';
+
 import moment from 'moment';
 import ImageModal from "./ImageModal"
 import { AppContext } from '../../../App';
@@ -80,11 +82,14 @@ const Notifications = ({ route }) => {
   var getProjectsDetails = app.getProjectsDetails;
   var getRisk = app.getRisk;
   var risk = app.risk;
+  var getAllTask = app.getAllTask;
+  var  alltask = app. alltask;
 
   useEffect(() => {
     let id = details.id;
     getProjectsDetails(setModalVisible, setMessage, setLoading, id);
     getRisk(setModalVisible, setMessage, setLoading, id);
+    getAllTask(setModalVisible, setMessage, setLoading);
   }, []);
 
 
@@ -294,6 +299,14 @@ const Notifications = ({ route }) => {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
+                onPress={handleCalendar}
+                style={calendar ? styles.tab : styles.tab2}
+              >
+                <Text style={calendar ? styles.tabtext : styles.tabtext2}>
+                  Tasks
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
                 onPress={handleNote}
                 style={note ? styles.tab : styles.tab2}
               >
@@ -314,6 +327,7 @@ const Notifications = ({ route }) => {
             </View>
             <View style={styles.contentcontainer}>
               {note && <Notes id={details?.id} notes={projectDetails?.notes} />}
+              {calendar && <Tasks alltask={alltask} details={details} />}
               {rams && <Rams id={details?.id} risks={risk} />}
               {live && <Live projectDetails={projectDetails} details={details} />}
             </View>
@@ -342,7 +356,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     paddingVertical: 7,
-    width: '33.33%',
+    width: '25%',
     borderBottomColor: '#66C825',
     borderBottomWidth: 3,
     alignItems: 'center',
@@ -354,7 +368,7 @@ const styles = StyleSheet.create({
   },
   tab2: {
     paddingVertical: 7,
-    width: '33.33%',
+    width: '25%',
     borderBottomColor: 'rgba(220,220,220,0.4)',
     borderBottomWidth: 3,
     alignItems: 'center',

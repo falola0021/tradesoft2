@@ -84,7 +84,9 @@ const Root = () => {
     updateHoliday,
     markAsRead ,
     setErr,
-    getAllRisk
+    getAllRisk,
+    getAllTask,
+    alltask
     
   } = ProjecsService();
 
@@ -227,7 +229,9 @@ const Root = () => {
          changePassword ,
          markAsRead ,
          setErr,
-         getAllRisk
+         getAllRisk,
+         getAllTask,
+         alltask
       }}>
         <Stack.Navigator>
           {!Register && (

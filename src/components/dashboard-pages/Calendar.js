@@ -8,7 +8,7 @@ const Calendar = () => {
         
         <Text style={styles.txt1b}>CALENDAR</Text>
       <GeneralCalendar/>
-    </View>
+           </View>
   )
 }
 

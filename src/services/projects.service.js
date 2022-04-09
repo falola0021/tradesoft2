@@ -23,6 +23,8 @@ export default () => {
   const [messagedetails, setMessageDetails] = React.useState(null);
   const [users, setUsers] = React.useState(null);
   const [allholidays, setAllholidays] = React.useState(null);
+  const [alltask, setAlltask] = React.useState(null);
+
 
   
 
@@ -768,6 +770,22 @@ export default () => {
     });
   };
 
+  const getAllTask = async (setModalVisible, setMessage, setLoading) => {
+    setLoading(true);
+    http().then((axios) => {
+      axios
+        .post('/task_get')
+        .then((response) => {
+          setLoading(false);
+          setAlltask(response.data.data);
+         
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
+
 
 
 
@@ -812,7 +830,9 @@ export default () => {
     deleteHoliday,
     updateHoliday,
     markAsRead ,
-    getAllRisk
+    getAllRisk,
+    getAllTask,
+    alltask
    
   };
 };
