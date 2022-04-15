@@ -109,19 +109,46 @@ const Cal = () => {
       </TouchableOpacity>
     );
   };
+  let date=moment()
+
+ let today_date = moment(Date(date)).format('YYYY-MM-DD');
 
   return (
     <View style={{ flex: 1 }}>
       <Agenda
-        //markingType={'period'}
-        
+      
         items={items}
-        //  items={items}
-        // loadItemsForMonth={(month) => {
-        //   console.log('trigger items loading');
-        // }}
-        selected={'2021-02-01'}
+        selected={ today_date }
+        current={today_date}
         renderItem={renderItem}
+
+          // hideExtraDays={true}
+          firstDay={1}
+          disableAllTouchEventsForDisabledDays={true}
+          displayLoadingIndicator={false}
+          pastScrollRange={100}
+          futureScrollRange={10}
+          monthFormat={'MMM-yyyy'}
+          hideExtraDays={true}
+          disableMonthChange={true}
+          theme={{
+            // calendarBackground: '#166088',
+  
+            selectedDayBackgroundColor: '#66C825',
+            selectedDayTextColor: '#fff',
+            selectedDotColor: '#66C825',
+  
+            // dayTextColor: '#DBE9EE',
+            textDisabledColor: '#729DAF',
+            dotColor: '#66C825',
+            dotStyle: { width: 50, height: 5 },
+
+  
+            // monthTextColor: '#DBE9EE',
+            textMonthFontWeight: 'bold',
+  
+            // arrowColor: '#DBE9EE',
+          }}
       />
     </View>
   );

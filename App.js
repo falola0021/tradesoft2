@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, StatusBar, LogBox } from 'react-native';
 import Welcome from './src/screens/welcome/Welcome';
@@ -13,26 +12,22 @@ import Onboard3 from './assets/images/onboard3.png';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
 export const AgentContext = React.createContext();
 import LoginScreen from './src/screens/login-screen/Login';
 import ForgotScreen from './src/screens/forgot-password-screen/Forgot';
 import RegisterScreen from './src/screens/register-screen/Register';
 import DashboardScreen from './src/screens/dashboard-screen/Dashboard';
 import NotificationScreen from './src/screens/notification-screen/Notification';
-import ProjectDetails from './src/screens/project-details/Details'
-import AuthService from './src/services/auth.service'
-import ProjecsService from './src/services/projects.service'
+import ProjectDetails from './src/screens/project-details/Details';
+import AuthService from './src/services/auth.service';
+import ProjecsService from './src/services/projects.service';
+import ProjecsOfflineScreen from './src/screens/offlineMode/liveprojects/offlineLive';
+import ProjecDetailsOfflineScreen from './src/screens/offlineMode/project-details/Details';
 
 export const AppContext = React.createContext();
-import FlashMessage from "react-native-flash-message";
-
-
-
+import FlashMessage from 'react-native-flash-message';
 
 const Root = () => {
-  
-  
   const Stack = createNativeStackNavigator();
 
   const {
@@ -43,9 +38,9 @@ const Root = () => {
     myaccountinfo,
     upadteProfile,
     deleteProfileNote,
-    changePassword 
+    changePassword,
   } = AuthService();
-  
+
   const {
     getAllLiveProjects,
     allLiveProjects,
@@ -55,41 +50,39 @@ const Root = () => {
     allProjects,
     notificationCount,
     getAllNotification,
-  notification,
-  readNotification,
-  readAllNotification,
-  projectDetails,
-  getProjectsDetails,
-  addNote,
-  deleteNote,
-  getRisk,
-  risk,
-  addAdditionalRisk,
-  clockInOut ,
-  getClock,
-  clockview,
-  getAllMessage,
-  allmessage,
-  messagedetails,
-  getMessageDetails,
-  deleteMessage,
-  replyMessage,
-  addMessage,
-  getUsers,
+    notification,
+    readNotification,
+    readAllNotification,
+    projectDetails,
+    getProjectsDetails,
+    addNote,
+    deleteNote,
+    getRisk,
+    risk,
+    addAdditionalRisk,
+    clockInOut,
+    getClock,
+    clockview,
+    getAllMessage,
+    allmessage,
+    messagedetails,
+    getMessageDetails,
+    deleteMessage,
+    replyMessage,
+    addMessage,
+    getUsers,
     users,
     getAllHolidays,
     allholidays,
     requestHoliday,
     deleteHoliday,
     updateHoliday,
-    markAsRead ,
+    markAsRead,
     setErr,
     getAllRisk,
     getAllTask,
-    alltask
-    
+    alltask,
   } = ProjecsService();
-
 
   const [loading, setLoading] = useState(true);
   const [isFirstTimeLoad, setIsFirstTimeLoad] = useState(false);
@@ -156,17 +149,16 @@ const Root = () => {
 
   // //   const [index,setIndex]=React.useState(0)
 
-// //   React.useEffect(()=>{
-// //  const interval=setInterval(()=>{
-// //    setIndex((index+1)%(10+1))
-// //  },1000)
+  // //   React.useEffect(()=>{
+  // //  const interval=setInterval(()=>{
+  // //    setIndex((index+1)%(10+1))
+  // //  },1000)
 
-// // return()=>{
-// //   clearInterval(interval)
-// // }
+  // // return()=>{
+  // //   clearInterval(interval)
+  // // }
 
-// // },[index])
-
+  // // },[index])
 
   if (loading) return null;
   if (isFirstTimeLoad)
@@ -183,76 +175,78 @@ const Root = () => {
 
   if (!isFirstTimeLoad)
     return (
-      <AppContext.Provider value={{
-        success,
-        err,
-        login,
-        logout,
-        myaccountinfo,
-        getAllLiveProjects,
-        allLiveProjects,
-        latestClockinsTime,
-        getAllProjects,
-        allProjects,
-        getNotificatiobCount,
-        notificationCount,
-        getAllNotification,
-        notification,
-        readNotification,
-        readAllNotification,
-        projectDetails,
-        getProjectsDetails,
-        addNote,
-        deleteNote,
-        getRisk,
-        risk,
-        addAdditionalRisk,
-        clockInOut ,
-        getClock,
-        clockview,
-        getAllMessage,
-        allmessage,
-        messagedetails,
-        getMessageDetails,
-        deleteMessage,
-        replyMessage,
-        addMessage,
-        getUsers,
-         users,
-         getAllHolidays,
-         allholidays,
-         requestHoliday,
-         deleteHoliday,
-         updateHoliday,
-         upadteProfile,
-         deleteProfileNote,
-         changePassword ,
-         markAsRead ,
-         setErr,
-         getAllRisk,
-         getAllTask,
-         alltask
-      }}>
+      <AppContext.Provider
+        value={{
+          success,
+          err,
+          login,
+          logout,
+          myaccountinfo,
+          getAllLiveProjects,
+          allLiveProjects,
+          latestClockinsTime,
+          getAllProjects,
+          allProjects,
+          getNotificatiobCount,
+          notificationCount,
+          getAllNotification,
+          notification,
+          readNotification,
+          readAllNotification,
+          projectDetails,
+          getProjectsDetails,
+          addNote,
+          deleteNote,
+          getRisk,
+          risk,
+          addAdditionalRisk,
+          clockInOut,
+          getClock,
+          clockview,
+          getAllMessage,
+          allmessage,
+          messagedetails,
+          getMessageDetails,
+          deleteMessage,
+          replyMessage,
+          addMessage,
+          getUsers,
+          users,
+          getAllHolidays,
+          allholidays,
+          requestHoliday,
+          deleteHoliday,
+          updateHoliday,
+          upadteProfile,
+          deleteProfileNote,
+          changePassword,
+          markAsRead,
+          setErr,
+          getAllRisk,
+          getAllTask,
+          alltask,
+        }}
+      >
         <Stack.Navigator>
           {!Register && (
             <Stack.Screen
               name='LoginScreen'
-              options={{ headerShown: false, }}
-              component={LoginScreen}
-            />
-          ) }
-            <Stack.Screen
-              name='RegisterScreen'
               options={{ headerShown: false }}
               component={LoginScreen}
             />
-        
-         {/* <Stack.Screen
+          )}
+          <Stack.Screen
+            name='RegisterScreen'
+            options={{ headerShown: false }}
+            component={LoginScreen}
+          />
+
+          {/* <Stack.Screen
             name='RegisterScreen'
             options={{ headerShown: false }}
             component={RegisterScreen}
           /> */}
-                    
+
           <Stack.Screen
             name='ForgotScreen'
             options={{ headerShown: false }}
@@ -260,7 +254,7 @@ const Root = () => {
           />
           <Stack.Screen
             name='DashboardScreen'
-            options={{ headerShown: false,statusBarStyle:"dark" }}
+            options={{ headerShown: false, statusBarStyle: 'dark' }}
             component={DashboardScreen}
           />
           <Stack.Screen
@@ -273,10 +267,17 @@ const Root = () => {
             options={{ headerShown: false }}
             component={ProjectDetails}
           />
-           
-          
+          <Stack.Screen
+            name='ProjecsOfflineScreen'
+            options={{ headerShown: false }}
+            component={ProjecsOfflineScreen}
+          />
+          <Stack.Screen
+            name='ProjecDetailsOfflineScreen'
+            options={{ headerShown: false }}
+            component={ProjecDetailsOfflineScreen}
+          />
         </Stack.Navigator>
-       
       </AppContext.Provider>
     );
 };
@@ -285,21 +286,22 @@ export default function App() {
   return (
     <NavigationContainer>
       <Root />
-      <FlashMessage 
-      textStyle={{
-        fontSize:12,
-        fontFamily: 'Nunito_600SemiBold',
-      }}
-      titleStyle={
-        {
-      fontSize:12,
-      fontFamily: 'Nunito_600SemiBold',
-       marginTop:10
-        }
-      }
-    //icon="auto"
-      //floating={true} 
-      duration={2000} animationDuration={300} position="top" />
+      <FlashMessage
+        textStyle={{
+          fontSize: 12,
+          fontFamily: 'Nunito_600SemiBold',
+        }}
+        titleStyle={{
+          fontSize: 12,
+          fontFamily: 'Nunito_600SemiBold',
+          marginTop: 10,
+        }}
+        //icon="auto"
+        //floating={true}
+        duration={2000}
+        animationDuration={300}
+        position='top'
+      />
     </NavigationContainer>
   );
 }
@@ -313,4 +315,3 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
 });
-

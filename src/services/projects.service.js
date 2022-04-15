@@ -28,6 +28,20 @@ export default () => {
 
   
 
+  const getLiveProjects = async (offlineliveprojects,offlineClockins) => {
+    try {
+      const b = JSON.stringify(offlineliveprojects);
+      const c=JSON.stringify(offlineClockins);
+      
+
+      await AsyncStorage.setItem('offlineliveprojects',b);
+      await AsyncStorage.setItem('offlineclockins',c);
+
+    
+    } catch (error) {
+      // Error saving data
+    }
+  };
 
 
 
@@ -36,6 +50,7 @@ export default () => {
     setMessage,
     setLoading
   ) => {
+
     setLoading(true);
     http().then((axios) => {
       axios
@@ -44,6 +59,12 @@ export default () => {
           setLoading(false);
           setAllLIveProjects(response.data.data.projects);
           setLatestClockinsTime(response.data.data.latest_clock_ins);
+          const offlineliveprojects = response.data.data.projects;
+          const offlineClockins = response.data.data.latest_clock_ins;
+
+          getLiveProjects(offlineliveprojects,offlineClockins)
+     
+
         })
         .catch((e) => {
           error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);

@@ -186,14 +186,22 @@ const styles = StyleSheet.create({
     
       )}
         <DateTimePickerModal
+         style={{
+          shadowColor: 'red',
+          shadowRadius: 0,
+          shadowOpacity: 1,
+          shadowOffset: { height: 0, width: 0 ,backgroundColor:"red"},
+        }}
+        androidVariant="nativeAndroid"
 
         isVisible={isDatePickerVisible}
               mode="date"
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
-
+              androidMode={'default'}
           minimumDate={minDate}
           maximumDate={maxDate}
+          datePickerModeAndroid={'default'} 
           
         />
      

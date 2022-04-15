@@ -27,6 +27,9 @@ import Loader from "../../components/loader/Loader"
 import { AppContext } from '../../../App';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import * as Device from 'expo-device';
+import {
+  MaterialCommunityIcons
+} from '@expo/vector-icons';
 
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -52,6 +55,10 @@ const Login = () => {
   const success = app.success;
   const err = app.err;
 
+  const handleSwitchToOffline=()=>{
+    navigation.navigate('ProjecsOfflineScreen')
+    
+  }
 
 
 
@@ -157,11 +164,23 @@ const Login = () => {
           </View>
           
           </TouchableWithoutFeedback>
+          <View style={{position:"absolute",bottom:20,right:20}}>
+          
+          <TouchableOpacity onPress={handleSwitchToOffline} style={styles.attachmentbox}>
+                 <MaterialCommunityIcons
+                  name='network-off-outline'
+                  color='#66C825'
+                  size={25}
+                />
+                </TouchableOpacity>
+
+          </View>
           
         </ImageBackground>
         
         {/* </ScrollView> */}
         <Loader loading={loading}/> 
+       
       </SafeAreaView>
     );
   }

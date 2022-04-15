@@ -35,7 +35,7 @@ import AddNewHoliday from "../holiday/AddNewHoliday"
 import EditHoliday from "../holiday/EditHoliday"
 
 import * as FileSystem from 'expo-file-system';
-import HolidayCalendar from "../../components/calendar/HolidayCalendar"
+
 
 const Create = () => {
   const navigation = useNavigation();
@@ -64,26 +64,8 @@ var requestHoliday= app.requestHoliday
 
 
 
- const handleToggletab=()=>{
-   setToggletab(true)
-   setToggletab1(false)
- }
- const handleToggletab1=()=>{
-  setToggletab1(true)
-  setToggletab(false)
-}
-
- 
    const [err ,setErr] = React.useState(null);
 
-
-
-//  const handleclosemessage=()=>{
-
-//    setActiveindex(null)
-//    setLoading(null)
-//  }
-  
 
 useEffect(() => {
  getAllHolidays(setModalVisible,setMessage,setLoading)
@@ -198,50 +180,6 @@ setSelectedhol(item)
  setModalVisible(!modalVisible)
 }
 
-//   const handleAddMessage = (item) => {
-//    setConversationId(item.id)
-//     setViewmessage(false)
-// setModalVisible(!modalVisible)
-   
-//   };
-
-
-
-
-
-//  const handleReplyMessage= async(val,docname,docsize,docurl,doctype)=>{
-//    let content = val
-
-//    if(docname){
-//     const base64 = await FileSystem.readAsStringAsync(docurl, {
-//       encoding: 'base64',
-//     });
-//     setBase64image(`data:image/png;base64,${base64}`)
-//    }
-
-  
-
-
-// let body = {
-//   conversation_id : conversationId,
-//   content:content,
-//   name: "attachment",
-//   filename: docname,
-//   type: "pdf",
-// data:base64image
-// }
-
-//  replyMessage(
-//     setModalVisible,
-//     setMessage,
-//     setLoading,
-//     setSuccess,
-//     setErr,
-//   body
-//    )
-//  }
- 
- 
 
  if (err && message) {
   showMessage({
@@ -261,9 +199,6 @@ setSelectedhol(item)
   setMessage(false);
 }
 
-
-
-
   return (
     <SafeAreaView>
       <View>
@@ -281,18 +216,7 @@ setSelectedhol(item)
                  <Text style={styles.buttontext}>Request Holiday</Text>
                </TouchableOpacity>
              </View>
-             <View style={{display:"flex",flexDirection:"row",marginVertical:20}}>
-           <TouchableOpacity onPress={handleToggletab} style={{backgroundColor:toggletab? "#65C825":"#DCDCDC",width:"50%",alignItems:"center"}}>
-             <Text style={{color:"#fff",fontFamily: 'Nunito_600SemiBold',fontSize:12}}>Holiday Requests</Text>
-           </TouchableOpacity>
-           <TouchableOpacity onPress={handleToggletab1} style={{backgroundColor:toggletab1? "#65C825":"#DCDCDC",width:"50%",alignItems:"center"}}>
-
-           <Text style={{color:"#fff",fontFamily: 'Nunito_600SemiBold',fontSize:12}}>View On Calendar</Text>
-
-           </TouchableOpacity>
-
-         </View>
-          {toggletab &&
+           
              <FlatList
         data={allholidays}
        
@@ -355,13 +279,8 @@ setSelectedhol(item)
        </View>
         )}
       />
-           }
+           
 
-           {toggletab1 &&
-             <View>
-               <HolidayCalendar/>
-             </View>
-           }
          
          
               

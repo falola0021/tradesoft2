@@ -10,13 +10,16 @@ import {
   ImageBackground,
   ImageBackgroundBase,
   ActivityIndicator,
+  Modal
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import MoreDetails from '../dashboard-moreinfo/MoreInfo';
+import MoreDetails from '../../../components/dashboard-moreinfo/MoreInfo';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Nav from '../offlineNav/Nav';
+import Logo from '../../../../assets/images/logo.png';
 
 
 import {
@@ -27,10 +30,9 @@ import {
   Entypo,
   Fontisto,
 } from '@expo/vector-icons';
-import Avatar from '../../../assets/images/avatar.png';
 
 import { ScrollView } from 'react-native-gesture-handler';
-import { AppContext } from '../../../App';
+import { AppContext } from '../../../../App';
 
 const Create = () => {
   const navigation = useNavigation();
@@ -38,26 +40,32 @@ const Create = () => {
   const [loading, setLoading] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [message, setMessage] = React.useState(null);
-  const [details, setDetails] = React.useState(null);
+  const [offdetails, setOfflineDetails] = React.useState(null);
+  const [offlinelatestclockins, setOfflinelatestclockins] = React.useState(null);
+
   const [showclock, setShowclock] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 
 
 
+  const close = () => {
+    setModalVisible(false);
+  
+  };
+
   const handleNavigateToDetails = (item) => {
     setShowclock(false)
     let details=item
-    navigation.navigate('ProjectDetails',{details})
-  //   setModalVisible(true);
-  //  setDetails(item)
+    navigation.navigate('ProjecDetailsOfflineScreen',{details})
+ 
   };
 
-  const app = useContext(AppContext);
-  var getAllLiveProjects = app.getAllLiveProjects;
-  var getAllProjects = app.getAllProjects;
-  var allProjects = app.allProjects;
-  var allLiveProjects = app.allLiveProjects;
-  var getAllTask = app.getAllTask;
+ const app = useContext(AppContext);
+//   var getAllLiveProjects = app.getAllLiveProjects;
+//   var getAllProjects = app.getAllProjects;
+//   var allProjects = app.allProjects;
+//   var allLiveProjects = app.allLiveProjects;
+//   var getAllTask = app.getAllTask;
 
    var markAsRead =app.markAsRead 
   const latestClockinsTime = app.latestClockinsTime;
@@ -70,24 +78,25 @@ const Create = () => {
   const getOffliveliveprojects=async()=>{
 
     const offlineliveprojects= await AsyncStorage.getItem('offlineliveprojects');
+   const  offlineClockins= await AsyncStorage.getItem('offlineclockins');
   
   if (offlineliveprojects !== null){
 
     // We have data!!
     const parsedofflineliveprojects = JSON.parse(offlineliveprojects);
-    console.log(parsedofflineliveprojects,"paertedddddddd")
+    const parsedofflineClockins = JSON.parse(offlineClockins);
+    setOfflinelatestclockins(parsedofflineClockins)
+    setOfflineDetails(parsedofflineliveprojects)
+    
   }
 }
  
 
+
   useEffect(() => {
     getOffliveliveprojects()
-    getAllLiveProjects(setModalVisible, setMessage, setLoading);
-    getAllProjects(setModalVisible, setMessage, setLoading);
-    getAllTask(setModalVisible, setMessage, setLoading);
-
-
-
+    setModalVisible(true)
+ 
   }, []);
 
   if (err && message) {
@@ -139,7 +148,9 @@ const Create = () => {
   return (
     <SafeAreaView>
       <View>
+         
         <View style={styles.container}>
+        < Nav />
           <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
           <Text style={styles.txt1b}>LIVE PROJECTS</Text>
           <TouchableOpacity onPress={handleShowClockins} style={{display:"flex",flexDirection:"row",marginRight:20,alignItems:"center"}}>
@@ -167,7 +178,7 @@ const Create = () => {
                   horizontal={false}
                   showsVerticalScrollIndicator={false}
                   legacyImplementation={false}
-                  data={allLiveProjects}
+                  data={offdetails}
                   keyExtractor={(item) => item.id}
                   renderItem={({ item, index }) => (
                     <TouchableOpacity
@@ -191,19 +202,9 @@ const Create = () => {
                         />
                       </ImageBackground>
                       <View style={styles.bottomtxtbox}>
-                        <Text style={styles.bottomtxt}>{item?.name}</Text>
+                        <Text style={styles.bottomtxt}>{item['name']}</Text>
                       </View>
 
-                      {/* <View style={styles.bottomtxtbox2}>
-                        <Text style={styles.bottomtxt2}>
-                    
-                        </Text>
-                      </View> */}
-                      {/* <View style={styles.bottomtxtbox2}>
-                        <Text style={styles.bottomtxt2}>Task: </Text>
-                        <Text style={styles.bottomtxt3}>No task from API </Text>
-                      </View> */}
-                    
                      
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Start: </Text>
@@ -258,7 +259,7 @@ const Create = () => {
           <Text style={styles.txt1b}>LATEST CLOCK-INS</Text>
 
 
-          {latestClockinsTime?.length > 0 ? (
+          {offlinelatestclockins?.length > 0 ? (
             <ScrollView
               style={{
                 backgroundColor: 'rgb(102,200,37)',
@@ -268,7 +269,7 @@ const Create = () => {
               }}
               showsVerticalScrollIndicator={false}
             >
-              {latestClockinsTime?.map((item) => (
+              {offlinelatestclockins?.map((item) => (
                 <View key={item.id} style={styles.clockbox}>
                   <View style={styles.aa}>
                     <Fontisto name='checkbox-active' color='yellow' size={12} />
@@ -305,6 +306,80 @@ const Create = () => {
 }
         </View>
       </View>
+      <View style={styles.centeredView}>
+          <Modal
+            animationType='slide'
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View style={styles.logobox}>
+                  <MaterialCommunityIcons
+                  name='network-off-outline'
+                  color='#66C825'
+                  size={25}
+                />
+                  </View>
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#808080',
+                      height: 30,
+                      width: 30,
+                      borderRadius: 20,
+                      alignItems: 'center',
+                    }}
+                    onPress={close}
+                  >
+                    <Text style={{ fontSize: 17, color: '#fff' }}>x</Text>
+                  </TouchableOpacity>
+
+                 
+                </View>
+
+                
+                <Text style={{marginTop:20,marginBottom:40,fontFamily: 'Nunito_600SemiBold',color:"#808080"}}>
+                   Kindly note that this is an offline mode and all your clockin data would be saved for submission whenever you can access the internet
+                  </Text>
+               
+
+
+              
+
+               
+              
+
+                
+
+                <View style={styles.bottomtxtbuttonbox}>
+               
+        
+{/*           
+                  <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
+                    <Text style={styles.btntext2}>Update Request</Text>
+                  </TouchableOpacity> */}
+               
+               
+             
+       
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </View>
+
       {/* <MoreDetails
       details={details}
         modalVisible={modalVisible}
@@ -535,53 +610,33 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_600SemiBold',
     marginBottom:2,
 
-  }
+  },
+
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: 'rgba(80, 80,80,0.5)',
+  },
+  modalView: {
+    backgroundColor: 'white',
+    width: '100%',
+    position: 'absolute',
+
+    borderRadius: 7,
+    padding: 20,
+    // height: 500,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
 
 
 });
 
-{
-  /* <TouchableOpacity onPress={handleNavigateToDetails} style={styles.secbox}>
-<ImageBackground
-  imageStyle={{
-    borderTopLeftRadius: 6,
-    borderTopRightRadius: 6,
-  }}
-  source={require('../../../assets/images/avatar.png')}
-  style={styles.imgbg}
-></ImageBackground>
-<View style={styles.bottomtxtbox}>
-  <Text style={styles.bottomtxt}>JIIOJIOI</Text>
-</View>
-
-<View style={styles.bottomtxtbox2}>
-  <Text style={styles.bottomtxt2}>Account: </Text>
-  <Text style={styles.bottomtxt3}>₦30,952.61</Text>
-</View>
-<View style={styles.bottomtxtbox2}>
-  <Text style={styles.bottomtxt2}>Status: </Text>
-  <Text style={styles.bottomtxt3}>Scheduling</Text>
-</View>
-<View style={styles.bottomtxtbox2}>
-  <Text style={styles.bottomtxt2}>Start: </Text>
-  <Text style={styles.bottomtxt3}>20-10-2022 10:18am</Text>
-</View>
-<View style={styles.bottomtxtbox2}>
-  <Text style={styles.bottomtxt2}>End: </Text>
-  <Text style={styles.bottomtxt3}>20-10-2022 10:18pm</Text>
-</View>
-<View style={styles.bottomtxtbox2}>
-  <Text style={styles.bottomtxt2}>Post: </Text>
-  <Text style={styles.bottomtxt3}>hsshshhs</Text>
-</View>
-<View style={styles.bottomtxtbox2}>
-  <Text style={styles.bottomtxt2}>Estimate: </Text>
-  <Text style={styles.bottomtxt3}>abababa</Text>
-</View>
-<View style={styles.bottomtxtbox2}>
-  <Text style={styles.bottomtxt2}>Postal: </Text>
-  <Text style={styles.bottomtxt3}>jm,kkkk</Text>
-</View>
-
-</TouchableOpacity> */
-}

@@ -14,6 +14,9 @@ export default () => {
   const [myaccountinfo, setMyaccountinfo] = React.useState(null);
 
 
+  const removeOfflineData = async () => {
+    await AsyncStorage.removeItem('offlineliveprojects');
+  };
 
   const login =async (username, password, setModalVisible,setMessage,setLoading) => {
 
@@ -64,7 +67,7 @@ export default () => {
             setMessage(response.data.message)
             return
           }
-        
+          removeOfflineData()
           setErr(false)
 
           let user = response.data.data;
