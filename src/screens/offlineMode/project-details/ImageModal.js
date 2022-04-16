@@ -17,7 +17,7 @@ import Logo from '../../../../assets/images/logo.png';
 
 
 
-const handleNavigate = ({ modalVisible2, setModalVisible2,projectDetails}) => {
+const handleNavigate = ({ modalVisible2, setModalVisible2,details}) => {
 
 
 
@@ -78,7 +78,7 @@ const handleNavigate = ({ modalVisible2, setModalVisible2,projectDetails}) => {
           <Image
             style={styles.img}
             source={{
-              uri: `http://portal.trade-soft.co.uk/${projectDetails?.project_info?.image_src}`,
+              uri: `http://portal.trade-soft.co.uk/${details?.image_src}`,
             }}
           />
         </View>

@@ -84,6 +84,7 @@ export default () => {
           navigation.navigate('DashboardScreen')
         })
         .catch((e) => {
+        
           error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
         });
     });

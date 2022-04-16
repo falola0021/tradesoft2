@@ -28,10 +28,12 @@ export default () => {
 
   
 
-  const getLiveProjects = async (offlineliveprojects,offlineClockins) => {
+  const getOfflineLiveProjects = async (offlineliveprojects,offlineClockins) => {
     try {
       const b = JSON.stringify(offlineliveprojects);
       const c=JSON.stringify(offlineClockins);
+    
+
       
 
       await AsyncStorage.setItem('offlineliveprojects',b);
@@ -39,6 +41,19 @@ export default () => {
 
     
     } catch (error) {
+      // Error saving data
+    }
+  };
+
+
+  const  getOfflineTask = async (offlinetask) => {
+   
+    try {
+      const b = JSON.stringify(offlinetask);
+     
+     
+       await AsyncStorage.setItem('offlinetask',b);
+       } catch (error) {
       // Error saving data
     }
   };
@@ -62,7 +77,7 @@ export default () => {
           const offlineliveprojects = response.data.data.projects;
           const offlineClockins = response.data.data.latest_clock_ins;
 
-          getLiveProjects(offlineliveprojects,offlineClockins)
+          getOfflineLiveProjects(offlineliveprojects,offlineClockins)
      
 
         })
@@ -799,6 +814,8 @@ export default () => {
         .then((response) => {
           setLoading(false);
           setAlltask(response.data.data);
+          let offlinetask=response.data.data
+          getOfflineTask(offlinetask)
          
         })
         .catch((e) => {

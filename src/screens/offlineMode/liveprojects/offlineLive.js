@@ -238,9 +238,9 @@ const Create = () => {
                {/* <TouchableOpacity onPress={handleNavigateToDetails} style={styles.btn1}>
                <Text style={styles.btntext2}>GO TO PROJECT</Text>
                </TouchableOpacity> */}
-               <TouchableOpacity onPress={()=>item.status !=="finalised" && handleMarkAsRead(item)} style={item.status =="finalised"? styles.btn1 : styles.btn2}>
+               {/* <TouchableOpacity onPress={()=>item.status !=="finalised" && handleMarkAsRead(item)} style={item.status =="finalised"? styles.btn1 : styles.btn2}>
                <Text style={item.status=="finalised"?styles.btntext2a : styles.btntext2}>{item?.status=="finalised"? "COMPLETED" : "MARK AS COMPLETE"}</Text>
-               </TouchableOpacity>
+               </TouchableOpacity> */}
              </View>
                     </TouchableOpacity>
                   )}
@@ -354,14 +354,6 @@ const Create = () => {
                    Kindly note that this is an offline mode and all your clockin data would be saved for submission whenever you can access the internet
                   </Text>
                
-
-
-              
-
-               
-              
-
-                
 
                 <View style={styles.bottomtxtbuttonbox}>
                
@@ -479,7 +471,7 @@ const styles = StyleSheet.create({
   secbox: {
     backgroundColor: '#fff',
     width: '48%',
-    height: 365,
+    height: 320,
     borderRadius: 10,
     marginBottom: 30,
   },

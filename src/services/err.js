@@ -25,9 +25,11 @@ export default () => {
       setMessage('Session timeout, please login again');
       setModalVisible(true);
       setErr(true)
+      navigation.navigate('ProjecsOfflineScreen');
+
     }
 
-    console.log(e, 'the error');
+
     const resMessage =
       (e.response && e.response.data && e.response.data.message) ||
       e.message ||

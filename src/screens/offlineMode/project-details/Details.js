@@ -8,8 +8,10 @@ import Avatar from '../../../../assets/images/avatar.png';
 import Notes from '../../../components/notes/Notes';
 import Rams from '../../../components/rams/Rams';
 import Calendar from '../../../components/calendar/Calendar';
-import Live from '../../../components/live/Live';
-import Tasks from '../../../components/tasks/Task';
+import Live from './clockins';
+import Tasks from './task';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 import moment from 'moment';
 import ImageModal from "./ImageModal"
@@ -85,13 +87,37 @@ const Notifications = ({ route }) => {
   var getAllTask = app.getAllTask;
   var  alltask = app. alltask;
 
+
+
+
+  const [tasksoff, setTaskoff] = React.useState(null);
+
+
+
+
+ const getOfflineTask=async()=>{
+  
+    const offlinetask = await AsyncStorage.getItem('offlinetask');
+ 
+  
+  
+  if (offlinetask !== null){
+   const parsedofflinetask = JSON.parse(offlinetask);
+setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == details.id));
+
+    
+  }
+}
+ 
+
+
   useEffect(() => {
-    let id = details.id;
-    getProjectsDetails(setModalVisible, setMessage, setLoading, id);
-    getRisk(setModalVisible, setMessage, setLoading, id);
-    getAllTask(setModalVisible, setMessage, setLoading);
+
+    getOfflineTask()
+ 
   }, []);
 
+ 
 
 
   return (
@@ -114,7 +140,7 @@ const Notifications = ({ route }) => {
             }}
           >
             <Text style={styles.title}>
-              {projectDetails?.project_info?.name}{' '}
+              {details?.name}{' '}
             </Text>
             <TouchableOpacity
               onPress={handleToggleImage}
@@ -142,8 +168,8 @@ const Notifications = ({ route }) => {
               >
                 <Text style={styles.titleb}>Description: </Text>
                 <Text style={styles.address}>
-                  {projectDetails?.project_info?.description != ''
-                    ? projectDetails?.project_info?.description
+                  {details?.description != ''
+                    ? details?.description
                     : 'No project description'}{' '}
                 </Text>
               </View>
@@ -155,16 +181,16 @@ const Notifications = ({ route }) => {
                   <Text style={styles.address}>
                     {' '}
                     {
-                      projectDetails?.address
+                      details?.address
                         ?.address_line_1
                     }{' '}
                   </Text>
-                  { projectDetails?.address
+                  { details?.address
                         ?.address_line_2 != '' && (
                     <Text style={styles.address}>
                       {' '}
                       {
-                       projectDetails?.address
+                       details?.address
                        ?.address_line_2
                       }{' '}
                     </Text>
@@ -183,20 +209,20 @@ const Notifications = ({ route }) => {
                   <Text style={styles.address}>
                     Postcode:{' '}
                     {
-                   projectDetails?.address
+                   details?.address
                         ?.postcode
                     }{' '}
                   </Text>
                   <Text style={styles.address}>
                       County:{' '}
                       {
-                      projectDetails?.address?.county
+                      details?.address?.county
                       }{' '}
                     </Text>
                   <Text style={styles.address}>
                       Country:{' '}
                       {
-                     projectDetails?.address?.country
+                     details?.address?.country
                       }{' '}
                     </Text>
                  
@@ -219,7 +245,7 @@ const Notifications = ({ route }) => {
 
                   <Text style={styles.temtext}>
                     {moment(
-                      projectDetails?.project_info?.start_date?.date
+                      details?.start_date
                     ).format('MM-DD-YY, h:mm:ss a')}
                   </Text>
                 </View>
@@ -233,7 +259,7 @@ const Notifications = ({ route }) => {
 
                   <Text style={styles.temtext}>
                     {moment(
-                      projectDetails?.project_info?.end_date?.date
+                      details?.end_date
                     ).format('MM-DD-YY, h:mm:ss a')}
                   </Text>
                 </View>
@@ -246,7 +272,7 @@ const Notifications = ({ route }) => {
                   <Text style={styles.temtext1}>Project Status</Text>
 
                   <Text style={styles.temtext}>
-                    {projectDetails?.project_info?.status}
+                    {details?.status}
                   </Text>
                 </View>
                 <View style={styles.itemcontainer}>
@@ -258,33 +284,33 @@ const Notifications = ({ route }) => {
                   <Text style={styles.temtext1}>Project Type</Text>
 
                   <Text style={styles.temtext}>
-                    {projectDetails?.project_info?.type}
+                    {details?.type}
                   </Text>
                 </View>
-                <View style={styles.itemcontainer}>
+                {/* <View style={styles.itemcontainer}>
                   <Feather name='user-check' color='#66C825' size={25} />
                   <Text style={styles.temtext1}>Contact Name</Text>
 
                   <Text style={styles.temtext}>
-                    {projectDetails?.contact?.full_name}{' '}
+                    {details?.contact?.full_name}{' '}
                   </Text>
-                </View>
+                </View> */}
                 <View style={styles.itemcontainer1}>
                   <Feather name='phone-call' color='#66C825' size={24} />
                   <Text style={styles.temtext1}>Contact Phone</Text>
 
                   <Text style={styles.temtext}>
-                    {projectDetails?.contact?.primary_telephone?.tel_number}
+                    {details?.tel_number}
                   </Text>
                 </View>
-                <View style={styles.itemcontainer1}>
+                {/* <View style={styles.itemcontainer1}>
                   <Fontisto name='email' color='#66C825' size={24} />
                   <Text style={styles.temtext1}>Contact Email</Text>
 
                   <Text style={styles.temtext}>
-                    {projectDetails?.contact?.primary_email_address?.address}
+                    {details?.contact?.primary_email_address?.address}
                   </Text>
-                </View>
+                </View> */}
               </ScrollView>
             </View>
        
@@ -306,15 +332,15 @@ const Notifications = ({ route }) => {
                   Tasks
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={handleNote}
                 style={note ? styles.tab : styles.tab2}
               >
                 <Text style={note ? styles.tabtext : styles.tabtext2}>
                   Notes
                 </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
+              </TouchableOpacity> */}
+              {/* <TouchableOpacity
                 onPress={handleRams}
                 style={rams ? styles.tab : styles.tab2}
               >
@@ -322,19 +348,22 @@ const Notifications = ({ route }) => {
                   Rams
                 </Text>
               </TouchableOpacity>
-         
+          */}
              
             </View>
+            {live && <Live  details={details} />}
+            {calendar && <Tasks tasksoff={tasksoff}  />}
+
+
+
             {/* <View style={styles.contentcontainer}>
               {note && <Notes id={details?.id} notes={projectDetails?.notes} />}
-              {calendar && <Tasks alltask={alltask} details={details} />}
               {rams && <Rams id={details?.id} risks={risk} />}
-              {live && <Live projectDetails={projectDetails} details={details} />}
             </View> */}
           </View>
         </View>
       </View>
-      {/* <ImageModal projectDetails={projectDetails} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/> */}
+       <ImageModal details={details} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/> 
     </SafeAreaView>
  </ScrollView>
   );
@@ -356,7 +385,7 @@ const styles = StyleSheet.create({
   },
   tab: {
     paddingVertical: 7,
-    width: '25%',
+    width: '50%',
     borderBottomColor: '#66C825',
     borderBottomWidth: 3,
     alignItems: 'center',
@@ -368,7 +397,7 @@ const styles = StyleSheet.create({
   },
   tab2: {
     paddingVertical: 7,
-    width: '25%',
+    width: '50%',
     borderBottomColor: 'rgba(220,220,220,0.4)',
     borderBottomWidth: 3,
     alignItems: 'center',
