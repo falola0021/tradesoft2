@@ -13,10 +13,11 @@ import {
 } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
-import MoreDetails from '../dashboard-moreinfo/MoreInfo';
+import OfflineDetails from '../dashboard-moreinfo/MoreInfo';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 import {
@@ -37,10 +38,14 @@ const Create = () => {
 
   const [loading, setLoading] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [offlinemodalVisible, setOfflineModalVisible] = React.useState(false);
+
   const [message, setMessage] = React.useState(null);
   const [details, setDetails] = React.useState(null);
   const [showclock, setShowclock] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+  const [offlinestatus, setOfflinestatus] = React.useState(false);
+
 
 
 
@@ -58,6 +63,8 @@ const Create = () => {
   var allProjects = app.allProjects;
   var allLiveProjects = app.allLiveProjects;
   var getAllTask = app.getAllTask;
+  const  clockInOutOffline  = app.clockInOutOffline ;
+
 
    var markAsRead =app.markAsRead 
   const latestClockinsTime = app.latestClockinsTime;
@@ -75,8 +82,39 @@ const Create = () => {
 
     // We have data!!
     const parsedofflineliveprojects = JSON.parse(offlineliveprojects);
-    console.log(parsedofflineliveprojects,"paertedddddddd")
   }
+}
+
+const getOfflineclockinsStatus=async()=>{
+
+  const offlineclockins= await AsyncStorage.getItem('offlineclockinsinfo');
+
+if (offlineclockins !== null){
+
+  const parsedofflineclockins = JSON.parse(offlineclockins);
+  setOfflinestatus(parsedofflineclockins)
+  if(parsedofflineclockins.length>0){
+    setOfflineModalVisible(true)
+   
+
+  }
+  
+  
+}
+}
+const submitOfflineData=()=>{
+    offlinestatus?.map((item) => 
+    clockInOutOffline(
+      setModalVisible,
+      setMessage,
+      setLoading,
+      setSuccess,
+      setErr,
+      item.projectId,
+      item.lat,
+      item.lng)
+    )
+    setOfflineModalVisible(false)
 }
  
 
@@ -85,7 +123,7 @@ const Create = () => {
     getAllLiveProjects(setModalVisible, setMessage, setLoading);
     getAllProjects(setModalVisible, setMessage, setLoading);
     getAllTask(setModalVisible, setMessage, setLoading);
-
+    getOfflineclockinsStatus()
 
 
   }, []);
@@ -305,11 +343,12 @@ const Create = () => {
 }
         </View>
       </View>
-      {/* <MoreDetails
+      <OfflineDetails
       details={details}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      /> */}
+        modalVisible={offlinemodalVisible}
+        setModalVisible={setOfflineModalVisible}
+        submitOfflineData={submitOfflineData}
+      />
     </SafeAreaView>
   );
 };

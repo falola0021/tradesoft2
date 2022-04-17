@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Touchable,
 } from 'react-native';
 import moment from 'moment';
 import { AppContext } from '../../../../App';
@@ -13,7 +14,7 @@ import { showMessage, hideMessage } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function Timer({details,location}) {
+export default function Timer({details,location,longitude,latitude}) {
   const [clockInTime, setClockInTime] = React.useState('00:00:00');
   const [travelTime, setTravelTime] = React.useState('00:00:00');
 
@@ -26,69 +27,31 @@ export default function Timer({details,location}) {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [err, setErr] = React.useState(false);
-
-
-
+  const [clockinoffline, setClockinoffline] = React.useState([]);
 
   const app = useContext(AppContext);
-//   const  myaccountinfo = app. myaccountinfo;
-//   const  clockInOut = app.clockInOut;
-//   const  getClock = app.getClock;
-//   const  clockview = app.clockview;
- 
-  
 
   const tick = useRef();
 
   const handleGetClockView=()=>{
  
-    let projectId=details.id
-    getClock(setModalVisible,
-      setMessage,
-      setLoading,
-      setSuccess,
-      setErr,
-      projectId,)
+    // let projectId=details.id
+    // getClock(setModalVisible,
+    //   setMessage,
+    //   setLoading,
+    //   setSuccess,
+    //   setErr,
+    //   projectId,)
       setClockindetails(true)
   }
  
-
-
-  const handleClockIn = () => {
-
-   let lat=location? location?.coords?.latitude:0
-   let lng=location? location?.coords?.longitude:0
-   let projectId=details.id
-    clockInOut(
-      setModalVisible,
-      setMessage,
-      setLoading,
-      setSuccess,
-      setErr,
-      projectId,
-      lat,
-      lng,)
-    setStartClockIn(!startClockIn);
-  };
-
   const handleGetClockinStatus =async () => {
-   
-    let clockinstatus = await AsyncStorage.getItem('clockinstatus')
-
-
-    if(clockinstatus=="clockin"){
-      
+   let clockinstatus = await AsyncStorage.getItem('clockinstatus')
+   if(clockinstatus=="clockin"){
       setStartClockIn(!startClockIn);
-
-    }
+     }
 
   }
-
-  useEffect(() => {
-    handleGetClockinStatus()
-  }, [])
-
-
 
 if (err && message) {
   showMessage({
@@ -297,6 +260,83 @@ if (success && message) {
     },
   });
 
+
+
+const getOfflineclockins=async()=>{
+
+  const offlineclockins= await AsyncStorage.getItem('offlineclockinsinfo');
+
+if (offlineclockins !== null){
+
+  const parsedofflineclockins = JSON.parse(offlineclockins);
+  setClockinoffline(parsedofflineclockins)
+  
+}
+}
+
+  const saveOfflineClockins = async () => {
+ 
+    try {
+        let  saveclockinoffline= [...clockinoffline, {
+            projectId: details.id,
+            lat:latitude,
+            lng:longitude
+          }]
+  
+         
+      const b = JSON.stringify(saveclockinoffline);
+
+      await AsyncStorage.setItem('offlineclockinsinfo',b);
+     
+      
+      getOfflineclockins()
+      setSuccess(true)
+      setMessage("Clock-in information has been saved and would be submitted when you can access the internet")
+     
+    } catch (error) {
+      // Error saving data
+    }
+  };
+
+
+  const handleClockIn = () => {
+   
+    saveOfflineClockins()
+
+  //  let lat=location? location?.coords?.latitude:0
+  //  let lng=location? location?.coords?.longitude:0
+  //  let projectId=details.id
+  //   clockInOut(
+  //     setModalVisible,
+  //     setMessage,
+  //     setLoading,
+  //     setSuccess,
+  //     setErr,
+  //     projectId,
+  //     lat,
+  //     lng,)
+ setModalVisible(false)
+     setStartClockIn(!startClockIn);
+  };
+
+
+  useEffect(() => {
+    handleGetClockinStatus()
+  }, [])
+  useEffect(() => {
+    getOfflineclockins()
+ 
+  }, [])
+
+
+  // console.log(clockinoffline.length)
+
+
+
+
+
+
+
   return (
       <>
     <View
@@ -307,6 +347,7 @@ if (success && message) {
  
       }}
     >
+  
       <View style={styles.timerbox}>
         <TouchableOpacity
           onPress={() => setModalVisible(true)}
@@ -316,7 +357,9 @@ if (success && message) {
             {startClockIn ? 'Clock Out' : ' Clock In'}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity   onPress={() => startClockIn && handleGetClockView()} style={styles.timerboxcountname}>
+        <TouchableOpacity  
+        // onPress={() => startClockIn && handleGetClockView()} 
+        style={styles.timerboxcountname}>
           <Text style={styles.timerboxcount}>{clockInTime}</Text>
         </TouchableOpacity>
       </View>

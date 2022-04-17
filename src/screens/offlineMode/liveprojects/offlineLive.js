@@ -20,6 +20,7 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Nav from '../offlineNav/Nav';
 import Logo from '../../../../assets/images/logo.png';
+import * as Location from 'expo-location';
 
 
 import {
@@ -45,6 +46,7 @@ const Create = () => {
 
   const [showclock, setShowclock] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
+  const [location, setLocation] = useState(null);
 
 
 
@@ -56,16 +58,13 @@ const Create = () => {
   const handleNavigateToDetails = (item) => {
     setShowclock(false)
     let details=item
-    navigation.navigate('ProjecDetailsOfflineScreen',{details})
+    let longitude=location?.coords?.longitude
+    let latitude=location?.coords?.latitude
+    navigation.navigate('ProjecDetailsOfflineScreen',{details,longitude,latitude})
  
   };
 
  const app = useContext(AppContext);
-//   var getAllLiveProjects = app.getAllLiveProjects;
-//   var getAllProjects = app.getAllProjects;
-//   var allProjects = app.allProjects;
-//   var allLiveProjects = app.allLiveProjects;
-//   var getAllTask = app.getAllTask;
 
    var markAsRead =app.markAsRead 
   const latestClockinsTime = app.latestClockinsTime;
@@ -90,6 +89,25 @@ const Create = () => {
     
   }
 }
+
+
+
+
+
+useEffect(() => {
+  (async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Permission to access location was denied');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+  })();
+}, []);
+
+
  
 
 

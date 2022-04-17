@@ -4,8 +4,6 @@ import React, { useEffect, useState, useRef, useContext } from 'react';
 
 
 const Task = ({tasksoff}) => {
-  
-
 
  
   return (
@@ -51,6 +49,8 @@ const Task = ({tasksoff}) => {
                     </View>
                   )}
                     />
+
+
     
     </View>
   )

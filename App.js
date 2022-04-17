@@ -82,6 +82,7 @@ const Root = () => {
     getAllRisk,
     getAllTask,
     alltask,
+    clockInOutOffline 
   } = ProjecsService();
 
   const [loading, setLoading] = useState(true);
@@ -225,6 +226,7 @@ const Root = () => {
           getAllRisk,
           getAllTask,
           alltask,
+          clockInOutOffline 
         }}
       >
         <Stack.Navigator>

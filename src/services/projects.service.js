@@ -26,7 +26,19 @@ export default () => {
   const [alltask, setAlltask] = React.useState(null);
 
 
-  
+  const removeOffline = async() => {
+    try {
+     
+      await AsyncStorage.removeItem("offlineclockinsinfo");
+      
+    
+      return true;
+  }
+  catch(exception) {
+      return false;
+  }
+  };
+
 
   const getOfflineLiveProjects = async (offlineliveprojects,offlineClockins) => {
     try {
@@ -580,6 +592,60 @@ export default () => {
         });
     });
   };
+  const clockInOutOffline = async (
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+    projectId,
+    lat,
+    lng
+  ) => {
+    setLoading(true);
+    let payload = {
+      project_id: projectId,
+      lat: lat,
+      lng: lng,
+    };
+    setModalVisible(false);
+
+
+    http().then((axios) => {
+      axios
+        .post('/project_clock_toggle', payload)
+        .then((response) => {
+          if (response.data.status) {
+            setErr(false);
+            setLoading(false);
+            setSuccess(true);
+            setModalVisible(false);
+           
+             if(response.data.message=="Clocked in successfully"){
+             
+              AsyncStorage.setItem('clockinstatus',"clockin");
+
+             }
+             if(response.data.message=="Clocked out successfully"){
+              AsyncStorage.setItem('clockinstatus',"clockout");
+             }
+          
+
+            setMessage("Offline clockins submitted successfully");
+            removeOffline()
+          } else {
+            setErr(true);
+            setLoading(false);
+            setSuccess(false);
+            setModalVisible(false);
+            setMessage(response.data.message);
+          }
+        })
+        .catch((e) => {
+          error(e, setMessage, setModalVisible, setErr, setSuccess, setLoading);
+        });
+    });
+  };
 
   const getClock = async (
     setModalVisible,
@@ -870,7 +936,8 @@ export default () => {
     markAsRead ,
     getAllRisk,
     getAllTask,
-    alltask
+    alltask,
+    clockInOutOffline 
    
   };
 };

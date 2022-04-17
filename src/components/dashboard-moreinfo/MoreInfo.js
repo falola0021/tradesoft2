@@ -13,14 +13,16 @@ import {
 import Logo from "../../../assets/images/logo.png"
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showMessage, hideMessage } from 'react-native-flash-message';
 
 
 
 const handleNavigate = ({
   modalVisible,
   setModalVisible,
-  details
- 
+  details,
+  submitOfflineData
 }) => {
   const navigation = useNavigation();
 
@@ -29,11 +31,30 @@ const handleNavigate = ({
     }
 
 
-    const handleNavigateToDetails = () => {
-      setModalVisible(false)
-
-      navigation.navigate('ProjectDetails',{details})
+    const handleSubmitOffline = () => {
+      submitOfflineData()
     };
+
+   const removeOffline = async() => {
+    try {
+     
+      await AsyncStorage.removeItem("offlineclockinsinfo");
+      showMessage({
+        message: 'SUCCESS',
+        description:"Offline information cleared!",
+        type: 'success',
+      });
+    
+      setModalVisible(false)
+      return true;
+  }
+  catch(exception) {
+      return false;
+  }
+  };
+
+
+
   return (
       <>
     <TouchableOpacity
@@ -64,55 +85,16 @@ const handleNavigate = ({
                 </TouchableOpacity>
                 </View>
               
+             
              <View style={styles.titlebox}>
-               <Text style={styles.bottomtxt3}>Project: </Text>
-               <Text style={styles.bottomtxt2}>{details?.name}</Text>
-             </View>
-           
-             <View style={styles.titlebox}>
-               <Text style={styles.bottomtxt3}>Task: </Text>
-               <Text style={styles.bottomtxt2}>No task from API</Text>
-             </View>
-             <View style={styles.titlebox}>
-               <Text style={styles.bottomtxt3}>Start Date: </Text>
-               <Text style={styles.bottomtxt2}>
-                 {moment(details?.start_date).format(
-                            'MM-DD-YY, h:mm:ss a'
-                          )}</Text>
-             </View>
-             <View style={styles.titlebox}>
-               <Text style={styles.bottomtxt3}>End Date: </Text>
-               <Text style={styles.bottomtxt2}> {moment(details?.end_date).format(
-                            'MM-DD-YY, h:mm:ss a'
-                          )}</Text>
-             </View>
-             <View style={styles.titleboxa}>
-                <Text style={styles.bottomtxt3}>Address Line 1: </Text> 
-               <Text style={styles.bottomtxt2}>{details?.address.address_line_1}</Text>
-             </View>
-             <View style={styles.titleboxa}>
-                <Text style={styles.bottomtxt3}>Address Line 2: </Text> 
-               <Text style={styles.bottomtxt2}>{details?.address.address_line_2}</Text>
-             </View>
-             <View style={styles.titlebox}>
-               <Text style={styles.bottomtxt3}>County: </Text>
-               <Text style={styles.bottomtxt2}>{details?.address.county}</Text>
-             </View>
-             <View style={styles.titlebox}>
-            
-               <Text style={styles.bottomtxt3}>Postcode: </Text>
-               <Text style={styles.bottomtxt2}>{details?.address.postcode}</Text>
-             </View>
-             <View style={styles.titlebox}>
-               <Text style={styles.bottomtxt3}>Country: </Text>
-               <Text style={styles.bottomtxt2}>{details?.address.country}</Text>
+               <Text style={styles.bottomtxt3}>You have some pending offline clockins information stored. Do you want to submit ? </Text>
              </View>
              <View style={styles.bottomtxtbuttonbox}>
-               <TouchableOpacity onPress={handleNavigateToDetails} style={styles.btn1}>
-               <Text style={styles.btntext2}>GO TO PROJECT</Text>
+               <TouchableOpacity onPress={handleSubmitOffline} style={styles.btn1}>
+               <Text style={styles.btntext2}>YES SUBMIT</Text>
                </TouchableOpacity>
-               <TouchableOpacity style={styles.btn2}>
-               <Text style={styles.btntext2}>MARK AS COMPLETE</Text>
+               <TouchableOpacity onPress={removeOffline} style={styles.btn2}>
+               <Text style={styles.btntext2}>DELETE</Text>
                </TouchableOpacity>
              </View>
         
@@ -144,7 +126,7 @@ const styles = StyleSheet.create({
     
     borderRadius: 7,
     padding: 20,
-    height: 420,
+    height: 200,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -169,7 +151,7 @@ const styles = StyleSheet.create({
   titlebox:{
     display:"flex",
     flexDirection:"row",
-    marginTop:7,
+    marginTop:20,
     flexWrap:"wrap"
   },
   titleboxa:{
@@ -186,7 +168,7 @@ const styles = StyleSheet.create({
   },
   bottomtxt3: {
     color: '#2E3A59',
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Nunito_600SemiBold',
   },
   bottomtxtbuttonbox:{

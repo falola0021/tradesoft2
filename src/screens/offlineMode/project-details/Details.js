@@ -13,6 +13,7 @@ import Tasks from './task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+
 import moment from 'moment';
 import ImageModal from "./ImageModal"
 import { AppContext } from '../../../../App';
@@ -31,7 +32,7 @@ import {
 import { set } from 'react-native-reanimated';
 
 const Notifications = ({ route }) => {
-  const { details } = route.params;
+  const { details,longitude,latitude } = route.params;
   const navigation = useNavigation();
   const [note, setNote] = React.useState(false);
   const [rams, setRams] = React.useState(false);
@@ -40,8 +41,10 @@ const Notifications = ({ route }) => {
   const [loading, setLoading] = React.useState(false);
   const [modalVisible, setModalVisible] = React.useState(false);
   const [message, setMessage] = React.useState(null);
-  // console.log(details.id,"details")
   const [modalVisible2, setModalVisible2] = React.useState(false);
+
+
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const handleToggleImage = () => {
     setModalVisible2(!modalVisible2)
@@ -108,14 +111,22 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
     
   }
 }
+
+
+
+
+
  
 
 
   useEffect(() => {
-
+    // getOffliveliveprojects()
     getOfflineTask()
  
   }, []);
+
+
+  
 
  
 
@@ -351,7 +362,7 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
           */}
              
             </View>
-            {live && <Live  details={details} />}
+            {live && <Live longitude={longitude} latitude={latitude} details={details} />}
             {calendar && <Tasks tasksoff={tasksoff}  />}
 
 
