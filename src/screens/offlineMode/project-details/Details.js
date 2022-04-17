@@ -218,20 +218,20 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
               >
                 <View>
                   <Text style={styles.address}>
-                    Postcode:{' '}
+                   
                     {
                    details?.address
                         ?.postcode
                     }{' '}
                   </Text>
                   <Text style={styles.address}>
-                      County:{' '}
+                   
                       {
                       details?.address?.county
                       }{' '}
                     </Text>
                   <Text style={styles.address}>
-                      Country:{' '}
+                   
                       {
                      details?.address?.country
                       }{' '}

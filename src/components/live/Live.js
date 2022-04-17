@@ -86,7 +86,7 @@ if (errorMsg) {
 
   const openMap = async () => {
     const origin = encodeURIComponent(`${currentaddress[0].street} ${currentaddress[0].subregion} ${currentaddress[0].city}, ${currentaddress[0].country}`);  
-   const destination = encodeURIComponent(`${details.address.address_line_1} ${details.address.postcode}, ${details.address.town}`);  
+   const destination = encodeURIComponent(`${details.address.address_line_1} ${details.address.postcode}, ${details.address.town},${details.address.county},${details.address.country}`);  
     const provider = Platform.OS === 'ios' ? 'apple' : 'google'
     const link = `http://maps.${provider}.com/?saddr=${origin}&daddr=${destination}`;
 

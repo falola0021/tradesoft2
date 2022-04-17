@@ -369,7 +369,7 @@ useEffect(() => {
 
                 
                 <Text style={{marginTop:20,marginBottom:40,fontFamily: 'Nunito_600SemiBold',color:"#808080"}}>
-                   Kindly note that this is an offline mode and all your clockin data would be saved for submission whenever you can access the internet
+                   Kindly note that this is an offline mode and all your clockin data would be saved for submission whenever you can access the internet.
                   </Text>
                
 

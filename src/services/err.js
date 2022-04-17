@@ -59,10 +59,6 @@ export default () => {
       setErr(true)
     }
 
-    //    if(e.message === 'Network Error'){
-    //     alert('no internet connection');
-
-    // }
 
     setModalVisible(true);
   };

@@ -547,13 +547,16 @@ export default () => {
     setErr,
     projectId,
     lat,
-    lng
+    lng,
+    clock_type,
+    handleGetClockView
   ) => {
     setLoading(true);
     let payload = {
       project_id: projectId,
       lat: lat,
       lng: lng,
+      clock_type
     };
     setModalVisible(false);
 
@@ -563,10 +566,12 @@ export default () => {
         .post('/project_clock_toggle', payload)
         .then((response) => {
           if (response.data.status) {
+            handleGetClockView()
             setErr(false);
             setLoading(false);
             setSuccess(true);
             setModalVisible(false);
+           
            
              if(response.data.message=="Clocked in successfully"){
              

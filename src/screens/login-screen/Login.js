@@ -10,8 +10,7 @@ import {
   ImageBackground,
   SafeAreaView,
   TouchableWithoutFeedback,
-  Keyboard
- 
+  Keyboard,
 } from 'react-native';
 import Input from '../../components/inputs/Password';
 import AppLoading from 'expo-app-loading';
@@ -23,17 +22,14 @@ import Logo from '../../../assets/images/logo.png';
 
 import Button from '../../components/green-button/Button';
 import InactiveButton from '../../components/inactive-button/Button';
-import Loader from "../../components/loader/Loader"
+import Loader from '../../components/loader/Loader';
 import { AppContext } from '../../../App';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import * as Device from 'expo-device';
-import {
-  MaterialCommunityIcons
-} from '@expo/vector-icons';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import NetInfo from '@react-native-community/netinfo';
 import {
   useFonts,
   Nunito_700Bold,
@@ -55,30 +51,41 @@ const Login = () => {
   const success = app.success;
   const err = app.err;
 
-  const handleSwitchToOffline=()=>{
-    navigation.navigate('ProjecsOfflineScreen')
-    
-  }
+  const handleSwitchToOffline = () => {
+    navigation.navigate('ProjecsOfflineScreen');
+  };
 
-
-
-  useEffect(async  () => {
-    const deviceId = await AsyncStorage.getItem('deviceId');
-   if(deviceId){
-      
-    }else{
-      AsyncStorage.setItem('deviceId',Device.osInternalBuildId);
-
+  // Subscribe
+  const unsubscribe = NetInfo.addEventListener((state) => {
+    // console.log("Connection type", state.type);
+    // console.log("Is connected?", state.isConnected);
+    if (state.isConnected == false) {
+      handleSwitchToOffline();
     }
-    
-  }, [])
+  });
+
+  // Unsubscribe
+  unsubscribe();
+
+  // NetInfo.fetch().then(state => {
+  //   console.log("Connection type", state.type);
+  //   console.log("Is connected?", state.isConnected);
+  // });
+
+  useEffect(async () => {
+    const deviceId = await AsyncStorage.getItem('deviceId');
+    if (deviceId) {
+    } else {
+      AsyncStorage.setItem('deviceId', Device.osInternalBuildId);
+    }
+  }, []);
 
   const handleLogin = () => {
-    Keyboard.dismiss()
+    Keyboard.dismiss();
     let username = email;
-    login(username, password, setModalVisible, setMessage,setLoading);
+    login(username, password, setModalVisible, setMessage, setLoading);
   };
-  
+
   if (err && message) {
     showMessage({
       message: 'ERROR',
@@ -112,47 +119,47 @@ const Login = () => {
     return <AppLoading />;
   } else {
     return (
-      <SafeAreaView >
-        
-        <ImageBackground  source={Bg} resizeMode='cover' style={styles.imagebg}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-
-        
-          <View keyboardShouldPersistTaps="handled" style={styles.container}>
-            <View style={styles.logo}>
-              <Image source={Logo} />
-            </View>
-            <View style={styles.input}>
-              <Email outlinecolor='grey' email={email} setEmail={setEmail} />
-            </View>
-            <View style={styles.input}>
-              <Input
-                label='Password'
-                placeholder='Password(8 characters minimum)'
-                outlinecolor='grey'
-                password={password}
-                setPassword={setPassword}
-              />
-            </View>
-           
-            <View style={styles.button}>
-              {password.length>7 && email ? (
-                <Button
-                  //loading={loading}
-                  handleNavigate={handleLogin}
-                  text='Login'
+      <SafeAreaView>
+        <ImageBackground source={Bg} resizeMode='cover' style={styles.imagebg}>
+          <TouchableWithoutFeedback
+            onPress={Keyboard.dismiss}
+            accessible={false}
+          >
+            <View keyboardShouldPersistTaps='handled' style={styles.container}>
+              <View style={styles.logo}>
+                <Image source={Logo} />
+              </View>
+              <View style={styles.input}>
+                <Email outlinecolor='grey' email={email} setEmail={setEmail} />
+              </View>
+              <View style={styles.input}>
+                <Input
+                  label='Password'
+                  placeholder='Password(8 characters minimum)'
+                  outlinecolor='grey'
+                  password={password}
+                  setPassword={setPassword}
                 />
-              ) : (
-                <InactiveButton text='Login' />
-              )}
-            </View>
-            <View style={styles.forgotpasbox}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('ForgotScreen')}
-              >
-                <Text style={styles.forgotpas}>Forgot password?</Text>
-              </TouchableOpacity>
-              {/* <TouchableOpacity
+              </View>
+
+              <View style={styles.button}>
+                {password.length > 7 && email ? (
+                  <Button
+                    //loading={loading}
+                    handleNavigate={handleLogin}
+                    text='Login'
+                  />
+                ) : (
+                  <InactiveButton text='Login' />
+                )}
+              </View>
+              <View style={styles.forgotpasbox}>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('ForgotScreen')}
+                >
+                  <Text style={styles.forgotpas}>Forgot password?</Text>
+                </TouchableOpacity>
+                {/* <TouchableOpacity
                 onPress={
                   () => alert('Not part of the the discussed features')
                   //navigation.navigate('RegisterScreen')
@@ -160,27 +167,25 @@ const Login = () => {
               >
                 <Text style={styles.forgotpas}>Don't have an account ?</Text>
               </TouchableOpacity> */}
+              </View>
             </View>
-          </View>
-          
           </TouchableWithoutFeedback>
-          <View style={{position:"absolute",bottom:20,right:20}}>
-          
-          <TouchableOpacity onPress={handleSwitchToOffline} style={styles.attachmentbox}>
-                 <MaterialCommunityIcons
-                  name='network-off-outline'
-                  color='#66C825'
-                  size={25}
-                />
-                </TouchableOpacity>
-
+          <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+            <TouchableOpacity
+              onPress={handleSwitchToOffline}
+              style={styles.attachmentbox}
+            >
+              <MaterialCommunityIcons
+                name='network-off-outline'
+                color='#66C825'
+                size={25}
+              />
+            </TouchableOpacity>
           </View>
-          
         </ImageBackground>
-        
+
         {/* </ScrollView> */}
-        <Loader loading={loading}/> 
-       
+        <Loader loading={loading} />
       </SafeAreaView>
     );
   }
@@ -202,8 +207,8 @@ const styles = StyleSheet.create({
   },
 
   forgotpasbox: {
-   marginTop:10,
-    alignItems:"center"
+    marginTop: 10,
+    alignItems: 'center',
     // justifyContent: 'space-between',
     // display: 'flex',
     // flexDirection: 'row',

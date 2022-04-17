@@ -181,20 +181,20 @@ const Notifications = ({ route }) => {
               >
                 <View>
                   <Text style={styles.address}>
-                    Postcode:{' '}
+                  
                     {
                    projectDetails?.address
                         ?.postcode
                     }{' '}
                   </Text>
                   <Text style={styles.address}>
-                      County:{' '}
+                    
                       {
                       projectDetails?.address?.county
                       }{' '}
                     </Text>
                   <Text style={styles.address}>
-                      Country:{' '}
+                    
                       {
                      projectDetails?.address?.country
                       }{' '}

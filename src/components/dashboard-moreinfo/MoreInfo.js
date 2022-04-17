@@ -93,9 +93,9 @@ const handleNavigate = ({
                <TouchableOpacity onPress={handleSubmitOffline} style={styles.btn1}>
                <Text style={styles.btntext2}>YES SUBMIT</Text>
                </TouchableOpacity>
-               <TouchableOpacity onPress={removeOffline} style={styles.btn2}>
+               {/* <TouchableOpacity onPress={removeOffline} style={styles.btn2}>
                <Text style={styles.btntext2}>DELETE</Text>
-               </TouchableOpacity>
+               </TouchableOpacity> */}
              </View>
         
             </View>
@@ -174,13 +174,13 @@ const styles = StyleSheet.create({
   bottomtxtbuttonbox:{
     display:"flex",
     flexDirection:"row",
-    justifyContent:"space-between",
+    justifyContent:"center",
     marginTop:30
 
   },
   btn1:{
     backgroundColor:'#66C825',
-    width:140,
+    width:170,
     height:37,
     borderRadius:7,
     alignItems:"center",

@@ -26,6 +26,10 @@ export default function Timer({details,location}) {
   const [loading, setLoading] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [err, setErr] = React.useState(false);
+  const [clock_type, setClock_type] = React.useState(null);
+  const [traveltimemodal, setTravetimemodal] = React.useState(false);
+
+
 
 
 
@@ -49,26 +53,68 @@ export default function Timer({details,location}) {
       setSuccess,
       setErr,
       projectId,)
-      setClockindetails(true)
+    
   }
+
+
+  const handleGetClocksummary=()=>{
  
-
-
-  const handleClockIn = () => {
-
-   let lat=location? location?.coords?.latitude:0
-   let lng=location? location?.coords?.longitude:0
-   let projectId=details.id
-    clockInOut(
-      setModalVisible,
+    let projectId=details.id
+    getClock(setModalVisible,
       setMessage,
       setLoading,
       setSuccess,
       setErr,
-      projectId,
-      lat,
-      lng,)
-    setStartClockIn(!startClockIn);
+      projectId,)
+     setClockindetails(true)
+  }
+
+
+ 
+
+
+  const handleClockIn = async(type) => {
+   
+    setClock_type(type)
+
+   let lat=location? location?.coords?.latitude:0
+   let lng=location? location?.coords?.longitude:0
+   let projectId=details.id
+   setTravetimemodal(false)
+
+if(type==0){
+
+  await clockInOut(
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+    projectId,
+    lat,
+    lng,
+    clock_type,
+    handleGetClockView
+    )
+
+}else{
+ 
+  await clockInOut(
+    setModalVisible,
+    setMessage,
+    setLoading,
+    setSuccess,
+    setErr,
+    projectId,
+    lat,
+    lng,
+    clock_type,
+    handleGetClockView
+    )
+
+}
+
+
   };
 
   const handleGetClockinStatus =async () => {
@@ -86,6 +132,7 @@ export default function Timer({details,location}) {
 
   useEffect(() => {
     handleGetClockinStatus()
+    handleGetClockView()
   }, [])
 
 
@@ -109,10 +156,13 @@ if (success && message) {
 }
 
 
-  useEffect(() => {
-    if (startClockIn) {
-      tick.current = setInterval(() => {
+
+ const startTimer=async()=>{
+   let status= await clockview && clockview[0]?.clock_out_time 
+  if (status ==null ) {
+    tick.current = setInterval(() => {
         setClockInTime(moment().format('LTS'));
+       
       }, 1000);
     } else {
       setClockInTime('00:00:00');
@@ -120,11 +170,37 @@ if (success && message) {
     }
 
     return () => clearInterval(tick.current);
-  }, [startClockIn]);
+ 
+ }
 
-  const handleTravelTime = () => {
-    setStartTravel(!startTravel);
-  };
+
+ const startTravelTimer=async()=>{
+  let status= await clockview && clockview[0]?.clock_out_time 
+ if (status ==null ) {
+   tick.current = setInterval(() => {
+       setTravelTime(moment().format('LTS'));
+      
+     }, 1000);
+   } else {
+     setTravelTime('00:00:00');
+     clearInterval(tick.current);
+   }
+
+   return () => clearInterval(tick.current);
+
+}
+
+// console.log(clockview.length,'PPPPPP')
+
+  useEffect(() => {
+    startTimer()
+  }, [clockview && clockview[0]?.clock_out_time && clockview[0]?.clock_type===0 ]);
+
+  // useEffect(() => {
+  //   startTravelTimer()
+  // }, [clockview && clockview[0]?.clock_out_time && clockview[0]?.clock_type >0 ]);
+
+
 
   useEffect(() => {
     if (startTravel) {
@@ -151,25 +227,27 @@ if (success && message) {
       paddingHorizontal: 12,
     },
     timerboxtitle: {
-      backgroundColor: startClockIn ? '#F1E22E' : '#66C825',
+      backgroundColor: clockInTime=="00:00:00" ?'#66C825': '#F1E22E',
       paddingVertical: 10,
       paddingHorizontal: 12,
     },
     timerboxname: {
-      color: startClockIn ? '#000' : '#fff',
+      color: clockInTime=="00:00:00" ?'#fff': '#000' ,
       fontSize: 12,
       fontFamily: 'Nunito_600SemiBold',
     },
+
     timerboxtitle2: {
-      backgroundColor: startTravel ? '#F1E22E' : '#66C825',
+       backgroundColor: travelTime=="00:00:00"?'#66C825': '#F1E22E',
       paddingVertical: 10,
       paddingHorizontal: 12,
     },
     timerboxname2: {
-      color: startTravel ? '#000' : '#fff',
+     color:travelTime == "00:00:00"  ?'#fff': '#000' ,
       fontSize: 12,
       fontFamily: 'Nunito_600SemiBold',
     },
+   
     timerbox: {
       display: 'flex',
       flexDirection: 'row',
@@ -310,21 +388,23 @@ if (success && message) {
           style={styles.timerboxtitle}
         >
           <Text style={styles.timerboxname}>
-            {startClockIn ? 'Clock Out' : ' Clock In'}
+            {clockview && clockview[0]?.clock_out_time ?   ' Clock In':'Clock Out'}
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity   onPress={() => startClockIn && handleGetClockView()} style={styles.timerboxcountname}>
+        <TouchableOpacity   onPress={() => clockview && clockview[0]?.clock_out_time ==null && handleGetClocksummary()} style={styles.timerboxcountname}>
           <Text style={styles.timerboxcount}>{clockInTime}</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.timerbox}>
         <TouchableOpacity
-          onPress={handleTravelTime}
+          onPress={() => setTravetimemodal(true)}
           style={styles.timerboxtitle2}
         >
-          <Text style={styles.timerboxname2}>Start Travel</Text>
+          <Text style={styles.timerboxname2}>
+            {clockview && clockview[0]?.clock_out_time ?   'Start Travel':'Stop Travel'}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.timerboxcountname}>
+        <TouchableOpacity   onPress={() => clockview && clockview[0]?.clock_out_time ==null && handleGetClocksummary()} style={styles.timerboxcountname}>
           <Text style={styles.timerboxcount}>{travelTime}</Text>
         </TouchableOpacity>
       </View>
@@ -373,7 +453,7 @@ if (success && message) {
                 color: '#000',
               }}
             >
-              You are about to clock {!startClockIn ? 'in' : 'out'} at
+              You are about to clock {clockview && clockview[0]?.clock_out_time ? 'in' : 'out'} at
             </Text>
             <Text
               style={{
@@ -394,9 +474,9 @@ if (success && message) {
               }}
             >
               <TouchableOpacity
-                onPress={handleClockIn}
+                onPress={()=>handleClockIn(0)}
                 style={{
-                  backgroundColor: !startClockIn ? '#66C825' : '#F1E22E',
+                  backgroundColor: clockview && clockview[0]?.clock_out_time ? '#66C825' : '#F1E22E',
                   paddingHorizontal: 20,
                   paddingVertical: 8,
                   borderRadius: 6,
@@ -406,11 +486,11 @@ if (success && message) {
               >
                 <Text
                   style={{
-                    color: !startClockIn ? '#fff' : '#000',
+                    color: clockview && clockview[0]?.clock_out_time ? '#fff' : '#000',
                     fontFamily: 'Nunito_600SemiBold',
                   }}
                 >
-                  Clock-{!startClockIn ? 'in' : 'out'}
+                  Clock-{clockview && clockview[0]?.clock_out_time ? 'in' : 'out'}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -435,6 +515,115 @@ if (success && message) {
         </View>
       </Modal>
 
+      
+      
+      <Modal
+        animationType='slide'
+        transparent={true}
+        visible={traveltimemodal}
+        onRequestClose={() => {
+          setTravelTime(!traveltimemodal);
+        }}
+      >
+        <View
+          onStartShouldSetResponder={() => setModalVisible(false)}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(225,225,225,0.5)',
+          }}
+        >
+          <View
+            style={{
+              width: 300,
+              height: 300,
+              backgroundColor: '#fff',
+              elevation: 0.3,
+              borderRadius: 6,
+              padding: 20,
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'Nunito_600SemiBold',
+                fontSize: 14,
+                color: '#000',
+                textTransform:"capitalize"
+              }}
+            >
+              Hi {myaccountinfo.first_name},{' '}
+            </Text>
+            <Text
+              style={{
+                fontFamily: 'Nunito_600SemiBold',
+                fontSize: 14,
+                color: '#000',
+              }}
+            >
+              You are about to  {clockview && clockview[0]?.clock_out_time ? 'start' : 'stop'} your travel time  at
+            </Text>
+            <Text
+              style={{
+                marginTop: 30,
+                textAlign: 'center',
+                fontSize: 35,
+                color: '#66C825',
+              }}
+            >
+              {moment().format('HH:mm A')}
+            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 70,
+              }}
+            >
+              <TouchableOpacity
+                onPress={()=>handleClockIn(1)}
+                style={{
+                  backgroundColor: clockview && clockview[0]?.clock_out_time ? '#66C825' : '#F1E22E',
+                  paddingHorizontal: 10,
+                  paddingVertical: 8,
+                  borderRadius: 6,
+                  width: 120,
+                  alignItems: 'center',
+                }}
+              >
+                <Text
+                  style={{
+                    color: clockview && clockview[0]?.clock_out_time ? '#fff' : '#000',
+                    fontFamily: 'Nunito_600SemiBold',
+                  }}
+                >
+                {clockview && clockview[0]?.clock_out_time ? 'Start-travel' : 'Stop-travel'}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => setTravetimemodal(false)}
+                style={{
+                  backgroundColor: '#E40101',
+                  paddingHorizontal: 20,
+                  paddingVertical: 8,
+                  borderRadius: 6,
+                  width: 120,
+                  alignItems: 'center',
+                }}
+              >
+                <Text
+                  style={{ color: '#fff', fontFamily: 'Nunito_600SemiBold' }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      
+      
       <Modal
         animationType='slide'
         transparent={true}

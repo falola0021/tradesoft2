@@ -291,7 +291,7 @@ if (offlineclockins !== null){
       
       getOfflineclockins()
       setSuccess(true)
-      setMessage("Clock-in information has been saved and would be submitted when you can access the internet")
+      setMessage("Clock-in information has been saved and would be submitted when you can access the internet.")
      
     } catch (error) {
       // Error saving data
@@ -602,7 +602,7 @@ if (offlineclockins !== null){
     </View>
     <View>
          <Text style={{marginTop:50,marginBottom:"100%",fontFamily: 'Nunito_600SemiBold',color:"#808080"}}>
-       <Text style={{color:'red'}}> * </Text>Kindly note that this is an offline mode and all your clockin data would be saved for submission whenever you can access the internet
+       <Text style={{color:'red'}}> * </Text>Kindly note that this is an offline mode and all your clockin data would be saved for submission whenever you can access the internet.
      </Text>
     </View>
     </>
