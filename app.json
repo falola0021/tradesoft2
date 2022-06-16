@@ -21,7 +21,8 @@
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
         "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos"
-      }
+      },
+      "bundleIdentifier": "io.teknet.Tradesoft"
     },
     "android": {
       "adaptiveIcon": {
@@ -35,7 +36,8 @@
         "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.FOREGROUND_SERVICE"
-      ]
+      ],
+      "package": "io.teknet.Tradesoft"
     },
     "web": {
       "favicon": "./assets/favicon.png"

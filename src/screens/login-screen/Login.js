@@ -170,7 +170,7 @@ const Login = () => {
               </View>
             </View>
           </TouchableWithoutFeedback>
-          <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+          {/* <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
             <TouchableOpacity
               onPress={handleSwitchToOffline}
               style={styles.attachmentbox}
@@ -181,7 +181,7 @@ const Login = () => {
                 size={25}
               />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ImageBackground>
 
         {/* </ScrollView> */}
