@@ -1,212 +1,58 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Platform,
-  Button,
-  Image,
-} from 'react-native';
-import { TextInput } from 'react-native-paper';
-import AppLoading from 'expo-app-loading';
-import { FontAwesome } from '@expo/vector-icons';
-import moment from 'moment';
-// import DatePicker from 'react-native-datepicker';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { View, Text, Button, TouchableOpacity } from 'react-native';
+import React from 'react';
+import DatePicker from 'react-native-date-ranges';
 
-
-
-// import Calendar from '../../../assets/calendar.png';
-
-
-const Password = ({
-  setDob,
-  dob,
-  label,
-  placeholder,
-  err,
-  minDate,
-  maxDate,
-}) => {
-  const [hidePass, setHidePass] = useState(true);
-
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [lab, setLab] = useState(false);
-  const [labcol, setLabcol] = useState(false);
-
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setLab(true)
-    setLabcol(true);
-   setDatePickerVisibility(true);
-    
-    };
-
-  const hideDatePicker = (date) => {
-   
-    if(date){
-      setLab(true),
-      setLabcol(false);
-    }else{
-      setLab(false),
-      setLabcol(false);
-    }
-    setDatePickerVisibility(false);
-   
-  };
-
-  const handleConfirm = (date) => {
-    
-  
-    const currentDate = date ;
-    let dateConvert = moment(currentDate).format('YYYY-MM-DD');
-  
-    setDob(dateConvert);
-   setDate(currentDate);
-
-   hideDatePicker(date);
-   
-  };
-
-
-
-const styles = StyleSheet.create({
-  input: {
-    fontSize: 15,
-    fontFamily: 'Nunito_700Bold',
-  },
-
-  inputicon: {
-    textAlign: 'right',
-    paddingHorizontal: 20,
-    position: 'absolute',
-    bottom: 20,
-    right: 10,
-    zIndex: 1,
-  },
-  datebox: {
-    position: 'absolute',
-    bottom: 2,
-    width: '100%',
-
-    paddingVertical: 27,
-    // opacity:0
-  },
-
-  title: {
-    textAlign: 'left',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  datePickerStyle: {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 15,
-    borderWidth: 1,
-    borderColor: 'rgb(211, 211, 211)',
-    borderRadius: 5,
-    paddingVertical: 18,
-  },
-  datecalender: {
-    width: 25,
-    height: 25,
-  },
-  text: {
-    textAlign: 'left',
-    width: '100%',
-    fontSize: 16,
-    color: '#000',
-  },
-  confirmdate: {
-    color: 'grey',
-    fontFamily: 'Nunito_700Bold',
-  },
-  canceldate: {
-    color: 'red',
-    fontFamily: 'Nunito_700Bold',
-  },
-  placeholder: {
-    fontSize: 15,
-    color: 'gray',
-    fontFamily: 'Nunito_600SemiBold',
-  },
-  textval: {
-    fontSize: 15,
-    color: '#000',
-    fontFamily: 'Nunito_600SemiBold',
-  },
-  label: {
-    backgroundColor: 'red',
-    paddingHorizontal: 4,
-    marginHorizontal: 10,
-    position: 'absolute',
-    top: -10,
-    zIndex: 20,
-    color: labcol ? 'grey' : 'grey',
-    backgroundColor: '#F5F5F5',
-    alignSelf: 'flex-start',
-    fontSize: 12,
-  },
-});
-
-
+const DatePicker1 = ({ setStartdate, setEnddete }) => {
+  const customButton = (onConfirm) => (
+    <TouchableOpacity
+      style={{
+        backgroundColor: '#65C825',
+        width: '90%',
+        alignItems: 'center',
+        padding: 14,
+        borderRadius: 7,
+      }}
+      onPress={onConfirm}
+    >
+      <Text style={{ color: '#fff', fontSize: 14 }}>
+        Confirm date selection
+      </Text>
+    </TouchableOpacity>
+  );
   return (
-    <View>
-      {dob ? (
-        <View>
-           {lab && <Text style={styles.label}>{placeholder}</Text>} 
-        <TouchableOpacity
-          style={styles.datePickerStyle}
-          onPress={showDatePicker}
-        >
-          <Text style={styles.textval}>{dob}</Text>
-          {/* <Image style={styles.datecalender} source={Calendar} /> */}
-        </TouchableOpacity>
-        </View>
-      ) : (
-        <View>
-        {lab && <Text style={styles.label}>{placeholder}</Text>} 
-
-        <TouchableOpacity
-          style={styles.datePickerStyle}
-          onPress={showDatePicker}
-        >
-          <Text style={styles.placeholder}>{placeholder}</Text>
-          <FontAwesome name="calendar" size={16} color="grey" />
-
-          {/* <Image style={styles.datecalender} source={Calendar} /> */}
-        </TouchableOpacity>
-        </View>
-    
-      )}
-        <DateTimePickerModal
-         style={{
-          shadowColor: 'red',
-          shadowRadius: 0,
-          shadowOpacity: 1,
-          shadowOffset: { height: 0, width: 0 ,backgroundColor:"red"},
-        }}
-        androidVariant="nativeAndroid"
-
-        isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirm}
-              onCancel={hideDatePicker}
-              androidMode={'default'}
-          minimumDate={minDate}
-          maximumDate={maxDate}
-          datePickerModeAndroid={'default'} 
-          
-        />
-     
-    </View>
+    <DatePicker
+      style={{
+        backgroundColor: 'rgba(80,80,80,0.03)',
+        borderRadius: 5,
+        borderWidth: 0.8,
+      }}
+      customStyles={{
+        placeholderText: { fontSize: 14 },
+        headerStyle: {
+          backgroundColor: '#65C825',
+        },
+        headerMarkTitle: { fontSize: 16, color: '#ffffff', marginBottom: 10 },
+        headerDateTitle: { fontSize: 14 },
+        contentText: { fontSize: 14 },
+        placeholderText: {
+          fontSize: 14,
+          color: 'rgb(80,80,80)',
+          marginLeft: -155,
+        }, // placeHolder style
+      }}
+      placeholder={'Start Date → End Date'}
+      mode={'range'}
+      selectedBgColor='#F1E22E'
+      selectedTextColor='#000'
+      markText='Select your holiday date range'
+      customButton={customButton}
+      blockBefore={true}
+      onConfirm={(value) => {
+        setStartdate(value.startDate);
+        setEnddete(value.endDate);
+      }}
+    />
   );
 };
 
-export default Password;
+export default DatePicker1;

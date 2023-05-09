@@ -12,10 +12,8 @@ import Live from './clockins';
 import Tasks from './task';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
 import moment from 'moment';
-import ImageModal from "./ImageModal"
+import ImageModal from './ImageModal';
 import { AppContext } from '../../../../App';
 
 import {
@@ -32,7 +30,7 @@ import {
 import { set } from 'react-native-reanimated';
 
 const Notifications = ({ route }) => {
-  const { details,longitude,latitude } = route.params;
+  const { details, longitude, latitude } = route.params;
   const navigation = useNavigation();
   const [note, setNote] = React.useState(false);
   const [rams, setRams] = React.useState(false);
@@ -43,11 +41,10 @@ const Notifications = ({ route }) => {
   const [message, setMessage] = React.useState(null);
   const [modalVisible2, setModalVisible2] = React.useState(false);
 
-
   const [errorMsg, setErrorMsg] = useState(null);
 
   const handleToggleImage = () => {
-    setModalVisible2(!modalVisible2)
+    setModalVisible2(!modalVisible2);
   };
 
   const handleNote = () => {
@@ -55,31 +52,24 @@ const Notifications = ({ route }) => {
     setNote(true);
     setRams(false);
     setCalendar(false);
-   
   };
   const handleRams = () => {
     setLive(false);
     setNote(false);
     setRams(true);
     setCalendar(false);
-   
-
   };
   const handleCalendar = () => {
     setLive(false);
     setNote(false);
     setRams(false);
     setCalendar(true);
-   
-
   };
   const handleLive = () => {
     setLive(true);
     setNote(false);
     setRams(false);
     setCalendar(false);
-   
-
   };
 
   const app = useContext(AppContext);
@@ -88,86 +78,58 @@ const Notifications = ({ route }) => {
   var getRisk = app.getRisk;
   var risk = app.risk;
   var getAllTask = app.getAllTask;
-  var  alltask = app. alltask;
-
-
-
+  var alltask = app.alltask;
 
   const [tasksoff, setTaskoff] = React.useState(null);
 
-
-
-
- const getOfflineTask=async()=>{
-  
+  const getOfflineTask = async () => {
     const offlinetask = await AsyncStorage.getItem('offlinetask');
- 
-  
-  
-  if (offlinetask !== null){
-   const parsedofflinetask = JSON.parse(offlinetask);
-setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == details.id));
 
-    
-  }
-}
-
-
-
-
-
- 
-
+    if (offlinetask !== null) {
+      const parsedofflinetask = JSON.parse(offlinetask);
+      setTaskoff((tasksoff) =>
+        parsedofflinetask?.filter((item) => item.project_id == details.id)
+      );
+    }
+  };
 
   useEffect(() => {
     // getOffliveliveprojects()
-    getOfflineTask()
- 
+    getOfflineTask();
   }, []);
 
-
-  
-
- 
-
-
   return (
-<ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <SafeAreaView>
+        <View style={styles.container}>
+          <View style={styles.headerbox}>
+            <Arrowback />
+            <Text style={styles.nottext}>Project Overview</Text>
+          </View>
 
-    <SafeAreaView>
-      <View style={styles.container}>
-        <View style={styles.headerbox}>
-          <Arrowback />
-          <Text style={styles.nottext}>Project Overview</Text>
-        </View>
-        
-        <View style={styles.detailspage}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.title}>
-              {details?.name}{' '}
-            </Text>
-            <TouchableOpacity
-              onPress={handleToggleImage}
+          <View style={styles.detailspage}>
+            <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: '#66C825', marginRight: 5 }}>
-               Image
-              </Text>
-              <Feather name='image' color='#66C825' size={16} />
-            </TouchableOpacity>
-          </View>
-       
+              <Text style={styles.title}>{details?.name} </Text>
+              <TouchableOpacity
+                onPress={handleToggleImage}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: '#66C825', marginRight: 5 }}>Image</Text>
+                <Feather name='image' color='#66C825' size={16} />
+              </TouchableOpacity>
+            </View>
+
             <View>
               <View
                 style={{
@@ -191,19 +153,12 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                 <View>
                   <Text style={styles.address}>
                     {' '}
-                    {
-                      details?.address
-                        ?.address_line_1
-                    }{' '}
+                    {details?.address?.address_line_1}{' '}
                   </Text>
-                  { details?.address
-                        ?.address_line_2 != '' && (
+                  {details?.address?.address_line_2 != '' && (
                     <Text style={styles.address}>
                       {' '}
-                      {
-                       details?.address
-                       ?.address_line_2
-                      }{' '}
+                      {details?.address?.address_line_2}{' '}
                     </Text>
                   )}
                 </View>
@@ -218,27 +173,15 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
               >
                 <View>
                   <Text style={styles.address}>
-                   
-                    {
-                   details?.address
-                        ?.postcode
-                    }{' '}
+                    {details?.address?.postcode}{' '}
                   </Text>
                   <Text style={styles.address}>
-                   
-                      {
-                      details?.address?.county
-                      }{' '}
-                    </Text>
+                    {details?.address?.county}{' '}
+                  </Text>
                   <Text style={styles.address}>
-                   
-                      {
-                     details?.address?.country
-                      }{' '}
-                    </Text>
-                 
+                    {details?.address?.country}{' '}
+                  </Text>
                 </View>
-               
               </View>
 
               <ScrollView
@@ -255,9 +198,7 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                   <Text style={styles.temtext1}>Start</Text>
 
                   <Text style={styles.temtext}>
-                    {moment(
-                      details?.start_date
-                    ).format('MM-DD-YY, h:mm:ss a')}
+                    {moment(details?.start_date).format('MM-DD-YY, h:mm:ss a')}
                   </Text>
                 </View>
                 <View style={styles.itemcontainer}>
@@ -269,9 +210,7 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                   <Text style={styles.temtext1}>End</Text>
 
                   <Text style={styles.temtext}>
-                    {moment(
-                      details?.end_date
-                    ).format('MM-DD-YY, h:mm:ss a')}
+                    {moment(details?.end_date).format('MM-DD-YY, h:mm:ss a')}
                   </Text>
                 </View>
                 <View style={styles.itemcontainer}>
@@ -282,9 +221,7 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                   />
                   <Text style={styles.temtext1}>Project Status</Text>
 
-                  <Text style={styles.temtext}>
-                    {details?.status}
-                  </Text>
+                  <Text style={styles.temtext}>{details?.status}</Text>
                 </View>
                 <View style={styles.itemcontainer}>
                   <MaterialCommunityIcons
@@ -294,9 +231,7 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                   />
                   <Text style={styles.temtext1}>Project Type</Text>
 
-                  <Text style={styles.temtext}>
-                    {details?.type}
-                  </Text>
+                  <Text style={styles.temtext}>{details?.type}</Text>
                 </View>
                 {/* <View style={styles.itemcontainer}>
                   <Feather name='user-check' color='#66C825' size={25} />
@@ -310,9 +245,7 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                   <Feather name='phone-call' color='#66C825' size={24} />
                   <Text style={styles.temtext1}>Contact Phone</Text>
 
-                  <Text style={styles.temtext}>
-                    {details?.tel_number}
-                  </Text>
+                  <Text style={styles.temtext}>{details?.tel_number}</Text>
                 </View>
                 {/* <View style={styles.itemcontainer1}>
                   <Fontisto name='email' color='#66C825' size={24} />
@@ -324,26 +257,26 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                 </View> */}
               </ScrollView>
             </View>
-       
-          <View style={{ height: '100%' }}>
-            <View style={styles.tabs}>
-            <TouchableOpacity
-                onPress={handleLive}
-                style={live ? styles.tab : styles.tab2}
-              >
-                <Text style={live ? styles.tabtext : styles.tabtext2}>
-                  Live
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCalendar}
-                style={calendar ? styles.tab : styles.tab2}
-              >
-                <Text style={calendar ? styles.tabtext : styles.tabtext2}>
-                  Tasks
-                </Text>
-              </TouchableOpacity>
-              {/* <TouchableOpacity
+
+            <View style={{ height: '100%' }}>
+              <View style={styles.tabs}>
+                <TouchableOpacity
+                  onPress={handleLive}
+                  style={live ? styles.tab : styles.tab2}
+                >
+                  <Text style={live ? styles.tabtext : styles.tabtext2}>
+                    Live
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleCalendar}
+                  style={calendar ? styles.tab : styles.tab2}
+                >
+                  <Text style={calendar ? styles.tabtext : styles.tabtext2}>
+                    Tasks
+                  </Text>
+                </TouchableOpacity>
+                {/* <TouchableOpacity
                 onPress={handleNote}
                 style={note ? styles.tab : styles.tab2}
               >
@@ -351,7 +284,7 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                   Notes
                 </Text>
               </TouchableOpacity> */}
-              {/* <TouchableOpacity
+                {/* <TouchableOpacity
                 onPress={handleRams}
                 style={rams ? styles.tab : styles.tab2}
               >
@@ -360,23 +293,30 @@ setTaskoff( tasksoff=> parsedofflinetask?.filter((item) => item.project_id == de
                 </Text>
               </TouchableOpacity>
           */}
-             
-            </View>
-            {live && <Live longitude={longitude} latitude={latitude} details={details} />}
-            {calendar && <Tasks tasksoff={tasksoff}  />}
+              </View>
+              {live && (
+                <Live
+                  longitude={longitude}
+                  latitude={latitude}
+                  details={details}
+                />
+              )}
+              {calendar && <Tasks tasksoff={tasksoff} />}
 
-
-
-            {/* <View style={styles.contentcontainer}>
+              {/* <View style={styles.contentcontainer}>
               {note && <Notes id={details?.id} notes={projectDetails?.notes} />}
               {rams && <Rams id={details?.id} risks={risk} />}
             </View> */}
+            </View>
           </View>
         </View>
-      </View>
-       <ImageModal details={details} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/> 
-    </SafeAreaView>
- </ScrollView>
+        <ImageModal
+          details={details}
+          modalVisible2={modalVisible2}
+          setModalVisible2={setModalVisible2}
+        />
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -385,9 +325,6 @@ export default Notifications;
 const styles = StyleSheet.create({
   contentcontainer: {
     marginTop: 20,
-  
-  
-
   },
   tabtext: {
     fontSize: 14,
@@ -423,7 +360,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: '#fff',
     height: '100%',
-    
   },
   cancel: {
     width: 40,
@@ -464,12 +400,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'GilroyBold',
   },
- 
+
   detailspage: {
     paddingHorizontal: 20,
-    
-    height:"100%",
-    flex:1
+
+    height: '100%',
+    flex: 1,
   },
   title: {
     fontSize: 16,
@@ -521,4 +457,3 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
-

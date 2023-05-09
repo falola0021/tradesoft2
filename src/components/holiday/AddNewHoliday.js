@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Alert,
   Modal,
@@ -8,52 +8,50 @@ import {
   View,
   Image,
   TouchableOpacity,
-  
+
   //Animated
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
 import TextArea from '../inputs/InputTextArea';
-import DatePicker from "../inputs/DatePicker"
-import {
-  AntDesign
-} from '@expo/vector-icons';
+import DatePicker from '../inputs/DatePicker';
+import { AntDesign } from '@expo/vector-icons';
 import { Value } from 'react-native-reanimated';
-import * as DocumentPicker from "expo-document-picker";
+import * as DocumentPicker from 'expo-document-picker';
 import InactiveButton from '../inactive-button/Button';
 import MultiSelect from 'react-native-multiple-select';
 import moment from 'moment';
 
-
-const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
+const handleNavigate = ({
+  modalVisible,
+  setModalVisible,
+  handleNewHoliday,
+}) => {
   const [val, setVal] = React.useState(null);
   const [title, setTitle] = React.useState(null);
   const [enddate, setEnddete] = React.useState('');
   const [startdate, setStartdate] = React.useState('');
 
-
-  const [maxdate, setMaxdate] = React.useState(new Date(moment().add(150, "years")));
-  const [mindate, setMindate] = React.useState(new Date(moment().add(1, "day")));
-
-
- 
+  const [maxdate, setMaxdate] = React.useState(
+    new Date(moment().add(150, 'years'))
+  );
+  const [mindate, setMindate] = React.useState(
+    new Date(moment().add(1, 'day'))
+  );
 
   const close = () => {
     setModalVisible(false);
-    setVal(null)
-    setTitle(null)
-    setStartdate("")
-    setEnddete("")
+    setVal(null);
+    setTitle(null);
+    setStartdate('');
+    setEnddete('');
   };
 
   const handleSubmit = () => {
-  
-    handleNewHoliday(val,title,startdate,enddate)   
-    setVal(null)
-    setTitle(null)
-    setStartdate("")
-    setEnddete("")
-    
- 
+    handleNewHoliday(val, title, startdate, enddate);
+    setVal(null);
+    setTitle(null);
+    setStartdate('');
+    setEnddete('');
   };
   return (
     <>
@@ -99,32 +97,24 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
                   {/* <Text style={styles.bottomtxt2}>135, Brierley Hill, Dudley, West Midlands, SY3 3NH, AL</Text> */}
                 </View>
 
-               
-
-
-              <Text style={{marginTop:20,marginBottom:10,fontFamily: 'Nunito_600SemiBold',}}>Enter your holiday request details</Text>
-                <View style={{marginBottom:20}}>
-                <DatePicker
-           
-                 setDob={setStartdate}
-                 dob={startdate}
-                minDate={mindate}
-                 
-                  placeholder='Start date'
-                 />
+                <Text
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 10,
+                    fontFamily: 'Nunito_600SemiBold',
+                  }}
+                >
+                  Enter your holiday request details
+                </Text>
+                <View style={{ marginBottom: 20 }}>
+                  <DatePicker
+                    setStartdate={setStartdate}
+                    setEnddete={setEnddete}
+                    minDate={mindate}
+                    placeholder='Start date'
+                  />
                 </View>
-       
 
-                <View style={{marginBottom:15}}>
-                <DatePicker
-           
-                 setDob={setEnddete}
-                 dob={enddate}
-                minDate={mindate}
-                 
-                  placeholder='End date'
-                 />
-                </View>
                 <TextArea
                   placeholder='Enter your message here...'
                   label='Your Reason'
@@ -132,20 +122,17 @@ const handleNavigate = ({ modalVisible, setModalVisible,handleNewHoliday}) => {
                   setVal={setVal}
                 />
 
-
-                
-
                 <View style={styles.bottomtxtbuttonbox}>
-               
-        
-                {val && startdate && startdate ?
-                  <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
-                    <Text style={styles.btntext2}>Send Request</Text>
-                  </TouchableOpacity>:
-                  <InactiveButton text='Send Request' />
-               }
-             
-       
+                  {val && startdate && startdate ? (
+                    <TouchableOpacity
+                      onPress={handleSubmit}
+                      style={styles.btn2}
+                    >
+                      <Text style={styles.btntext2}>Send Request</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <InactiveButton text='Send Request' />
+                  )}
                 </View>
               </View>
             </View>
@@ -203,9 +190,9 @@ const styles = StyleSheet.create({
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 8,
     fontFamily: 'Nunito_600SemiBold',
-    textTransform:"lowercase",
-    marginTop:15,
-    marginBottom:5
+    textTransform: 'lowercase',
+    marginTop: 15,
+    marginBottom: 5,
   },
   bottomtxt3: {
     color: '#2E3A59',
@@ -240,28 +227,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_600SemiBold',
     marginBottom: 2,
   },
-  attachmentbox:{
-    display:"flex",
-    flexDirection:"row",
-    borderColor:"rgba(46, 58, 89, 0.2)",
-    borderWidth:1,
+  attachmentbox: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderColor: 'rgba(46, 58, 89, 0.2)',
+    borderWidth: 1,
     // marginTop:30,
-    paddingVertical:15,
-    alignItems:"center",
+    paddingVertical: 15,
+    alignItems: 'center',
     // justifyContent:"center",
-    borderRadius:5,
-    paddingHorizontal:20
+    borderRadius: 5,
+    paddingHorizontal: 20,
   },
-  attachmenttext:{
+  attachmenttext: {
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
-    marginLeft:10
+    marginLeft: 10,
   },
-  attachmenttext2:{
+  attachmenttext2: {
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
-    marginLeft:10
-  }
+    marginLeft: 10,
+  },
 });

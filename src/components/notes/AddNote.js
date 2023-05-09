@@ -8,57 +8,50 @@ import {
   View,
   Image,
   TouchableOpacity,
-  
+
   //Animated
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
 import TextArea from '../../components/inputs/InputTextArea';
-import {
-  AntDesign
-} from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 import { Value } from 'react-native-reanimated';
-import * as DocumentPicker from "expo-document-picker";
+import * as DocumentPicker from 'expo-document-picker';
 import InactiveButton from '../../components/inactive-button/Button';
 
-
-const handleNavigate = ({ modalVisible, setModalVisible,handleSendNote ,setFile}) => {
+const handleNavigate = ({
+  modalVisible,
+  setModalVisible,
+  handleSendNote,
+  setFile,
+}) => {
   const [val, setVal] = React.useState(null);
   const [docname, setDocname] = React.useState(null);
   const [docsize, setDocsize] = React.useState(null);
   const [docurl, setDocurl] = React.useState(null);
   const [doctype, setDoctype] = React.useState(null);
 
+  const pickDocument = async () => {
+    let result = await DocumentPicker.getDocumentAsync();
 
-
- 
-    const pickDocument = async () => {
-     
-      let result = await DocumentPicker.getDocumentAsync();
-  
-      setDocname(result.name)
-      setDocsize(result.size)
-      setDocurl(result.uri)
-      setDoctype(result.mimeType)
-     
-   
-    };
-
+    setDocname(result.name);
+    setDocsize(result.size);
+    setDocurl(result.uri);
+    setDoctype(result.mimeType);
+  };
 
   const close = () => {
     setModalVisible(false);
-    setVal(null)
-     
-    setDocname(null)
-    setDocsize(null)
-    setDocurl(null)
+    setVal(null);
+
+    setDocname(null);
+    setDocsize(null);
+    setDocurl(null);
   };
 
   const handleSubmit = () => {
-   
-    handleSendNote(val,docname,docsize,docurl,doctype)
-setVal("")
+    handleSendNote(val, docname, docsize, docurl, doctype);
+    setVal('');
     setModalVisible(false);
-  
   };
   return (
     <>
@@ -110,33 +103,42 @@ setVal("")
                   setVal={setVal}
                 />
 
-                <Text style={styles.bottomtxt2}>ALLOWED: JPEG, JPG, BMP, PNG, PDF, GIF, DOC, DOCX, ODT, CSV, ODS, XLS, XLSX, ZIP, TXT
-                 
-                 </Text>
+                <Text style={styles.bottomtxt2}>
+                  ALLOWED: JPEG, JPG, BMP, PNG, PDF, GIF, DOC, DOCX, ODT, CSV,
+                  ODS, XLS, XLSX, ZIP, TXT
+                </Text>
 
-                 <TouchableOpacity onPress={pickDocument} style={styles.attachmentbox}>
-                 <AntDesign
-                  name='addfile'
-                  color='#66C825'
-                  size={15}
-                />
-                <View style={{display:"flex",flexDirection:"row"}}>
-                   <Text style={styles.attachmenttext2}>{docname?docname.substring(0, 26):"Attatchment"}  </Text>
-                   <Text style={styles.attachmenttext}>{docsize?(docsize * 0.000001).toFixed(2) + "Mb": " (128mb max-size)"}  </Text>
-
-                   </View>
-                 </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={pickDocument}
+                  style={styles.attachmentbox}
+                >
+                  <AntDesign name='addfile' color='#66C825' size={15} />
+                  <View style={{ display: 'flex', flexDirection: 'row' }}>
+                    <Text style={styles.attachmenttext2}>
+                      {docname ? docname.substring(0, 26) : 'Attatchment'}{' '}
+                    </Text>
+                    <Text style={styles.attachmenttext}>
+                      {docsize
+                        ? (docsize * 0.000001).toFixed(2) + 'Mb'
+                        : ' (128mb max-size)'}{' '}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
 
                 <View style={styles.bottomtxtbuttonbox}>
                   {/* <TouchableOpacity style={styles.btn1}>
                <Text style={styles.btntext2}>GO TO PROJECT</Text>
                </TouchableOpacity> */}
-               {val ?
-                  <TouchableOpacity onPress={handleSubmit} style={styles.btn2}>
-                    <Text style={styles.btntext2}>Add Note</Text>
-                  </TouchableOpacity>:
-                  <InactiveButton text='Add Note' />
-               }
+                  {val ? (
+                    <TouchableOpacity
+                      onPress={handleSubmit}
+                      style={styles.btn2}
+                    >
+                      <Text style={styles.btntext2}>Add Note</Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <InactiveButton text='Add Note' />
+                  )}
                 </View>
               </View>
             </View>
@@ -194,9 +196,9 @@ const styles = StyleSheet.create({
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 8,
     fontFamily: 'Nunito_600SemiBold',
-    textTransform:"lowercase",
-    marginTop:30,
-    marginBottom:5
+    textTransform: 'lowercase',
+    marginTop: 30,
+    marginBottom: 5,
   },
   bottomtxt3: {
     color: '#2E3A59',
@@ -231,28 +233,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_600SemiBold',
     marginBottom: 2,
   },
-  attachmentbox:{
-    display:"flex",
-    flexDirection:"row",
-    borderColor:"rgba(46, 58, 89, 0.2)",
-    borderWidth:1,
+  attachmentbox: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderColor: 'rgba(46, 58, 89, 0.2)',
+    borderWidth: 1,
     // marginTop:30,
-    paddingVertical:15,
-    alignItems:"center",
+    paddingVertical: 15,
+    alignItems: 'center',
     // justifyContent:"center",
-    borderRadius:5,
-    paddingHorizontal:20
+    borderRadius: 5,
+    paddingHorizontal: 20,
   },
-  attachmenttext:{
+  attachmenttext: {
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
-    marginLeft:10
+    marginLeft: 10,
   },
-  attachmenttext2:{
+  attachmenttext2: {
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
-    marginLeft:10
-  }
+    marginLeft: 10,
+  },
 });

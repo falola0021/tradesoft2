@@ -18,8 +18,6 @@ import { showMessage, hideMessage } from 'react-native-flash-message';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
 import {
   FontAwesome,
   MaterialCommunityIcons,
@@ -46,15 +44,12 @@ const Create = () => {
   const [success, setSuccess] = React.useState(false);
   const [offlinestatus, setOfflinestatus] = React.useState(false);
 
-
-
-
   const handleNavigateToDetails = (item) => {
-    setShowclock(false)
-    let details=item
-    navigation.navigate('ProjectDetails',{details})
-  //   setModalVisible(true);
-  //  setDetails(item)
+    setShowclock(false);
+    let details = item;
+    navigation.navigate('ProjectDetails', { details });
+    //   setModalVisible(true);
+    //  setDetails(item)
   };
 
   const app = useContext(AppContext);
@@ -63,69 +58,58 @@ const Create = () => {
   var allProjects = app.allProjects;
   var allLiveProjects = app.allLiveProjects;
   var getAllTask = app.getAllTask;
-  const  clockInOutOffline  = app.clockInOutOffline ;
+  const clockInOutOffline = app.clockInOutOffline;
 
-
-   var markAsRead =app.markAsRead 
+  var markAsRead = app.markAsRead;
   const latestClockinsTime = app.latestClockinsTime;
 
-
   const err = app.err;
-  const setErr=app.setErr
-  
-  
-  const getOffliveliveprojects=async()=>{
+  const setErr = app.setErr;
 
-    const offlineliveprojects= await AsyncStorage.getItem('offlineliveprojects');
-  
-  if (offlineliveprojects !== null){
+  const getOffliveliveprojects = async () => {
+    const offlineliveprojects = await AsyncStorage.getItem(
+      'offlineliveprojects'
+    );
 
-    // We have data!!
-    const parsedofflineliveprojects = JSON.parse(offlineliveprojects);
-  }
-}
+    if (offlineliveprojects !== null) {
+      // We have data!!
+      const parsedofflineliveprojects = JSON.parse(offlineliveprojects);
+    }
+  };
 
-const getOfflineclockinsStatus=async()=>{
+  const getOfflineclockinsStatus = async () => {
+    const offlineclockins = await AsyncStorage.getItem('offlineclockinsinfo');
 
-  const offlineclockins= await AsyncStorage.getItem('offlineclockinsinfo');
-
-if (offlineclockins !== null){
-
-  const parsedofflineclockins = JSON.parse(offlineclockins);
-  setOfflinestatus(parsedofflineclockins)
-  if(parsedofflineclockins.length>0){
-    setOfflineModalVisible(true)
-   
-
-  }
-  
-  
-}
-}
-const submitOfflineData=()=>{
-    offlinestatus?.map((item) => 
-    clockInOutOffline(
-      setModalVisible,
-      setMessage,
-      setLoading,
-      setSuccess,
-      setErr,
-      item.projectId,
-      item.lat,
-      item.lng)
-    )
-    setOfflineModalVisible(false)
-}
- 
+    if (offlineclockins !== null) {
+      const parsedofflineclockins = JSON.parse(offlineclockins);
+      setOfflinestatus(parsedofflineclockins);
+      if (parsedofflineclockins.length > 0) {
+        setOfflineModalVisible(true);
+      }
+    }
+  };
+  const submitOfflineData = () => {
+    offlinestatus?.map((item) =>
+      clockInOutOffline(
+        setModalVisible,
+        setMessage,
+        setLoading,
+        setSuccess,
+        setErr,
+        item.projectId,
+        item.lat,
+        item.lng
+      )
+    );
+    setOfflineModalVisible(false);
+  };
 
   useEffect(() => {
-    getOffliveliveprojects()
+    getOffliveliveprojects();
     getAllLiveProjects(setModalVisible, setMessage, setLoading);
     getAllProjects(setModalVisible, setMessage, setLoading);
     getAllTask(setModalVisible, setMessage, setLoading);
-    getOfflineclockinsStatus()
-
-
+    getOfflineclockinsStatus();
   }, []);
 
   if (err && message) {
@@ -137,22 +121,14 @@ const submitOfflineData=()=>{
     setMessage(false);
   }
 
-  const handleShowClockins=()=>{
-    setShowclock(!showclock)
-  }
+  const handleShowClockins = () => {
+    setShowclock(!showclock);
+  };
 
-  const handleMarkAsRead=(item)=>{
-    let id=item.id
-    markAsRead(
-      setModalVisible,
-      setMessage,
-      setLoading,
-      setSuccess,
-      setErr,
-    id
-    )
-  }
-
+  const handleMarkAsRead = (item) => {
+    let id = item.id;
+    markAsRead(setModalVisible, setMessage, setLoading, setSuccess, setErr, id);
+  };
 
   if (err && message) {
     showMessage({
@@ -162,8 +138,8 @@ const submitOfflineData=()=>{
     });
     setMessage(false);
   }
-  
-   if (success && message) {
+
+  if (success && message) {
     showMessage({
       message: 'SUCCESS',
       description: message,
@@ -171,25 +147,39 @@ const submitOfflineData=()=>{
     });
     setMessage(false);
   }
-  
-
 
   return (
     <SafeAreaView>
       <View>
         <View style={styles.container}>
-          <View style={{display:"flex",flexDirection:"row",justifyContent:"space-between",alignItems:"center"}}>
-          <Text style={styles.txt1b}>LIVE PROJECTS</Text>
-          <TouchableOpacity onPress={handleShowClockins} style={{display:"flex",flexDirection:"row",marginRight:20,alignItems:"center"}}>
-          <Text style={{color:"#66C825",fontSize:14,marginRight:5}}>View Clock-ins</Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.txt1b}>LIVE PROJECTS</Text>
+            <TouchableOpacity
+              onPress={handleShowClockins}
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                marginRight: 20,
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ color: '#66C825', fontSize: 14, marginRight: 5 }}>
+                View Clock-ins
+              </Text>
 
-          <MaterialCommunityIcons
-                      name='clock-outline'
-                      color='green'
-                      size={17}
-                    />
-          </TouchableOpacity>
-
+              <MaterialCommunityIcons
+                name='clock-outline'
+                color='green'
+                size={17}
+              />
+            </TouchableOpacity>
           </View>
           {loading ? (
             <ActivityIndicator size='25%' color='#c3c3c3' />
@@ -209,7 +199,7 @@ const submitOfflineData=()=>{
                   keyExtractor={(item) => item.id}
                   renderItem={({ item, index }) => (
                     <TouchableOpacity
-                      onPress={()=>handleNavigateToDetails(item)}
+                      onPress={() => handleNavigateToDetails(item)}
                       style={styles.secbox}
                     >
                       <ImageBackground
@@ -224,7 +214,9 @@ const submitOfflineData=()=>{
                       >
                         <FontAwesome
                           name='tag'
-                          color={item?.is_callout == '1' ? '#01B0E9' : '#66C825'}
+                          color={
+                            item?.is_callout == '1' ? '#01B0E9' : '#66C825'
+                          }
                           size={18}
                         />
                       </ImageBackground>
@@ -241,8 +233,7 @@ const submitOfflineData=()=>{
                         <Text style={styles.bottomtxt2}>Task: </Text>
                         <Text style={styles.bottomtxt3}>No task from API </Text>
                       </View> */}
-                    
-                     
+
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Start: </Text>
                         <Text style={styles.bottomtxt3}>
@@ -259,26 +250,54 @@ const submitOfflineData=()=>{
                       </View>
                       <View style={styles.bottomtxtbox2a}>
                         <Text style={styles.bottomtxt2}>Address : </Text>
-                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_1}</Text>
-                        <Text style={styles.bottomtxt3}>{item?.address?.address_line_2}</Text>
-                        <Text style={styles.bottomtxt3}>{item?.address?.county}</Text>
-                        <Text style={styles.bottomtxt3}>{item?.address?.postcode}</Text>
-                        <Text style={styles.bottomtxt3}>{item?.address?.country}</Text>
-
-
+                        <Text style={styles.bottomtxt3}>
+                          {item?.address?.address_line_1}
+                        </Text>
+                        <Text style={styles.bottomtxt3}>
+                          {item?.address?.address_line_2}
+                        </Text>
+                        <Text style={styles.bottomtxt3}>
+                          {item?.address?.county}
+                        </Text>
+                        <Text style={styles.bottomtxt3}>
+                          {item?.address?.postcode}
+                        </Text>
+                        <Text style={styles.bottomtxt3}>
+                          {item?.address?.country}
+                        </Text>
                       </View>
                       <View style={styles.bottomtxtbox2}>
                         <Text style={styles.bottomtxt2}>Project Status: </Text>
                         <Text style={styles.bottomtxt4}>{item?.status}</Text>
                       </View>
                       <View style={styles.bottomtxtbuttonbox}>
-               {/* <TouchableOpacity onPress={handleNavigateToDetails} style={styles.btn1}>
+                        {/* <TouchableOpacity onPress={handleNavigateToDetails} style={styles.btn1}>
                <Text style={styles.btntext2}>GO TO PROJECT</Text>
                </TouchableOpacity> */}
-               <TouchableOpacity onPress={()=>item.status !=="finalised" && handleMarkAsRead(item)} style={item.status =="finalised"? styles.btn1 : styles.btn2}>
-               <Text style={item.status=="finalised"?styles.btntext2a : styles.btntext2}>{item?.status=="finalised"? "COMPLETED" : "MARK AS COMPLETE"}</Text>
-               </TouchableOpacity>
-             </View>
+                        <TouchableOpacity
+                          onPress={() =>
+                            item.status !== 'finalised' &&
+                            handleMarkAsRead(item)
+                          }
+                          style={
+                            item.status == 'finalised'
+                              ? styles.btn1
+                              : styles.btn2
+                          }
+                        >
+                          <Text
+                            style={
+                              item.status == 'finalised'
+                                ? styles.btntext2a
+                                : styles.btntext2
+                            }
+                          >
+                            {item?.status == 'finalised'
+                              ? 'COMPLETED'
+                              : 'MARK AS COMPLETE'}
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
                     </TouchableOpacity>
                   )}
                 />
@@ -286,65 +305,66 @@ const submitOfflineData=()=>{
             </ScrollView>
           )}
 
-{
-  !loading &&
-<>
-  {
-    showclock &&
-<>
+          {!loading && (
+            <>
+              {showclock && (
+                <>
+                  <Text style={styles.txt1b}>LATEST CLOCK-INS</Text>
 
-          <Text style={styles.txt1b}>LATEST CLOCK-INS</Text>
-
-
-          {latestClockinsTime?.length > 0 ? (
-            <ScrollView
-              style={{
-                backgroundColor: 'rgb(102,200,37)',
-                paddingHorizontal: 20,
-                paddingTop: 10,
-                paddingBottom: 10,
-              }}
-              showsVerticalScrollIndicator={false}
-            >
-              {latestClockinsTime?.map((item) => (
-                <View key={item.id} style={styles.clockbox}>
-                  <View style={styles.aa}>
-                    <Fontisto name='checkbox-active' color='yellow' size={12} />
-                    <View>
-                      <Text style={styles.bb}>{item.project_name}</Text>
-                    </View>
-                  </View>
-                  <View style={styles.aa}>
-                    <MaterialCommunityIcons
-                      name='clock-outline'
-                      color='green'
-                      size={14}
-                    />
-                    <Text style={styles.bb}>{item.clock_in_time}</Text>
-                  </View>
-                  <View style={styles.aa}>
-                    <MaterialCommunityIcons
-                      name='clock-outline'
-                      color='red'
-                      size={14}
-                    />
-                    <Text style={styles.bb}>{item.clock_out_time}</Text>
-                  </View>
-                </View>
-              ))}
-            </ScrollView>
-          ) : (
-            <Text>No Available clockin</Text>
+                  {latestClockinsTime?.length > 0 ? (
+                    <ScrollView
+                      style={{
+                        backgroundColor: 'rgb(102,200,37)',
+                        paddingHorizontal: 20,
+                        paddingTop: 10,
+                        paddingBottom: 10,
+                      }}
+                      showsVerticalScrollIndicator={false}
+                    >
+                      {latestClockinsTime?.map((item) => (
+                        <View key={item.id} style={styles.clockbox}>
+                          <View style={styles.aa}>
+                            <Fontisto
+                              name='checkbox-active'
+                              color='yellow'
+                              size={12}
+                            />
+                            <View>
+                              <Text numberOfLines={1} style={styles.bb}>
+                                {item.project_name}
+                              </Text>
+                            </View>
+                          </View>
+                          <View style={styles.aa}>
+                            <MaterialCommunityIcons
+                              name='clock-outline'
+                              color='green'
+                              size={14}
+                            />
+                            <Text style={styles.bb}>{item.clock_in_time}</Text>
+                          </View>
+                          <View style={styles.aa}>
+                            <MaterialCommunityIcons
+                              name='clock-outline'
+                              color='red'
+                              size={14}
+                            />
+                            <Text style={styles.bb}>{item.clock_out_time}</Text>
+                          </View>
+                        </View>
+                      ))}
+                    </ScrollView>
+                  ) : (
+                    <Text>No Available clockin</Text>
+                  )}
+                </>
+              )}
+            </>
           )}
-        </>  
-          } 
-          </>
-      
-}
         </View>
       </View>
       <OfflineDetails
-      details={details}
+        details={details}
         modalVisible={offlinemodalVisible}
         setModalVisible={setOfflineModalVisible}
         submitOfflineData={submitOfflineData}
@@ -362,6 +382,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_400Regular',
     alignItems: 'center',
     color: '#fff',
+    width: 100,
   },
   aa: {
     display: 'flex',
@@ -491,7 +512,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     // display: 'flex',
     // flexDirection: 'row',
-    width:"100%",
+    width: '100%',
 
     marginBottom: 5,
   },
@@ -499,7 +520,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     display: 'flex',
     flexDirection: 'row',
-    width:"100%",
+    width: '100%',
 
     marginBottom: 5,
   },
@@ -524,24 +545,23 @@ const styles = StyleSheet.create({
     maxHeight: 800,
   },
 
-  bottomtxtbuttonbox:{
-    display:"flex",
-    flexDirection:"row",
-    justifyContent:"space-between",
-    marginTop:10,
+  bottomtxtbuttonbox: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
     // paddingHorizontal:10,
-    position:"absolute",
-    bottom:0
-
+    position: 'absolute',
+    bottom: 0,
   },
-  btn1:{
-    backgroundColor:'#F1E22E',
-    width:"100%",
-    height:37,
-    borderBottomRightRadius:7,
-    borderBottomLeftRadius:7,
-    alignItems:"center",
-    justifyContent:"center",
+  btn1: {
+    backgroundColor: '#F1E22E',
+    width: '100%',
+    height: 37,
+    borderBottomRightRadius: 7,
+    borderBottomLeftRadius: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
     // backgroundColor:'#66C825',
     // // width:140,
     // height:37,
@@ -549,34 +569,27 @@ const styles = StyleSheet.create({
     // alignItems:"center",
     // justifyContent:"center"
   },
-  btn2:{
-    backgroundColor:'#66C825',
-    width:"100%",
-    height:37,
-    borderBottomRightRadius:7,
-    borderBottomLeftRadius:7,
-    alignItems:"center",
-    justifyContent:"center",
-  
-
-
+  btn2: {
+    backgroundColor: '#66C825',
+    width: '100%',
+    height: 37,
+    borderBottomRightRadius: 7,
+    borderBottomLeftRadius: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  btntext2:{
-    color:"#fff",
+  btntext2: {
+    color: '#fff',
     fontSize: 10,
     fontFamily: 'Nunito_600SemiBold',
-    marginBottom:2,
-
+    marginBottom: 2,
   },
-  btntext2a:{
-    color:"#000",
+  btntext2a: {
+    color: '#000',
     fontSize: 10,
     fontFamily: 'Nunito_600SemiBold',
-    marginBottom:2,
-
-  }
-
-
+    marginBottom: 2,
+  },
 });
 
 {

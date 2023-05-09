@@ -5,6 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -13,16 +14,14 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow $(PRODUCT_NAME) to access your photos",
         "NSPhotoLibraryAddUsageDescription": "Allow $(PRODUCT_NAME) to save photos"
       },
-      "bundleIdentifier": "io.teknet.Tradesoft"
+      "bundleIdentifier": "com.teknet.TradesoftApp"
     },
     "android": {
       "adaptiveIcon": {
@@ -42,10 +41,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-media-library",
-      "expo-location",
-      "expo-document-picker"
-    ]
+    "plugins": ["expo-media-library", "expo-location", "expo-document-picker"],
+    "extra": {
+      "eas": {
+        "projectId": "12abeacb-3afc-4a68-ada8-1817fd7ae782"
+      }
+    }
   }
 }

@@ -82,7 +82,7 @@ const Root = () => {
     getAllRisk,
     getAllTask,
     alltask,
-    clockInOutOffline 
+    clockInOutOffline,
   } = ProjecsService();
 
   const [loading, setLoading] = useState(true);
@@ -161,127 +161,127 @@ const Root = () => {
 
   // // },[index])
 
-  if (loading) return null;
-  if (isFirstTimeLoad)
-    return (
-      <>
-        <StatusBar hidden />
-        <Welcome
-          onDone={handleDone}
-          handleLogin={handleLogin}
-          slides={slides}
-        />
-      </>
-    );
+  // if (loading) return null;
+  // if (isFirstTimeLoad)
+  //   return (
+  //     <>
+  //       <StatusBar hidden />
+  //       <Welcome
+  //         onDone={handleDone}
+  //         handleLogin={handleLogin}
+  //         slides={slides}
+  //       />
+  //     </>
+  //   );
 
-  if (!isFirstTimeLoad)
-    return (
-      <AppContext.Provider
-        value={{
-          success,
-          err,
-          login,
-          logout,
-          myaccountinfo,
-          getAllLiveProjects,
-          allLiveProjects,
-          latestClockinsTime,
-          getAllProjects,
-          allProjects,
-          getNotificatiobCount,
-          notificationCount,
-          getAllNotification,
-          notification,
-          readNotification,
-          readAllNotification,
-          projectDetails,
-          getProjectsDetails,
-          addNote,
-          deleteNote,
-          getRisk,
-          risk,
-          addAdditionalRisk,
-          clockInOut,
-          getClock,
-          clockview,
-          getAllMessage,
-          allmessage,
-          messagedetails,
-          getMessageDetails,
-          deleteMessage,
-          replyMessage,
-          addMessage,
-          getUsers,
-          users,
-          getAllHolidays,
-          allholidays,
-          requestHoliday,
-          deleteHoliday,
-          updateHoliday,
-          upadteProfile,
-          deleteProfileNote,
-          changePassword,
-          markAsRead,
-          setErr,
-          getAllRisk,
-          getAllTask,
-          alltask,
-          clockInOutOffline 
-        }}
-      >
-        <Stack.Navigator>
-          {!Register && (
-            <Stack.Screen
-              name='LoginScreen'
-              options={{ headerShown: false }}
-              component={LoginScreen}
-            />
-          )}
+  // if (!isFirstTimeLoad)
+  return (
+    <AppContext.Provider
+      value={{
+        success,
+        err,
+        login,
+        logout,
+        myaccountinfo,
+        getAllLiveProjects,
+        allLiveProjects,
+        latestClockinsTime,
+        getAllProjects,
+        allProjects,
+        getNotificatiobCount,
+        notificationCount,
+        getAllNotification,
+        notification,
+        readNotification,
+        readAllNotification,
+        projectDetails,
+        getProjectsDetails,
+        addNote,
+        deleteNote,
+        getRisk,
+        risk,
+        addAdditionalRisk,
+        clockInOut,
+        getClock,
+        clockview,
+        getAllMessage,
+        allmessage,
+        messagedetails,
+        getMessageDetails,
+        deleteMessage,
+        replyMessage,
+        addMessage,
+        getUsers,
+        users,
+        getAllHolidays,
+        allholidays,
+        requestHoliday,
+        deleteHoliday,
+        updateHoliday,
+        upadteProfile,
+        deleteProfileNote,
+        changePassword,
+        markAsRead,
+        setErr,
+        getAllRisk,
+        getAllTask,
+        alltask,
+        clockInOutOffline,
+      }}
+    >
+      <Stack.Navigator>
+        {!Register && (
           <Stack.Screen
-            name='RegisterScreen'
+            name='LoginScreen'
             options={{ headerShown: false }}
             component={LoginScreen}
           />
+        )}
+        <Stack.Screen
+          name='RegisterScreen'
+          options={{ headerShown: false }}
+          component={LoginScreen}
+        />
 
-          {/* <Stack.Screen
+        {/* <Stack.Screen
             name='RegisterScreen'
             options={{ headerShown: false }}
             component={RegisterScreen}
           /> */}
 
-          <Stack.Screen
-            name='ForgotScreen'
-            options={{ headerShown: false }}
-            component={ForgotScreen}
-          />
-          <Stack.Screen
-            name='DashboardScreen'
-            options={{ headerShown: false, statusBarStyle: 'dark' }}
-            component={DashboardScreen}
-          />
-          <Stack.Screen
-            name='NotificationScreen'
-            options={{ headerShown: false }}
-            component={NotificationScreen}
-          />
-          <Stack.Screen
-            name='ProjectDetails'
-            options={{ headerShown: false }}
-            component={ProjectDetails}
-          />
-          <Stack.Screen
-            name='ProjecsOfflineScreen'
-            options={{ headerShown: false }}
-            component={ProjecsOfflineScreen}
-          />
-          <Stack.Screen
-            name='ProjecDetailsOfflineScreen'
-            options={{ headerShown: false }}
-            component={ProjecDetailsOfflineScreen}
-          />
-        </Stack.Navigator>
-      </AppContext.Provider>
-    );
+        <Stack.Screen
+          name='ForgotScreen'
+          options={{ headerShown: false }}
+          component={ForgotScreen}
+        />
+        <Stack.Screen
+          name='DashboardScreen'
+          options={{ headerShown: false, statusBarStyle: 'dark' }}
+          component={DashboardScreen}
+        />
+        <Stack.Screen
+          name='NotificationScreen'
+          options={{ headerShown: false }}
+          component={NotificationScreen}
+        />
+        <Stack.Screen
+          name='ProjectDetails'
+          options={{ headerShown: false }}
+          component={ProjectDetails}
+        />
+        <Stack.Screen
+          name='ProjecsOfflineScreen'
+          options={{ headerShown: false }}
+          component={ProjecsOfflineScreen}
+        />
+        <Stack.Screen
+          name='ProjecDetailsOfflineScreen'
+          options={{ headerShown: false }}
+          component={ProjecDetailsOfflineScreen}
+        />
+      </Stack.Navigator>
+    </AppContext.Provider>
+  );
 };
 
 export default function App() {

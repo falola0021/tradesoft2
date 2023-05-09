@@ -12,7 +12,7 @@ import Live from '../../components/live/Live';
 import Tasks from '../../components/tasks/Task';
 
 import moment from 'moment';
-import ImageModal from "./ImageModal"
+import ImageModal from './ImageModal';
 import { AppContext } from '../../../App';
 
 import {
@@ -42,7 +42,7 @@ const Notifications = ({ route }) => {
   const [modalVisible2, setModalVisible2] = React.useState(false);
 
   const handleToggleImage = () => {
-    setModalVisible2(!modalVisible2)
+    setModalVisible2(!modalVisible2);
   };
 
   const handleNote = () => {
@@ -50,31 +50,24 @@ const Notifications = ({ route }) => {
     setNote(true);
     setRams(false);
     setCalendar(false);
-   
   };
   const handleRams = () => {
     setLive(false);
     setNote(false);
     setRams(true);
     setCalendar(false);
-   
-
   };
   const handleCalendar = () => {
     setLive(false);
     setNote(false);
     setRams(false);
     setCalendar(true);
-   
-
   };
   const handleLive = () => {
     setLive(true);
     setNote(false);
     setRams(false);
     setCalendar(false);
-   
-
   };
 
   const app = useContext(AppContext);
@@ -83,7 +76,7 @@ const Notifications = ({ route }) => {
   var getRisk = app.getRisk;
   var risk = app.risk;
   var getAllTask = app.getAllTask;
-  var  alltask = app. alltask;
+  var alltask = app.alltask;
 
   useEffect(() => {
     let id = details.id;
@@ -92,45 +85,40 @@ const Notifications = ({ route }) => {
     getAllTask(setModalVisible, setMessage, setLoading);
   }, []);
 
-
-
   return (
-<ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <SafeAreaView>
+        <View style={styles.container}>
+          <View style={styles.headerbox}>
+            <Arrowback />
+            <Text style={styles.nottext}>Project Overview</Text>
+          </View>
 
-    <SafeAreaView>
-      <View style={styles.container}>
-        <View style={styles.headerbox}>
-          <Arrowback />
-          <Text style={styles.nottext}>Project Overview</Text>
-        </View>
-        
-        <View style={styles.detailspage}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.title}>
-              {projectDetails?.project_info?.name}{' '}
-            </Text>
-            <TouchableOpacity
-              onPress={handleToggleImage}
+          <View style={styles.detailspage}>
+            <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
+                justifyContent: 'space-between',
                 alignItems: 'center',
               }}
             >
-              <Text style={{ color: '#66C825', marginRight: 5 }}>
-               Image
+              <Text style={styles.title}>
+                {projectDetails?.project_info?.name}{' '}
               </Text>
-              <Feather name='image' color='#66C825' size={16} />
-            </TouchableOpacity>
-          </View>
-       
+              <TouchableOpacity
+                onPress={handleToggleImage}
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <Text style={{ color: '#66C825', marginRight: 5 }}>Image</Text>
+                <Feather name='image' color='#66C825' size={16} />
+              </TouchableOpacity>
+            </View>
+
             <View>
               <View
                 style={{
@@ -154,19 +142,12 @@ const Notifications = ({ route }) => {
                 <View>
                   <Text style={styles.address}>
                     {' '}
-                    {
-                      projectDetails?.address
-                        ?.address_line_1
-                    }{' '}
+                    {projectDetails?.address?.address_line_1}{' '}
                   </Text>
-                  { projectDetails?.address
-                        ?.address_line_2 != '' && (
+                  {projectDetails?.address?.address_line_2 != '' && (
                     <Text style={styles.address}>
                       {' '}
-                      {
-                       projectDetails?.address
-                       ?.address_line_2
-                      }{' '}
+                      {projectDetails?.address?.address_line_2}{' '}
                     </Text>
                   )}
                 </View>
@@ -181,27 +162,15 @@ const Notifications = ({ route }) => {
               >
                 <View>
                   <Text style={styles.address}>
-                  
-                    {
-                   projectDetails?.address
-                        ?.postcode
-                    }{' '}
+                    {projectDetails?.address?.postcode}{' '}
                   </Text>
                   <Text style={styles.address}>
-                    
-                      {
-                      projectDetails?.address?.county
-                      }{' '}
-                    </Text>
+                    {projectDetails?.address?.county}{' '}
+                  </Text>
                   <Text style={styles.address}>
-                    
-                      {
-                     projectDetails?.address?.country
-                      }{' '}
-                    </Text>
-                 
+                    {projectDetails?.address?.country}{' '}
+                  </Text>
                 </View>
-               
               </View>
 
               <ScrollView
@@ -287,56 +256,62 @@ const Notifications = ({ route }) => {
                 </View>
               </ScrollView>
             </View>
-       
-          <View style={{ height: '100%' }}>
-            <View style={styles.tabs}>
-            <TouchableOpacity
-                onPress={handleLive}
-                style={live ? styles.tab : styles.tab2}
-              >
-                <Text style={live ? styles.tabtext : styles.tabtext2}>
-                  Live
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleCalendar}
-                style={calendar ? styles.tab : styles.tab2}
-              >
-                <Text style={calendar ? styles.tabtext : styles.tabtext2}>
-                  Tasks
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleNote}
-                style={note ? styles.tab : styles.tab2}
-              >
-                <Text style={note ? styles.tabtext : styles.tabtext2}>
-                  Notes
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={handleRams}
-                style={rams ? styles.tab : styles.tab2}
-              >
-                <Text style={rams ? styles.tabtext : styles.tabtext2}>
-                  Rams
-                </Text>
-              </TouchableOpacity>
-         
-             
-            </View>
-            <View style={styles.contentcontainer}>
-              {note && <Notes id={details?.id} notes={projectDetails?.notes} />}
-              {calendar && <Tasks alltask={alltask} details={details} />}
-              {rams && <Rams id={details?.id} risks={risk} />}
-              {live && <Live projectDetails={projectDetails} details={details} />}
+
+            <View style={{ height: '100%' }}>
+              <View style={styles.tabs}>
+                <TouchableOpacity
+                  onPress={handleLive}
+                  style={live ? styles.tab : styles.tab2}
+                >
+                  <Text style={live ? styles.tabtext : styles.tabtext2}>
+                    Live
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleCalendar}
+                  style={calendar ? styles.tab : styles.tab2}
+                >
+                  <Text style={calendar ? styles.tabtext : styles.tabtext2}>
+                    Tasks
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleNote}
+                  style={note ? styles.tab : styles.tab2}
+                >
+                  <Text style={note ? styles.tabtext : styles.tabtext2}>
+                    Notes
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleRams}
+                  style={rams ? styles.tab : styles.tab2}
+                >
+                  <Text style={rams ? styles.tabtext : styles.tabtext2}>
+                    Rams
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.contentcontainer}>
+                {note && (
+                  <Notes id={details?.id} notes={projectDetails?.notes} />
+                )}
+                {calendar && <Tasks alltask={alltask} details={details} />}
+                {rams && <Rams id={details?.id} risks={risk} />}
+                {live && (
+                  <Live projectDetails={projectDetails} details={details} />
+                )}
+              </View>
             </View>
           </View>
         </View>
-      </View>
-      <ImageModal projectDetails={projectDetails} modalVisible2={modalVisible2} setModalVisible2={setModalVisible2}/>
-    </SafeAreaView>
- </ScrollView>
+        <ImageModal
+          projectDetails={projectDetails}
+          modalVisible2={modalVisible2}
+          setModalVisible2={setModalVisible2}
+        />
+      </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -345,9 +320,6 @@ export default Notifications;
 const styles = StyleSheet.create({
   contentcontainer: {
     marginTop: 20,
-  
-  
-
   },
   tabtext: {
     fontSize: 14,
@@ -383,7 +355,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: '#fff',
     height: '100%',
-    
   },
   cancel: {
     width: 40,
@@ -424,12 +395,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontFamily: 'GilroyBold',
   },
- 
+
   detailspage: {
     paddingHorizontal: 20,
-    
-    height:"100%",
-    flex:1
+
+    height: '100%',
+    flex: 1,
   },
   title: {
     fontSize: 16,

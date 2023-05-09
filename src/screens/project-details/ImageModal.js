@@ -9,29 +9,18 @@ import {
   Image,
   TouchableOpacity,
 
-  
   //Animated
 } from 'react-native';
 import Logo from '../../../assets/images/logo.png';
 
-
-
-
-const handleNavigate = ({ modalVisible2, setModalVisible2,projectDetails}) => {
-
-
-
-
- 
-
-
+const handleNavigate = ({
+  modalVisible2,
+  setModalVisible2,
+  projectDetails,
+}) => {
   const close = () => {
     setModalVisible2(false);
-   
   };
-
- 
-  
 
   return (
     <>
@@ -54,6 +43,7 @@ const handleNavigate = ({ modalVisible2, setModalVisible2,projectDetails}) => {
                     justifyContent: 'space-between',
                     width: '100%',
                     alignItems: 'center',
+                    marginBottom: 10,
                   }}
                 >
                   <View style={styles.logobox}>
@@ -73,20 +63,14 @@ const handleNavigate = ({ modalVisible2, setModalVisible2,projectDetails}) => {
                   </TouchableOpacity>
                 </View>
 
-               
-              <View >
-          <Image
-            style={styles.img}
-            source={{
-              uri: `http://portal.trade-soft.co.uk/${projectDetails?.project_info?.image_src}`,
-            }}
-          />
-        </View>
-
-                
-               
-                 
-               
+                <View>
+                  <Image
+                    style={styles.img}
+                    source={{
+                      uri: `http://portal.trade-soft.co.uk/${projectDetails?.project_info?.image_src}`,
+                    }}
+                  />
+                </View>
               </View>
             </View>
           </Modal>
@@ -101,7 +85,7 @@ const styles = StyleSheet.create({
   img: {
     width: '100%',
     resizeMode: 'contain',
-    height: "100%",
+    height: '95%',
     borderRadius: 8,
   },
   centeredView: {
@@ -149,9 +133,9 @@ const styles = StyleSheet.create({
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 8,
     fontFamily: 'Nunito_600SemiBold',
-    textTransform:"lowercase",
-    marginTop:30,
-    marginBottom:5
+    textTransform: 'lowercase',
+    marginTop: 30,
+    marginBottom: 5,
   },
   bottomtxt3: {
     color: '#2E3A59',
@@ -186,28 +170,28 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_600SemiBold',
     marginBottom: 2,
   },
-  attachmentbox:{
-    display:"flex",
-    flexDirection:"row",
-    borderColor:"rgba(46, 58, 89, 0.2)",
-    borderWidth:1,
+  attachmentbox: {
+    display: 'flex',
+    flexDirection: 'row',
+    borderColor: 'rgba(46, 58, 89, 0.2)',
+    borderWidth: 1,
     // marginTop:30,
-    paddingVertical:15,
-    alignItems:"center",
+    paddingVertical: 15,
+    alignItems: 'center',
     // justifyContent:"center",
-    borderRadius:5,
-    paddingHorizontal:20
+    borderRadius: 5,
+    paddingHorizontal: 20,
   },
-  attachmenttext:{
+  attachmenttext: {
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
-    marginLeft:10
+    marginLeft: 10,
   },
-  attachmenttext2:{
+  attachmenttext2: {
     color: 'rgba(46, 58, 89, 0.7)',
     fontSize: 12,
     fontFamily: 'Nunito_600SemiBold',
-    marginLeft:10
-  }
+    marginLeft: 10,
+  },
 });
